@@ -1,0 +1,404 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2009 Deutsches Patent- und Markenamt und Hewlett-Packard GmbH
+  ~ Diese Software ist urheberrechtlich geschützt. Sie darf nur in Übereinstimmung mit den mit Hewlett-Packard getroffenen vertraglichen Vereinbarungen genutzt werden.
+  -->
+
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/schema"
+            xmlns="http://dpma.hp.com/marke/register/schema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${pom.version}">
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen Datenaustausch DVSM - DPMAregister        * -->
+    <!-- *     Verfahren Datenstrukturen                                             * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMARegisterVerfahren.xsd                               * -->
+    <!-- *     Author      : HP/ Frank Bareuther                                     * -->
+    <!-- *     Version     : 1.4                                                     * -->
+    <!-- *     Last Update : 2009-05-29                                              * -->
+    <!-- *     Contact     : frank.bareuter@dpma.de                                  * -->
+    <!-- *                                                                           * -->
+    <!-- ***************************************************************************** -->
+
+
+    <xsd:include schemaLocation="DPMARegisterTypes.xsd"/>
+
+    <xsd:complexType name="VerfahrensListeType">
+        <xsd:sequence>
+            <xsd:element name="Verfahren" type="VerfahrenBasisType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerfahrenBasisType" abstract="true">
+        <xsd:sequence>
+            <xsd:element name="Verfahrensart" type="VerfahrensartEnumType"/>
+            <xsd:element name="Kennung" type="TextType"/>
+            <xsd:element name="Sortierreihenfolge" type="TextType"/>
+            <xsd:element name="Verfahrensstand" type="VerfahrenszustandEnumType" minOccurs="0"/>
+            <xsd:element name="Abschluss" type="DateType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerfahrenPubliziertBasisType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Veroeffentlichung" type="DateType" minOccurs="0"/>
+                    <xsd:element name="VeroeffInTeil" type="TokenType" minOccurs="0"/>
+                    <xsd:element name="Heftjahr" type="ZahlType" minOccurs="0"/>
+                    <xsd:element name="Heftnummer" type="ZahlType" minOccurs="0"/>
+                    <xsd:element name="Wdvz" type="WdvzType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AnmeldeVerfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="StammdatenBasisGroup"/>
+                    <xsd:element name="Identifikation" type="MarkenIdentifikationBasisType"/>
+                    <xsd:element name="FarbigEintragung" type="BooleanType"/>
+                    <xsd:element name="BezeichnungFarben" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Markenbeschreibung" type="TextType" minOccurs="0"/>
+                    <xsd:element name="VerkehrsdurchgesetzteMarke" type="BooleanType"/>
+                    <xsd:element name="VerkehrsdurchgesetzterBestandteil" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Zeitrang" type="DateType" minOccurs="0"/>
+                    <xsd:element name="TagDerBekanntmachung" type="DateType" minOccurs="0"/>
+                    <xsd:element name="TagDerEintragungInRegister" type="DateType"/>
+                    <xsd:element name="Anmelder" type="TextType"/>
+                    <!--<xsd:element name="TeilwZurueckweisungZuruecknahme" type="WdvzGeloeschtType" minOccurs="0"/>-->
+                    <xsd:element name="TeilweiseZurueckweisungZuruecknahmeDetails" type="TeilweiseZurueckweisungZuruecknahmeDetailsType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="WiderspruchsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="PublikationsText" type="TextType" minOccurs="0"/>
+                    <xsd:element name="AbschlussRechtswirksam" type="DateType" minOccurs="0"/>
+                    <xsd:element name="AblaufWiderspruchsfrist" type="DateType" minOccurs="0"/>                    
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="LoeschungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="WirkungsDatum" type="DateType" minOccurs="0"/>
+                    <xsd:element name="Rechtsgrund" type="LoeschungrechtsgrundEnumType" minOccurs="0"/>
+                    <xsd:element name="AnnahmeAntrag" type="TextType" minOccurs="0"/>
+                  <!--  <xsd:element name="AngabeAbschluss" type="TextType" minOccurs="0"/>  Bug #5612 -->
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:group name="TeilungsverfahrenGroup">
+        <xsd:sequence>
+            <xsd:element name="AktenzeichenStamm" type="AktenzeichenType" minOccurs="0"/>
+            <xsd:element name="AktenzeichenAbgetrennt" type="AktenzeichenType" minOccurs="0"/>
+            <xsd:element name="Eingangstag" type="DateType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+
+
+    <xsd:complexType name="TeilungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="TeilungsverfahrenGroup"/>
+                    <xsd:element name="RegisternummerStamm" type="RegisternummerType" minOccurs="0"/>
+                    <xsd:element name="RegisternummerAbgetrennt" type="RegisternummerType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="UmschreibungsVerfahrenPubliziertBasisType" abstract="true">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Eingangstag" type="DateType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:group name="ZustellanschriftWechselGroup">
+        <xsd:sequence>
+            <xsd:element name="Zustellanschrift" type="TextType"/>
+            <xsd:element name="ZustellanschriftAlt" type="TextType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:group name="InhaberWechselGroup">
+        <xsd:sequence>
+            <xsd:element name="Inhaber" type="TextType"/>
+            <xsd:element name="InhaberAlt" type="TextType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:group name="VertreterWechselGroup">
+        <xsd:sequence>
+            <xsd:element name="Vertreter" type="TextType" minOccurs="0"/>
+            <xsd:element name="VertreterAlt" type="TextType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+    <xsd:complexType name="TeiluebertragungverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="TeilungsverfahrenType">
+                <xsd:sequence>
+                    <xsd:group ref="InhaberWechselGroup"/>
+                    <xsd:group ref="ZustellanschriftWechselGroup"/>
+                    <xsd:group ref="VertreterWechselGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="InhaberwechselverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="UmschreibungsVerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="InhaberWechselGroup"/>
+                    <xsd:group ref="ZustellanschriftWechselGroup"/>
+                    <xsd:group ref="VertreterWechselGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AnschriftaenderungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="UmschreibungsVerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="InhaberWechselGroup"/>
+                    <xsd:group ref="ZustellanschriftWechselGroup"/>
+                    <xsd:group ref="VertreterWechselGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ZustelladresseaenderungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="UmschreibungsVerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="ZustellanschriftWechselGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VertreterniederlegungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="UmschreibungsVerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <!--<xsd:group ref="ZustellanschriftWechselGroup"/>   Bug #5825 wegen Abwärtskompatibilität klären!-->
+                    <xsd:group ref="VertreterWechselGroup"/>  <!--Bug #5825 -->
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VertreterbestellungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="UmschreibungsVerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="VertreterWechselGroup"/>
+                    <xsd:group ref="ZustellanschriftWechselGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="VerfuegungsbeschraenkungsVerfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:group ref="VerfuegungsbeschraenkungGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerlaengerungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Schutzbeginn" type="DateType"/>
+                    <xsd:element name="Schutzende" type="DateType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SenioritaetenverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Senioritaeten" type="SenioritaetType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="BerichtigungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenPubliziertBasisType">
+                <xsd:sequence>
+                    <xsd:element name="BerichtigungsText" type="TextType"/>
+                    <xsd:element name="Bild" type="BildwiedergabeType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!-- Nicht elektronisch publizierte Verfahren -->
+    <xsd:complexType name="VerfahrenNichtElektronischPubliziertType">
+        <xsd:annotation xml:lang="DE">
+            <xsd:documentation>
+                In diesem Verfahren befinden sich migrierte Akten mit unvollständigen Attributen.
+                Für diese Akten liegt kein elektronischer Publikationsauftrag vor.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenBasisType">
+                <xsd:sequence>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AnmeldeverfahrenNichtEletronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="TeilweiseZurueckweisungZuruecknahmeDetails" type="TeilweiseZurueckweisungZuruecknahmeDetailsType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WiderspuchsVerfahrenNichtEletronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                	<xsd:element name="WdvzGeloescht" type="WdvzGeloeschtType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>           
+
+    <xsd:complexType name="BerichtigungNichtEletronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="BerichtigungsText" type="TextType"/>
+                    <xsd:element name="Veroeffentlichung" type="DateType" minOccurs="0"/>
+                    <xsd:element name="BildBerichtigt" type="BooleanType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="LoeschungsverfahrenNichtElektronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="Rechtsgrund" type="LoeschungrechtsgrundEnumType" minOccurs="0"/>
+                    <xsd:element name="Wdvz" type="WdvzType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    
+    <xsd:complexType name="LoeschungAntragDritterVerfahrenNichtEletronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                	<xsd:element name="WdvzGeloescht" type="WdvzGeloeschtType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>           
+
+
+     <xsd:complexType name="SenioritaetenNichtEletronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="Senioritaeten" type="SenioritaetType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TeilungsverfahrenNichtElektronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:group ref="TeilungsverfahrenGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="UmklassifizierungsverfahrenType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="Grund" type="TokenType" minOccurs="0"/>
+                    <xsd:element name="NizzaKlassifikation" type="NizzaType" minOccurs="0"/>
+                    <xsd:element name="Leitklasse" type="SingleKlasseType" minOccurs="0"/>
+                    <xsd:element name="Klassen" type="KlassenListeType" minOccurs="0"/>
+                    <xsd:element name="Wdvz" type="WdvzBasisType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="UmschreibungsverfahrenNichtElektronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:element name="Eingangstag" type="DateType" minOccurs="0"/>
+                    <xsd:element name="Umschreibungsart" type="UmschreibungsartEnumType" minOccurs="0"/>
+                    <xsd:group ref="InhaberWechselGroup" minOccurs="0"/>
+                    <xsd:group ref="ZustellanschriftWechselGroup" minOccurs="0"/>
+                    <xsd:group ref="VertreterWechselGroup" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="VerfuegungsbeschraenkungsverfahrenNichtElektronischPubliziertType">
+        <xsd:complexContent>
+            <xsd:extension base="VerfahrenNichtElektronischPubliziertType">
+                <xsd:sequence>
+                    <xsd:group ref="VerfuegungsbeschraenkungGroup"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+</xsd:schema>

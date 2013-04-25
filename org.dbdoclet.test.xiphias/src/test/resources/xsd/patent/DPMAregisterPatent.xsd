@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!-- *****************************************************************************************************-->
+  <!-- *                                                                                                    -->
+  <!-- *     Deutsches Patent- und Markenamt/ HP                                                            -->
+  <!-- *     XML Schema für den internen Datenaustausch Patente ung Gebrauchsmuster nach DPMARegister       -->
+  <!-- *                                                                                                    -->
+  <!-- *     Dateiname:             DPMARegisterPatent.xsd                                                  -->
+  <!-- *     Autor:                 Michael Fuchs                                                           -->
+  <!-- *     Version:               1.7                                                                     -->
+  <!-- *     Letzte Aktualisierung: 24. Juni 2010                                                           -->
+  <!-- *     E-Mail:                michael.fuchs.ext@dpma.de            							        -->
+  <!-- *     												 												-->
+  <!-- *     Aenderungshistorie (seit 01.04.2010)    										 				-->
+  <!-- *     Datum				  Aenderung			                                                        -->
+  <!-- *     04.05.2010           Änderungen laut REQ 1494                                                  -->
+  <!-- *     06.05.2010			  Änderung des Typs für das Element Verfahren in VerfahrensdatenListeType   -->
+  <!-- *     															 			 						-->
+  <!-- *****************************************************************************************************-->
+
+<xsd:schema version="1.7" xmlns="http://elsa.dpma.de/patgbm/register/schema" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elsa.dpma.de/patgbm/register/schema">
+
+  <xsd:include schemaLocation="DPMAregisterPatentBase.xsd" />
+  <xsd:include schemaLocation="DPMAregisterPatentTypes.xsd" />
+
+  <xsd:element name="GBMREG">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Stammdaten" type="GebrauchsmusterStammdatenType">
+        </xsd:element>
+        <xsd:element name="Verfahren" type="VerfahrensdatenListeType">
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="PATREG">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Stammdaten" type="PatentStammdatenType">
+        </xsd:element>
+        <xsd:element name="Verfahren" type="VerfahrensdatenListeType">
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="TOPOREG">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Stammdaten" type="TopographieStammdatenType">
+        </xsd:element>
+        <xsd:element name="Verfahren" type="VerfahrensdatenListeType">
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:element name="ZERTREG">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="Stammdaten" type="ZertifikatStammdatenType">
+        </xsd:element>
+        <xsd:element name="Verfahren" type="VerfahrensdatenListeType">
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xsd:schema>

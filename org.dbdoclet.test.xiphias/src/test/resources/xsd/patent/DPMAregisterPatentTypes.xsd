@@ -1,0 +1,737 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!-- *****************************************************************************************************-->
+  <!-- *                                                                                                    -->
+  <!-- *     Deutsches Patent- und Markenamt/ HP                                                            -->
+  <!-- *     XML Schema für den internen Datenaustausch Patente ung Gebrauchsmuster nach DPMARegister       -->
+  <!-- *                                                                                                    -->
+  <!-- *     Dateiname:             DPMARegisterPatentTypes.xsd                                             -->
+  <!-- *     Autor:                 Michael Fuchs                                                           -->
+  <!-- *     Version:               1.7                                                                     -->
+  <!-- *     Letzte Aktualisierung: 24. Juni 2010                                                            -->
+  <!-- *     E-Mail:                michael.fuchs.ext@dpma.de            							        -->
+  <!-- *     												 												-->
+  <!-- *     Aenderungshistorie (seit 01.04.2010)    										 				-->
+  <!-- *     Datum				  Änderung			                                                        -->
+  <!-- *     04.05.2010           Änderungen laut REQ 1494                                                  -->
+  <!-- *     06.05.2010           Suchfeldkürzel DEPN für VeroeffentlichteDokumente                         -->
+  <!-- *                          Suchfeldkürzel EPWOPN für VeroeffentlichteInternationaleDokumente         -->
+  <!-- *                          Neues Element VerfahrensdatenListeType                                    -->
+  <!-- *     17.05.2010           - Suchfelder für Stammdaten VeroeffentlichteDokumente und                 -->
+  <!-- *                            VeroeffentlichteInternationaleDokumente auf DEPN bzw. EPWOPN und deren  -->
+  <!-- *                            Einzelbestandteile auf Ländercode: PNC, Dokumentennummer: PNN,          -->
+  <!-- *                            Schriftartencode PNCOD geändert.                                        -->
+  <!-- *                          - Suchfelder für Verfahrensdaten VeröffentlichteDokumente auf DEPN und    -->
+  <!-- *                            für die Einzelbestandteile auf Ländercode: PNC, Dokumentennummer: PNN,  -->
+  <!-- *                            Schriftartencode PNCOD geändert.                                        -->
+  <!-- *     20.05.2010           - Neues Element ErstveroeffentlichungsTag                                 -->
+  <!-- *     08.06.2010           - Neue Elemente EingangsTag und GrundpatentAKZ in der Gruppe              -->
+  <!-- *                            VerfahrensdatenGroup                                                    -->
+  <!-- *     24.06.2010           - Umbenennung Anmeldetag -> Anmeldetag DE für Zertifikate und             -->
+  <!-- *                            Topographien, Suchfeldkürzel zu DAT hinzugefügt                         -->
+  <!-- *                                                                                                    -->
+  <!-- *                                                                                                    -->
+  <!-- *                                                                                                    -->
+  <!-- *****************************************************************************************************-->
+
+<xsd:schema version="1.7" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://elsa.dpma.de/patgbm/register/schema" targetNamespace="http://elsa.dpma.de/patgbm/register/schema"
+  elementFormDefault="qualified">
+
+  <xsd:complexType name="StammdatenBasisType">
+    <xsd:sequence>
+      <xsd:group ref="StammdatenBasisGroup" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="PatGbmTopoStammdatenBasisType">
+    <xsd:complexContent>
+      <xsd:extension base="StammdatenBasisType">
+        <xsd:group ref="PatGbmTopoStammdatenGroup" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PatGbmZertStammdatenBasisType">
+    <xsd:complexContent>
+      <xsd:extension base="StammdatenBasisType">
+        <xsd:group ref="PatGbmZertStammdatenGroup" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PatGbmStammdatenBasisType">
+    <xsd:complexContent>
+      <xsd:extension base="PatGbmZertStammdatenBasisType">
+        <xsd:sequence>
+          <xsd:group ref="PatGbmTopoStammdatenGroup" />
+          <xsd:group ref="PatGbmStammdatenGroup" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PatZertStammdatenBasisType">
+    <xsd:complexContent>
+      <xsd:extension base="PatGbmZertStammdatenBasisType">
+        <xsd:group ref="PatZertStammdatenGroup" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="GbmTopoStammdatenBasisType">
+    <xsd:complexContent>
+      <xsd:extension base="PatGbmTopoStammdatenBasisType">
+        <xsd:group ref="GbmTopoStammdatenGroup" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PatentStammdatenType">
+    <xsd:complexContent>
+      <xsd:extension base="PatGbmStammdatenBasisType">
+        <xsd:sequence>
+          <xsd:group ref="PatZertStammdatenGroup" />
+          <xsd:group ref="PatentStammdatenGroup" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="ZertifikatStammdatenType">
+    <xsd:complexContent>
+      <xsd:extension base="PatZertStammdatenBasisType">
+        <xsd:sequence>
+          <xsd:group ref="ZertTopoStammdatenGroup" />
+          <xsd:group ref="ZertifikatStammdatenGroup" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="GebrauchsmusterStammdatenType">
+    <xsd:complexContent>
+      <xsd:extension base="PatGbmStammdatenBasisType">
+        <xsd:sequence>
+          <xsd:group ref="GbmTopoStammdatenGroup" />
+          <xsd:group ref="GebrauchsmusterStammdatenGroup" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TopographieStammdatenType">
+    <xsd:complexContent>
+      <xsd:extension base="GbmTopoStammdatenBasisType">
+        <xsd:sequence>
+          <xsd:group ref="ZertTopoStammdatenGroup" />
+          <xsd:group ref="TopographieStammdatenGroup" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerfahrensdatenType">
+    <xsd:sequence>
+      <xsd:group ref="VerfahrensdatenGroup" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerfahrensdatenListeType">
+    <xsd:sequence>
+      <xsd:element name="Verfahrensdaten" type="VerfahrensdatenType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!--                       -->
+  <!-- Gruppen von Elementen -->
+  <!--                       -->
+
+  <xsd:complexType name="DokumentCollectionType">
+    <xsd:sequence>
+      <xsd:element name="Dokumentenreferenz" type="DokumentRefType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DokumentRefType">
+    <xsd:sequence>
+      <xsd:element name="Titel" type="xsd:string" />
+      <xsd:element name="CMid" type="xsd:string" />
+      <xsd:element name="Dokumentenart" type="xsd:string" />
+      <xsd:element name="Format" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:group name="StammdatenBasisGroup">
+    <xsd:annotation>
+      <xsd:documentation>Elemente die allen Schutzrechten gemeinsam sind: AktenzeichenDE, AnmelderInhaber, AnzuzeigendesAktenzeichen, BPatGAKZ, ErstmaligeBereitstellung, FuehrendesAktenzeichen,
+        Schutzrechtsart, Status, Vertreter und Zustellanschrift</xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="FuehrendesAktenzeichen" type="xsd:string" />
+      <xsd:element name="AnzuzeigendesAktenzeichen" type="AktenzeichenType" />
+      <xsd:element name="ErstveroeffentlichungsTag" type="xsd:date" />
+      <xsd:element name="ErstmaligeBereitstellung">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+              <xsd:attribute ref="suchfeld" fixed="EDVT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Status" type="StatusType" />
+      <xsd:element name="Schutzrechtsart" type="SchutzrechtsartType" />
+      <xsd:element name="AktenzeichenDE">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="DAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AnmelderInhaber">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="INH" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Vertreter" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="VTR" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Zustellanschrift" type="xsd:string" minOccurs="0" />
+      <xsd:element name="BPatGAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenListeType">
+              <xsd:attribute ref="suchfeld" fixed="CAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Dokumente" type="DokumentCollectionType" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="PatGbmZertStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="IPCHauptklasse" type="IPCHauptklasseType" />
+      <xsd:element name="IPCNebenklassen" type="IPCNebenklasseListeType" minOccurs="0" />
+      <xsd:element name="Faelligkeit" minOccurs="0" type="JahresgebuehrType" />
+      <xsd:element name="Lizenz" type="LizenzType" minOccurs="0" />
+      <xsd:element name="Foerderkennziffer" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute ref="suchfeld" fixed="FOEZ" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="PatZertStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="ZustaendigePatentabteilung" type="xsd:string" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:annotation>
+    <xsd:documentation>Elemente die den Schutzrechten Patente, Gebrauchsmuster und Topologien gemeinsam sind.</xsd:documentation>
+  </xsd:annotation>
+
+  <xsd:group name="PatGbmTopoStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="Bezeichnung">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="TI" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="PatGbmStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="AnmeldeTagDE" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="DAT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AnmeldeTagEP" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="EAT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AnmeldeTagWO" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="WAT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsspracheEP" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="ELANG" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsspracheWO" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="WLANG" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AktenzeichenEP" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="EAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AktenzeichenWO" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="WAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsNummerEP" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="VeroeffentlichungsNummerType">
+              <xsd:attribute ref="suchfeld" fixed="EPN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsNummerWO" minOccurs="0" maxOccurs="1">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="VeroeffentlichungsNummerType">
+              <xsd:attribute ref="suchfeld" fixed="WPN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="InlaendischePrioritaeten" type="InlaendischePrioritaetListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="AuslaendischePrioritaeten" type="AuslaendischePrioritaetListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="AusstellungsPrioritaeten" type="AusstellungsPrioritaetListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="GeschmacksmusterPrioritaeten" type="GeschmacksmusterPrioritaetListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="TeilungInAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenListeType">
+              <xsd:attribute ref="suchfeld" fixed="TIAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="TeilungAusAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenListeType">
+              <xsd:attribute ref="suchfeld" fixed="TAAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="BenannteVetragsstaatenEP" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="EDS" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="BestimmungsstaatenWO" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="WDS" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichteDokumente" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="DokidListeType">
+              <xsd:attribute ref="suchfeld" fixed="DEPN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichteEPWODokumente" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="DokidListeType">
+              <xsd:attribute ref="suchfeld" fixed="EPWOPN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Entgegenhaltungen" type="EntgegenhaltungListeType" minOccurs="0" />
+      <xsd:element name="EntgegenhaltungenNPL" type="EntgegenhaltungNPLListeType" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="GebrauchsmusterStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="AbzweigungAusAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="AAAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="LoeschAKZ" type="AktenzeichenListeType" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="GbmTopoStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="EintragungsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="ET" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungEintragungsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="PET" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="PatentStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="OffenlegungsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="OT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AbzweigungInAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="AIAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungErteilungsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="PET" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EntnahmePrioritaeten" type="EntnahmePrioritaetListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="Zusammenfassung" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="AB" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Erfinder" type="ErfinderListeType" minOccurs="0" />
+      <xsd:element name="StammanmeldungAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="AKZB" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="ZusatzanmeldungenAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenListeType">
+              <xsd:attribute ref="suchfeld" fixed="AKZA" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="SchutzzertifikatAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenListeType">
+              <xsd:attribute ref="suchfeld" fixed="ZAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="TopographieStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="ErsteNichtVertraulicheVerwertung">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="NVWT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="ZertifikatStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="Verwendung" type="VerwendungType" />
+      <xsd:element name="BezeichnungErzeugnis">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="TIEZ" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="BezeichnungGrundpatent">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="TIGZ" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="LaufzeitBeginn" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="LB" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="LaufzeitEnde" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="LE" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GrundpatentAKZ">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="GAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GenehmigungenInland" type="GenehmigungInlandListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="GenehmigungenEU" type="GenehmigungEUListeType" minOccurs="0" maxOccurs="1" />
+      <xsd:element name="VeroeffentlichungAnmeldungsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="OT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungErteilungsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="PET" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="ZertTopoStammdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="AnmeldeTagDE">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="DAT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+
+    </xsd:sequence>
+  </xsd:group>
+
+  <xsd:group name="VerfahrensdatenGroup">
+    <xsd:sequence>
+      <xsd:element name="Verfahrensart" type="VerfahrensartType" />
+      <xsd:element name="Verfahrensstand" type="VerfahrensstandType" />
+      <xsd:element name="VerfahrensstandsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+              <xsd:attribute ref="suchfeld" fixed="VSTT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EDVErfassungsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+              <xsd:attribute ref="suchfeld" fixed="EDVT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsInfo" type="VeroeffentlichungsInfoType" minOccurs="0" />
+      <xsd:element name="IPCHauptklasse" type="IPCHauptklasseType" minOccurs="0" />
+      <xsd:element name="FruehereIPCHauptklasse" type="FruehereIPCHauptklasseType" minOccurs="0" />
+      <xsd:element name="IPCNebenklassen" type="IPCNebenklasseListeType" minOccurs="0" />
+      <xsd:element name="FruehereIPCNebenklassen" type="FruehereIPCNebenklasseListeType" minOccurs="0" />
+      <xsd:element name="AnmelderInhaber" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="INH" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FruehererAnmelderInhaber" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="INHF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Erfinder" type="ErfinderListeType" minOccurs="0" />
+      <xsd:element name="FruehererErfinder" type="FruehererErfinderListeType" minOccurs="0" />
+      <xsd:element name="Vertreter" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="VTR" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="FruehererVertreter" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="VTRF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichteDokumente" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="DokidListeType">
+              <xsd:attribute ref="suchfeld" fixed="DEPN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AntragDritter" type="xsd:boolean" minOccurs="0" />
+      <xsd:element name="BPatGAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="CAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="AusgesetztBis" type="xsd:date" minOccurs="0" />
+      <xsd:element name="Information" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+              <xsd:attribute ref="suchfeld" fixed="INFO" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="EingangsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+              <xsd:attribute ref="suchfeld" fixed="AEGT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="GrundpatentAKZ" minOccurs="0">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="GAKZ" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:group>
+
+</xsd:schema>

@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.dbdoclet.tag
+Bundle-SymbolicName: org.dbdoclet.tag
+Bundle-Version: 6.1.0
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: org.dbdoclet.tag,
+ org.dbdoclet.tag.dbd,
+ org.dbdoclet.tag.docbook,
+ org.dbdoclet.tag.html,
+ org.dbdoclet.tag.javadoc,
+ org.dbdoclet.tag.jsf,
+ org.dbdoclet.tag.jsf.html,
+ org.dbdoclet.tag.presentation
+Import-Package: org.dbdoclet.xiphias,
+ org.dbdoclet.xiphias.dom

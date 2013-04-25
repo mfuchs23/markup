@@ -1,0 +1,124 @@
+ /**
+ * JavaCC file
+ */options{  JDK_VERSION = "1.5";  STATIC = false;  DEBUG_TOKEN_MANAGER = false;  DEBUG_PARSER = false;  UNICODE_INPUT = true;  JAVA_UNICODE_ESCAPE = false;}PARSER_BEGIN(HtmlTokenizer)package org.dbdoclet.trafo.html.tokenizer.parser;
+import java.util.ArrayList;import java.util.HashMap;import java.io.ByteArrayInputStream;import java.io.UnsupportedEncodingException;import org.dbdoclet.progress.ProgressListener;
+import org.dbdoclet.progress.ProgressEvent;
+import org.dbdoclet.progress.ProgressManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+
+public class HtmlTokenizer{
+  private static Log logger = LogFactory.getLog(HtmlTokenizer.class);
+
+  private ArrayList<org.dbdoclet.trafo.html.tokenizer.Token> tokenList;
+  private ArrayList<ProgressListener> listeners;
+    public HtmlTokenizer(String buffer, String encoding) throws UnsupportedEncodingException  {    this (new ByteArrayInputStream(buffer.getBytes(encoding)), encoding);  }  public synchronized ArrayList < org.dbdoclet.trafo.html.tokenizer.Token > parse() throws ParseException  {    tokenList = new ArrayList < org.dbdoclet.trafo.html.tokenizer.Token > ();    start();    return tokenList;  }}PARSER_END(HtmlTokenizer)< DEFAULT >SKIP :{  " "| "\r"| "\t"| "\n"| < "<" (< WHITESPACE >)*    (      "script"    | "style"    ) >  : WithinIgnorable}< WithinIgnorable >SKIP :{  < "</" (< WHITESPACE >)*    (      "script"    | "style"    )    (< WHITESPACE >)* ">" > : DEFAULT}< WithinIgnorable >MORE :{  < ~[ ] >}< DEFAULT >TOKEN : /* DEFAULT */{  < TAG_START : "<" > : TAG_CONTEXT| < QUOTE : [ "\"", "'" ] >| < TEXT :    (      ~[ "<", "\"", "'" ]    | "<"      (        "!" ~[ "-" ] ~[ "-" ]      | < TEXT_AFTER_GT >      )    | "->"    )+ >}< DEFAULT >MORE :{  "<!--" : COMMENT_CONTEXT}< TAG_CONTEXT >SKIP :{  " "| "\r"| "\t"| "\n"}< TAG_CONTEXT >TOKEN :{  < TAG_END : ">" > : DEFAULT| < EQUALS : "=" >| < SLASH : "/" >| < NCNAME : < NAME > >| < VALUE :    (      "\"" (~[ "\"", ">" ])* "\""    | "'" (~[ "'", ">" ])* "'"    | < NAME_CHAR > (< NAME_CHAR > | "/" | "?" | "&" )*    ) >}< COMMENT_CONTEXT >
+MORE:
+{	< ~[] >
+}
+< COMMENT_CONTEXT >
+TOKEN:{  < COMMENT: "-->" > : DEFAULT}TOKEN :{  < #DIGIT : [ "0"-"9" ] >| < #LETTER : [ "A"-"Z", "a"-"z" ] >| < #WHITESPACE : [ " ", "\t", "\n", "\r" ] >| < #NAME_START_CHAR : [ ":", "A"-"Z", "_", "a"-"z", "\u00C0"-"\u00D6", "\u00D8"-"\u00F6", "\u00F8"-"\u02FF", "\u0370"-"\u037D", "\u037F"-"\u1FFF", "\u200C"-"\u200D", "\u2070"-"\u218F", "\u2C00"-"\u2FEF", "\u3001"-"\uD7FF", "\uF900"-"\uFDCF", "\uFDF0"-"\uFFFD" ] >| < #TEXT_AFTER_GT : ~[ "/", ":", "!", "A"-"Z", "_", "a"-"z", "\u00C0"-"\u00D6", "\u00D8"-"\u00F6", "\u00F8"-"\u02FF", "\u0370"-"\u037D", "\u037F"-"\u1FFF", "\u200C"-"\u200D", "\u2070"-"\u218F", "\u2C00"-"\u2FEF", "\u3001"-"\uD7FF", "\uF900"-"\uFDCF", "\uFDF0"-"\uFFFD" ] >| < #NAME_CHAR :    (      < NAME_START_CHAR >    | [ "-", ".", "0"-"9", "\u00B7", "\u0300"-"\u036F", "\u203F"-"\u2040" ]    ) >| < #NAME : < NAME_START_CHAR > (< NAME_CHAR >)* >}void start() :{}{  (    tag()  | text()
+  | comment()  )*}void tag() :{  Token tag = null;  Token name = null;  Token value = null;  Token slash1 = null;  Token slash2 = null;  HashMap < String, String > attributeMap = new HashMap < String, String > ();}{  {    org.dbdoclet.trafo.html.tokenizer.Token token = new org.dbdoclet.trafo.html.tokenizer.Token();    tokenList.add(token);
+    fireProgressEvent(token.toString());
+  }  try  {    < TAG_START > (slash1 = < SLASH >) ? tag = ncname()    {      token.setTagName(tag.image);
+      token.setLine(tag.beginLine);      token.setColumn(tag.beginColumn);
+	  trace("Tag: " + tag.image);
+    }    (name = attrName() (equals() value = attrValue())?
+    {
+      if (value != null)      {              	String buffer = value.image;      	if (buffer != null)      	{        	if (buffer.startsWith("\"") || buffer.startsWith("'"))        	{          		buffer = buffer.substring(1, buffer.length());        	}
+        	        	if (buffer.endsWith("\"") || buffer.endsWith("'"))        	{          		buffer = buffer.substring(0, buffer.length() - 1);        	}
+
+        	attributeMap.put(name.image, buffer);      	}
+      }    }    ) * (slash2 = < SLASH >) ? < TAG_END >  }  catch (Throwable oops)  {    logger.warn(String.format("Invalid attributes in Element %s line %d column %d",
+    			 token.getTagName(), token.getLine(), token.getColumn()));
+    logger.warn(oops.getMessage());    Token t = skipTo(DEFAULT, DEFAULT, token.toString(), TAG_END, TAG_START);
+    token.setValue("&lt;" + token.getTagName() + toAttributesAsText(attributeMap) + t.image);
+    return;  }  {    StringBuilder buffer = new StringBuilder();    buffer.append('<');    if (slash1 != null)    {      buffer.append('/');    }    if (tag != null)    {      buffer.append(tag.image);    }
+    buffer.append(toAttributesAsText(attributeMap));    if (slash2 != null)    {      buffer.append('/');    }    buffer.append('>');    trace(buffer.toString());    token.setValue(buffer.toString());    token.setAttributes(attributeMap);  }}void comment() :
+{
+  Token comment;
+}
+{
+  comment = < COMMENT >
+  {
+    org.dbdoclet.trafo.html.tokenizer.Token token = new org.dbdoclet.trafo.html.tokenizer.Token(comment.image);
+    tokenList.add(token);
+    fireProgressEvent(token.toString());
+  }
+}
+
+void text() :{  Token text;}{  ( text = < TEXT > | text = < QUOTE > )   {    org.dbdoclet.trafo.html.tokenizer.Token token = new org.dbdoclet.trafo.html.tokenizer.Token(text.image);
+	trace("text() " + token);
+    tokenList.add(token);
+    fireProgressEvent(token.toString());      }}Token ncname() :{  Token t;}{  t = < NCNAME >  {    return t;  }}void equals() :{}{  < EQUALS >}Token attrName() :{  Token token = null;}{
+  try {  token = < NCNAME >  {    // System.out.println(token.image);    return token;  }
+  } catch(Throwable oops) 
+  {
+    logger.warn(String.format("Invalid attributes in Element %s line %d column %d",
+    			 token.image, token.beginLine, token.beginColumn));
+	logger.warn(oops.getMessage());
+
+	return skipTo(DEFAULT, TAG_CONTEXT, "", TAG_END, QUOTE);
+  }}Token attrValue() :{  Token token = null;}{
+  try  {  (    token = < VALUE >  | token = < NCNAME >  )  	{    	return token;  	}
+  } catch (Throwable oops)  {
+    logger.warn(String.format("Invalid attributes in Element %s line %d column %d",
+    			 token.image, token.beginLine, token.beginColumn));
+    logger.warn(oops.getMessage());
+	return skipTo(DEFAULT, TAG_CONTEXT, "", TAG_END, QUOTE);
+  }}JAVACODE private Token skipTo(int preContext, int postContext, String prev, int... kind){
+  StringBuilder buffer = new StringBuilder();
+
+  boolean skip = true;
+
+  token_source.SwitchTo(preContext);
+  
+  while (skip) 
+  {    Token t = getNextToken();	buffer.append(t.image);
+	
+	if (t.kind == EOF)	{	  break;
+	}
+
+	for (int stop : kind)	{	  if (t.kind == stop)	  {		skip = false;
+	  }
+	}
+  }
+
+  token_source.SwitchTo(postContext);
+  return new Token(VALUE, buffer.toString());}
+
+JAVACODE private String toAttributesAsText(HashMap<String, String > attributeMap){	StringBuilder buffer = new StringBuilder();
+	  
+    for (String attr : attributeMap.keySet())
+    {
+      buffer.append(' ');
+      buffer.append(attr);
+      buffer.append("=\"");
+      buffer.append(attributeMap.get(attr));
+      buffer.append("\"");
+    }
+
+    return buffer.toString();
+}
+
+JAVACODE public void setProgressListeners(ArrayList<ProgressListener> listeners)
+{
+	this.listeners = listeners;
+}
+
+JAVACODE public void fireProgressEvent(String action)
+{
+  	if (listeners != null)  	{
+		ProgressEvent event = new ProgressEvent("Tokenizer: " + action);
+		event.setStage(ProgressEvent.STAGE_PREPARE);
+
+		ProgressManager pm = new ProgressManager(listeners);
+		pm.fireProgressEvent(event);
+  	}
+}
+
+JAVACODE private void trace(String text)
+{
+	// System.out.println(String.format("[TRACE] %s",text));
+}

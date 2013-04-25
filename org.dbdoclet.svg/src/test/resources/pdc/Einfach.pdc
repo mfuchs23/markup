@@ -1,0 +1,12 @@
+s~s1~Start
+a~a1~In die Küche gehen
+a~a2~Kaffeestand kontrollieren
+a~a3~Wasser einfüllen
+a~a4~Kaffeepulver einfüllen
+a~a5~Kaffeemaschine einschalten
+e~e1~Heißes Getränk trinken
+
+b~b~b1~a2~Tee kochen~Teetrinker
+be~b1~a3
+
+c~c1~a4~a5~Pfeifen

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lesson xmlns="http://x-docu.com/ns/x-docu/5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:ns2="http://www.w3.org/1999/xhtml" xmlns:ns="http://x-docu.com/ns/x-docu/5.0">
+  <info>
+    <title>Eine Lektion mit Schema</title>
+    <description>Eine Lektion die auf Schema beruht und mit Inhalten der Medienbibliothek umgehen kann.</description>
+    <author>Michael Obermeier</author>
+    <email>michael.obermeier@unico-group.com</email>
+    <date day="30" month="07" year="2009"/>
+    <creationdate day="30" month="07" year="2009"/>
+    <duration time="15"/>
+    <level level="medium"/>
+    <lessonType>auto</lessonType>
+  </info>
+  <stepnormal stepid="a">
+    <h1>Ein Step ohne Zugriff auf die Medienbibliothek</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. In nec justo ac justo lacinia semper et cursus diam. Praesent laoreet facilisis lectus, a pharetra urna cursus nec. Aenean consequat diam eu augue lobortis a porta enim convallis. Nulla ut est arcu. Integer ultricies ultrices tortor a volutpat. Donec tincidunt, tortor rutrum viverra venenatis, risus arcu tempus metus, eget viverra odio ligula eu risus. Ut vel laoreet diam. In sollicitudin sagittis diam in hendrerit. Aliquam lorem ante, fermentum vel sagittis sit amet, adipiscing in orci. Duis non ante risus, et facilisis libero. Nulla consequat purus non lacus commodo volutpat. Nulla nisl felis, tincidunt in molestie eget, gravida in felis. Pellentesque condimentum, odio non sollicitudin pulvinar, tortor risus elementum nibh, ut malesuada eros justo sit amet mi. Duis mattis malesuada aliquam. Maecenas nisi lorem, hendrerit non eleifend ut, aliquet quis sapien. Aenean pharetra lectus vel metus gravida sit amet mollis quam laoreet. Praesent sit
+    amet tortor at erat consequat elementum nec vitae odio.</p>
+    <img alt="Das X-Docu-Logo" height="89" src="../01000_Schemalektion_PICNEUTRAL/xdocu-logo.png" width="75"/>
+  </stepnormal>
+  <stepnormal stepid="b">
+    <h1>Ein Step mit Zugriff auf die Medienbibliothek</h1>
+    <p>Hier ist der normale Lektionstext. Im nächsten Paragraph kommt der Text aus dem in der Medienbibliothek angelegten Modul.</p>
+    <xi:include href="../../../../../../../MEDIALIB/Daimler-Test-270809/Admonition/XML_DE/Admonition.xml">
+      <xi:fallback>
+        <p>XInclude xpointer "../../../../../../../MEDIALIB/Daimler-Test-270809/Admonition/XML_DE/Admonition.xml" could not be found</p>
+      </xi:fallback>
+    </xi:include>
+  </stepnormal>
+  <stepnormal stepid="c">
+    <h1>Ein Step nur aus einem Textbaustein bestehend</h1>
+    <xi:include href="../../../../../../../MEDIALIB/Daimler-Test-270809/Copyright/XML_DE/Copyright.xml">
+      <xi:fallback>
+        <p>XInclude xpointer "../../../../../../../MEDIALIB/Daimler-Test-270809/Copyright/XML_DE/Copyright.xml" could not be found</p>
+      </xi:fallback>
+    </xi:include>
+  </stepnormal>
+</lesson>

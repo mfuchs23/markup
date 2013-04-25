@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-SymbolicName: org.dbdoclet.svg
+Bundle-Version: 6.1.0
+Bundle-Name: org.dbdoclet.svg
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.dbdoclet,
+ org.dbdoclet.log,
+ org.dbdoclet.option,
+ org.dbdoclet.service,
+ org.dbdoclet.xiphias,
+ org.w3c.dom
+Provide-Package: org.dbdoclet.svg,
+ org.dbdoclet.svg.shape,
+ org.dbdoclet.svg.shape.g2d,
+ org.dbdoclet.svg.shape.xml
+Bundle-ClassPath: lib/org.apache.batik_1.7.jar

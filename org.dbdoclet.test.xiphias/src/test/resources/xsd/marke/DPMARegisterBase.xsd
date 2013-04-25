@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/schema"
+            xmlns="http://dpma.hp.com/marke/register/schema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${schema-intern-version}">
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen Datenaustausch DVSM - DPMAregister        * -->
+    <!-- *     Basis Datenstrukturen                                                 * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMARegisterBase.xsd                                    * -->
+    <!-- *     Author      : HP/ Frank Bareuther                                     * -->
+    <!-- *     Last Update : 2009-05-29                                              * -->
+    <!-- *     Contact     : frank.bareuter@dpma.de                                  * -->
+    <!-- *                                                                           * -->
+    <!-- ******************************************************************************-->
+
+
+    <xsd:complexType name="PictureType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:base64Binary">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+
+    <!-- Basis Typ fuer alle Elemente -->
+    <xsd:attributeGroup name="BasisAttribute">
+        <xsd:attribute name="INID" type="INIDType" use="optional"/>
+        <xsd:attribute name="suchfeld" type="SimpleFlagType" use="optional"/>
+        <xsd:attribute name="Data" type="SimpleFlagType" use="optional"/>
+    </xsd:attributeGroup>
+
+    <xsd:complexType name="BaseComplexType" abstract="true">
+        <xsd:attributeGroup ref="BasisAttribute"/>
+    </xsd:complexType>
+
+
+    <!-- INID Nummer Typ -->
+    <xsd:simpleType name="INIDType">
+        <xsd:restriction base="xsd:positiveInteger">
+            <xsd:totalDigits value="3" fixed="true"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Suchfeld Typ -->
+    <xsd:simpleType name="SimpleFlagType">
+        <xsd:restriction base="xsd:boolean"/>
+    </xsd:simpleType>
+
+    <!-- Komplexe Basis Typen -->
+    <xsd:complexType name="TextType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="BooleanType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:boolean">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="DateType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="ZahlType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:positiveInteger">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="Text12AbstractType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="12"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="Text13AbstractType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="13"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="Text15AbstractType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="15"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="Text16AbstractType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="16"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="RegisternummerType">
+        <xsd:simpleContent>
+            <xsd:extension base="Text12AbstractType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AktenzeichenType">
+        <xsd:simpleContent>
+            <xsd:extension base="Text16AbstractType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+ 
+    <xsd:complexType name="SortierschluesselType">
+        <xsd:simpleContent>
+            <xsd:extension base="Text15AbstractType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="TokenType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:NMTOKEN">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="VersionType">
+        <xsd:restriction base="xsd:token">
+          <xsd:pattern value="1(\.([0-9])+){1,2}(-SNAPSHOT)?"/>
+        </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

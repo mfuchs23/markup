@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/schema"
+            xmlns="http://dpma.hp.com/marke/register/schema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${schema-intern-version}">
+
+
+
+
+    <xsd:include schemaLocation="DPMARegisterTypes.xsd"/>
+    <xsd:include schemaLocation="DPMARegisterVerfahren.xsd"/>
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen Datenaustausch DVSM - DPMAregister        * -->
+    <!-- *     Root Schema                                                           * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMARegisterSchema.xsd                                  * -->
+    <!-- *     Author      : HP/ Frank Bareuther                                     * -->
+    <!-- *     Version     : 1.0.1                                                   * -->
+    <!-- *     Last Update : 2009-01-15                                              * -->
+    <!-- *     Contact     : frank.bareuther@dpma.de                                 * -->
+    <!-- *                                                                           * -->
+    <!-- ******************************************************************************-->
+
+    <xsd:element name="MRKREG">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Stammdaten" type="StammdatenBasisType"/>
+                <xsd:element name="VerfahrensListe" type="VerfahrensListeType" minOccurs="0"/>
+                <xsd:element ref="Bildinformationen" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+            <xsd:attribute name="version" type="VersionType"/>         
+        </xsd:complexType>
+    </xsd:element>
+
+    <xsd:element name="Bildinformationen">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="Bildwiedergabe" type="BildwiedergabeSingleType" maxOccurs="unbounded" minOccurs="0"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+</xsd:schema>

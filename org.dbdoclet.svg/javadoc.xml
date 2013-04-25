@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project name="-javadoc.org.dbdoclet.svg" default="javadoc">
+    <target name="javadoc">
+        <javadoc access="public" additionalparam="-encoding UTF-8 -d ../org.dbdoclet.svg/doc --profile=../org.dbdoclet.svg/doc/dbdoclet.dbd" classpath="../org.dbdoclet.xiphias/build/classes;../org.dbdoclet.getopts/bin;D:/Werkbank/share/eclipse-3.7.2/plugins/org.apache.commons.codec_1.3.0.v201101211617.jar;D:/Werkbank/share/eclipse-3.7.2/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar;D:/Werkbank/share/eclipse-3.7.2/plugins/org.junit_4.8.2.v4_8_2_v20110321-1705/junit.jar;../org.dbdoclet.commons/bin;../thirdParty/org.apache.xml.resolver;lib/org.apache.batik-1.7.jar" packagenames="org.dbdoclet.svg.shape,org.dbdoclet.svg.shape.g2d,org.dbdoclet.svg.shape.xml,org.dbdoclet.svg" sourcepath="src/main/resources;src/main/java">
+            <doclet name="org.dbdoclet.doclet.docbook.DocBookDoclet" path="../org.dbdoclet.doclet.docbook/distrib/dbdoclet.jar"/>
+        </javadoc>
+    </target>
+</project>

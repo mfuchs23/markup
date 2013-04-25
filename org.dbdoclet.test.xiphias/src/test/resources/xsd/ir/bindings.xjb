@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<jxb:bindings version="2.1" 
+	xmlns:jxb="http://java.sun.com/xml/ns/jaxb" 
+	xmlns:xsd="http://www.w3.org/2001/Schema">
+ 	<jxb:bindings schemaLocation="DPMAregisterTrademarkIr.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="de.dpma.register.marke.xml.ir"/>
+		</jxb:schemaBindings>
+	</jxb:bindings> 
+ 	<jxb:bindings schemaLocation="DPMAregisterTrademarkTypes.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="de.dpma.register.marke.xml.ir"/>
+		</jxb:schemaBindings>
+	</jxb:bindings> 
+ 	<jxb:bindings schemaLocation="romarin/Romarin-V1-1.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="de.dpma.register.marke.xml.ir.romarin"/>
+		</jxb:schemaBindings>
+	</jxb:bindings> 
+ 	<jxb:bindings schemaLocation="marke/DPMAIrRegisterSchema.xsd">
+		<jxb:schemaBindings>
+			<jxb:package name="de.dpma.register.marke.xml.ir.fs"/>
+		</jxb:schemaBindings>
+	</jxb:bindings>
+</jxb:bindings>

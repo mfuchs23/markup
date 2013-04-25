@@ -1,0 +1,32 @@
+/* 
+ * ### Copyright (C) 2008 Michael Fuchs ###
+ * ### All Rights Reserved.             ###
+ *
+ * Author: Michael Fuchs
+ * E-Mail: michael.fuchs@dbdoclet.org
+ * URL:    http://www.michael-a-fuchs.de
+ */
+package org.dbdoclet.tag.docbook;
+
+import org.dbdoclet.xiphias.XmlServices;
+
+public class ExceptionName extends DocBookElement {
+
+    private static String tagName = "exceptionname";
+
+    ExceptionName() {
+
+        super(tagName);
+        setFormatType(FORMAT_INLINE);
+    }
+
+    ExceptionName(String text) {
+
+        this();
+        appendChild(XmlServices.textToXml(text));
+    }
+
+    public static String getTag() {
+        return tagName;
+    }
+}

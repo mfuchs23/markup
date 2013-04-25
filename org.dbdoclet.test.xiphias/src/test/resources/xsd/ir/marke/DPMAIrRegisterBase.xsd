@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/irschema"
+            xmlns="http://dpma.hp.com/marke/register/irschema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${ir-schema-intern-version}">
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen IrDatenaustausch DVSMmarke - DPMAregister * -->
+    <!-- *     Root Schema                                                           * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMAIrRegisterBase.xsd                                * -->
+    <!-- *     Version     : 1.0.1                                                   * -->
+    <!-- *     Last Update : 2011-03-24                                              * -->
+    <!-- *                                                                           * -->
+    <!-- ******************************************************************************-->
+
+    <!-- INID Nummer Typ -->
+    <xsd:simpleType name="INIDType">
+        <xsd:restriction base="xsd:positiveInteger">
+            <xsd:totalDigits value="3" fixed="true"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Suchfeld Typ -->
+    <xsd:simpleType name="SimpleFlagType">
+        <xsd:restriction base="xsd:boolean"/>
+    </xsd:simpleType>
+
+    <!-- Basis Typ fuer alle Elemente -->
+    <xsd:attributeGroup name="BasisAttribute">
+        <xsd:attribute name="INID" type="INIDType" use="optional"/>
+        <xsd:attribute name="suchfeld" type="SimpleFlagType" use="optional"/>
+        <xsd:attribute name="Data" type="SimpleFlagType" use="optional"/>
+    </xsd:attributeGroup>
+
+
+    <!-- Komplexe Basis Typen -->
+    <xsd:complexType name="TextType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="BooleanType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:boolean">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="DateType">
+        <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="IdType">
+           <xsd:restriction base="xsd:long"/>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="AktenzeichenType">
+        <xsd:restriction base="xsd:string">
+            <xsd:maxLength value="16"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

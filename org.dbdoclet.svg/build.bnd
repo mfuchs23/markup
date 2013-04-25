@@ -1,0 +1,7 @@
+version=6.1.0
+Bundle-SymbolicName=org.dbdoclet.svg
+Bundle-Version=${version}
+Bundle-ClassPath: ., lib/batik.jar
+Include-Resource: lib/batik.jar=lib/org.apache.batik_1.7.jar
+Export-Package=org.dbdoclet.svg.*;version=${version}
+Import-Package: org.dbdoclet.*, *;resolution:=optional

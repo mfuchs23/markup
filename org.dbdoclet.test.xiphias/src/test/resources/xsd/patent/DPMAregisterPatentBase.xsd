@@ -1,0 +1,1347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+  <!-- *****************************************************************************************************-->
+  <!-- *                                                                                                    -->
+  <!-- *     Deutsches Patent- und Markenamt/ HP                                                            -->
+  <!-- *     XML Schema für den internen Datenaustausch Patente ung Gebrauchsmuster nach DPMARegister       -->
+  <!-- *                                                                                                    -->
+  <!-- *     Dateiname:             DPMARegisterPatentBase.xsd                                              -->
+  <!-- *     Autor:                 Michael Fuchs                                                           -->
+  <!-- *     Version:               1.7                                                                     -->
+  <!-- *     Letzte Aktualisierung: 24. Juni 2010                                                           -->
+  <!-- *     E-Mail:                michael.fuchs.ext@dpma.de            							        -->
+  <!-- *     												 												-->
+  <!-- *     Aenderungshistorie (seit 01.04.2010)    										 				-->
+  <!-- *     Datum				  Aenderung			                                                        -->
+  <!-- *     04.05.2010           Änderungen laut REQ 1494                                                  -->
+  <!-- *     06.05.2010           Suchfeldkürzel FT für den Typ Jahresgebuehr.Faelligkeit                   -->
+  <!-- *                          Suchfeldkürzel FG für den Typ Jahresgebuehr.JahresNummer                  -->
+  <!-- *     17.05.2010           - Element Verfahren in Verfahrensart umbenannt.                           -->
+  <!-- *                          - Mögliche Werte für Typ Schutzrechtsart und zugeordnete Suchmuster       -->
+  <!-- *                            geändert.                                                               -->
+  <!-- *                          - Elemente StammanmeldungAKZ und ZusatzanmeldungenAKZ nun recherchierbar  -->
+  <!-- *                            mit Suchfeldern AKZB bzw. AKZA.                                         -->
+  <!-- *                          - Element BPatGAKZ nun recherchierbar mit Suchfeld CAKZ.                  -->
+  <!-- *     20.05.2010           - Neuer Typ PublikationsartType                                           -->
+  <!-- *     24.06.2010           - Aufzählung Schutzrechtsart geändert (4 statt bisher 6 Werte)            -->
+  <!-- *                                                                                                    -->
+  <!-- *****************************************************************************************************-->
+
+<xsd:schema version="1.7" xmlns="http://elsa.dpma.de/patgbm/register/schema" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elsa.dpma.de/patgbm/register/schema">
+
+  <!-- Allgemeine Attribute fuer Fachobjekte -->
+  <xsd:attributeGroup name="BasisAttribute">
+    <xsd:attribute name="INID" type="INIDType" use="optional" />
+  </xsd:attributeGroup>
+
+  <xsd:attribute name="suchfeld" type="xsd:NMTOKEN" />
+
+  <!-- ================= -->
+  <!-- Basisdatentypen   -->
+  <!-- ================= -->
+
+  <!-- INID Nummer Typ -->
+  <xsd:simpleType name="INIDType">
+    <xsd:restriction base="xsd:positiveInteger">
+      <xsd:totalDigits value="3" fixed="true" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="TextType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:string">
+        <xsd:attributeGroup ref="BasisAttribute" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType2">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="2" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType10">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="10" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType16">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="16" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType18">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="18" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType20">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="20" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType21">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="21" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TextType24">
+    <xsd:simpleContent>
+      <xsd:restriction base="TextType">
+        <xsd:maxLength value="24" />
+      </xsd:restriction>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="DateType">
+    <xsd:simpleContent>
+      <xsd:extension base="xsd:date">
+        <xsd:attributeGroup ref="BasisAttribute" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <!-- ================= -->
+  <!-- Aufzählungen      -->
+  <!-- ================= -->
+  <xsd:simpleType name="HeftteilEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="teil-1" />
+      <xsd:enumeration value="teil-2" />
+      <xsd:enumeration value="teil-3" />
+      <xsd:enumeration value="teil-4" />
+      <xsd:enumeration value="teil-5" />
+      <xsd:enumeration value="teil-6" />
+      <xsd:enumeration value="teil-7" />
+      <xsd:enumeration value="teil-8" />
+      <xsd:enumeration value="teil-9" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="JahresNummerEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="pat-zer-jahr-3" />
+      <xsd:enumeration value="pat-zer-jahr-4" />
+      <xsd:enumeration value="pat-zer-jahr-5" />
+      <xsd:enumeration value="pat-zer-jahr-6" />
+      <xsd:enumeration value="pat-zer-jahr-7" />
+      <xsd:enumeration value="pat-zer-jahr-8" />
+      <xsd:enumeration value="pat-zer-jahr-9" />
+      <xsd:enumeration value="pat-zer-jahr-10" />
+      <xsd:enumeration value="pat-zer-jahr-11" />
+      <xsd:enumeration value="pat-zer-jahr-12" />
+      <xsd:enumeration value="pat-zer-jahr-13" />
+      <xsd:enumeration value="pat-zer-jahr-14" />
+      <xsd:enumeration value="pat-zer-jahr-15" />
+      <xsd:enumeration value="pat-zer-jahr-16" />
+      <xsd:enumeration value="pat-zer-jahr-17" />
+      <xsd:enumeration value="pat-zer-jahr-18" />
+      <xsd:enumeration value="pat-zer-jahr-19" />
+      <xsd:enumeration value="pat-zer-jahr-20" />
+      <xsd:enumeration value="pat-zer-jahr-21" />
+      <xsd:enumeration value="pat-zer-jahr-22" />
+      <xsd:enumeration value="pat-zer-jahr-23" />
+      <xsd:enumeration value="pat-zer-jahr-24" />
+      <xsd:enumeration value="pat-zer-jahr-25" />
+      <xsd:enumeration value="pat-zer-jahr-26" />
+      <xsd:enumeration value="gbm-jahr-4-6" />
+      <xsd:enumeration value="gbm-jahr-7-8" />
+      <xsd:enumeration value="gbm-jahr-9-10" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="LizenzEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="lizenzbereitschaftserklaerung-vorhanden" />
+      <xsd:enumeration value="lizenzinteresseerklaerung-vorhanden" />
+      <xsd:enumeration value="ausschliessliche-lizenz-vorhanden" />
+      <xsd:enumeration value="zwangslizenz-vorhanden" />
+      <xsd:enumeration value="gefoerdertes-vorhaben" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="PublikationsartEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="grossteile-publikation" />
+      <xsd:enumeration value="kleinteile-publikation" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="SchutzrechtsartEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="gebrauchsmuster" />
+      <xsd:enumeration value="patent" />
+      <xsd:enumeration value="schutzzertifikat" />
+      <xsd:enumeration value="topographie" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="StatusEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="anhaengig-in-kraft" />
+      <xsd:enumeration value="nicht-anhaengig-erloschen" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="VerfahrensartEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="anmelderaenderung" />
+      <xsd:enumeration value="beschraenkungsverfahren" />
+      <xsd:enumeration value="einspruchsverfahren" />
+      <xsd:enumeration value="erfinderaenderung" />
+      <xsd:enumeration value="gebrauchsmusterloeschungverfahren" />
+      <xsd:enumeration value="gebrauchsmusterrechercheverfahren" />
+      <xsd:enumeration value="gebrauchsmusterverfahren" />
+      <xsd:enumeration value="klassifikationsaenderung" />
+      <xsd:enumeration value="lizenzerklaerungen" />
+      <xsd:enumeration value="nichtigkeitsverfahren" />
+      <xsd:enumeration value="patentrechercheverfahren" />
+      <xsd:enumeration value="pruefungsverfahren" />
+      <xsd:enumeration value="publikationen" />
+      <xsd:enumeration value="topographieloeschungsverfahren" />
+      <xsd:enumeration value="topographieverfahren" />
+      <xsd:enumeration value="verfahren-ep-anmeldung" />
+      <xsd:enumeration value="verfahren-schutzzertifikat" />
+      <xsd:enumeration value="verfahren-wo-anmeldung" />
+      <xsd:enumeration value="vertreteraenderung" />
+      <xsd:enumeration value="verwaltungsverfahren" />
+      <xsd:enumeration value="vorverfahren" />
+      <xsd:enumeration value="widerrufsverfahren" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="VerfahrensstandEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="D00ABES" />
+      <xsd:enumeration value="D00ABZ" />
+      <xsd:enumeration value="D00AKE" />
+      <xsd:enumeration value="D00AKT" />
+      <xsd:enumeration value="D00AKTNOTIZ" />
+      <xsd:enumeration value="D00AKZL" />
+      <xsd:enumeration value="D00AL" />
+      <xsd:enumeration value="D00AM" />
+      <xsd:enumeration value="D00APB" />
+      <xsd:enumeration value="D00APBK" />
+      <xsd:enumeration value="D00AUSG" />
+      <xsd:enumeration value="D00AUSP" />
+      <xsd:enumeration value="D00AVBS" />
+      <xsd:enumeration value="D00BER" />
+      <xsd:enumeration value="D00BES" />
+      <xsd:enumeration value="D00BIB" />
+      <xsd:enumeration value="D00BSA" />
+      <xsd:enumeration value="D00BSH" />
+      <xsd:enumeration value="D00BSHAPO" />
+      <xsd:enumeration value="D00BSL" />
+      <xsd:enumeration value="D00BSR" />
+      <xsd:enumeration value="D00BSW" />
+      <xsd:enumeration value="D00DRS" />
+      <xsd:enumeration value="D00EPA" />
+      <xsd:enumeration value="D00EPUE" />
+      <xsd:enumeration value="D00ERBMIT" />
+      <xsd:enumeration value="D00ESP" />
+      <xsd:enumeration value="D00ESZ" />
+      <xsd:enumeration value="D00ETS" />
+      <xsd:enumeration value="D00EZS" />
+      <xsd:enumeration value="D00FRI" />
+      <xsd:enumeration value="D00GBM" />
+      <xsd:enumeration value="D00GBMNA" />
+      <xsd:enumeration value="D00GEB" />
+      <xsd:enumeration value="D00GEBKOR" />
+      <xsd:enumeration value="D00GEBUR" />
+      <xsd:enumeration value="D00GSF" />
+      <xsd:enumeration value="D00HOER" />
+      <xsd:enumeration value="D00INS" />
+      <xsd:enumeration value="D00KSTE" />
+      <xsd:enumeration value="D00LAD" />
+      <xsd:enumeration value="D00LBE" />
+      <xsd:enumeration value="D00LBS" />
+      <xsd:enumeration value="D00LIE" />
+      <xsd:enumeration value="D00LIT" />
+      <xsd:enumeration value="D00LOE" />
+      <xsd:enumeration value="D00MDL" />
+      <xsd:enumeration value="D00MDLBIO" />
+      <xsd:enumeration value="D00MIT" />
+      <xsd:enumeration value="D00NAM" />
+      <xsd:enumeration value="D00NIT" />
+      <xsd:enumeration value="D00PAN" />
+      <xsd:enumeration value="D00PANR" />
+      <xsd:enumeration value="D00PAT" />
+      <xsd:enumeration value="D00PATN" />
+      <xsd:enumeration value="D00PATUR" />
+      <xsd:enumeration value="D00PBS" />
+      <xsd:enumeration value="D00PCTA" />
+      <xsd:enumeration value="D00PCTAN" />
+      <xsd:enumeration value="D00PCTNA" />
+      <xsd:enumeration value="D00PCTNG" />
+      <xsd:enumeration value="D00PCTNP" />
+      <xsd:enumeration value="D00PCTUE" />
+      <xsd:enumeration value="D00PCTZ" />
+      <xsd:enumeration value="D00PMV" />
+      <xsd:enumeration value="D00PRI" />
+      <xsd:enumeration value="D00PRIBSH" />
+      <xsd:enumeration value="D00PROT" />
+      <xsd:enumeration value="D00PUB" />
+      <xsd:enumeration value="D00RAN" />
+      <xsd:enumeration value="D00RUEL" />
+      <xsd:enumeration value="D00RUELNA" />
+      <xsd:enumeration value="D00SON" />
+      <xsd:enumeration value="D00TEIL" />
+      <xsd:enumeration value="D00TOPO" />
+      <xsd:enumeration value="D00TOPONA" />
+      <xsd:enumeration value="D00TOPUR" />
+      <xsd:enumeration value="D00TRENN" />
+      <xsd:enumeration value="D00TUER" />
+      <xsd:enumeration value="D00UEB" />
+      <xsd:enumeration value="D00UEBPATG" />
+      <xsd:enumeration value="D00UMS" />
+      <xsd:enumeration value="D00VBS" />
+      <xsd:enumeration value="D00VIV" />
+      <xsd:enumeration value="D00VKH" />
+      <xsd:enumeration value="D00WBH" />
+      <xsd:enumeration value="D00WDE" />
+      <xsd:enumeration value="D00WID" />
+      <xsd:enumeration value="D00WIPO" />
+      <xsd:enumeration value="D00WLOE" />
+      <xsd:enumeration value="D00XPN" />
+      <xsd:enumeration value="D00ZEUG" />
+      <xsd:enumeration value="D00ZRN" />
+      <xsd:enumeration value="D00ZUN" />
+      <xsd:enumeration value="D00ZUNNA" />
+      <xsd:enumeration value="D00ZUS" />
+      <xsd:enumeration value="D00ZVDE" />
+      <xsd:enumeration value="D00ZVEA" />
+      <xsd:enumeration value="D00ZVEE" />
+      <xsd:enumeration value="D00ZVS" />
+      <xsd:enumeration value="D00ZVSA" />
+      <xsd:enumeration value="D00ZVSE" />
+      <xsd:enumeration value="P11001" />
+      <xsd:enumeration value="P11002" />
+      <xsd:enumeration value="P11003" />
+      <xsd:enumeration value="P11004" />
+      <xsd:enumeration value="P11005" />
+      <xsd:enumeration value="P11006" />
+      <xsd:enumeration value="P11007" />
+      <xsd:enumeration value="P11008" />
+      <xsd:enumeration value="P11009" />
+      <xsd:enumeration value="P11010" />
+      <xsd:enumeration value="P11011" />
+      <xsd:enumeration value="P11012" />
+      <xsd:enumeration value="P11013" />
+      <xsd:enumeration value="P11014" />
+      <xsd:enumeration value="P11015" />
+      <xsd:enumeration value="P11016" />
+      <xsd:enumeration value="P11017" />
+      <xsd:enumeration value="P11018" />
+      <xsd:enumeration value="P11019" />
+      <xsd:enumeration value="P11020" />
+      <xsd:enumeration value="P11021" />
+      <xsd:enumeration value="P11022" />
+      <xsd:enumeration value="P11023" />
+      <xsd:enumeration value="P11024" />
+      <xsd:enumeration value="P11025" />
+      <xsd:enumeration value="P11026" />
+      <xsd:enumeration value="P11027" />
+      <xsd:enumeration value="P11028" />
+      <xsd:enumeration value="P11029" />
+      <xsd:enumeration value="P11030" />
+      <xsd:enumeration value="P11031" />
+      <xsd:enumeration value="P11032" />
+      <xsd:enumeration value="P11033" />
+      <xsd:enumeration value="P11034" />
+      <xsd:enumeration value="P11035" />
+      <xsd:enumeration value="P11036" />
+      <xsd:enumeration value="P11037" />
+      <xsd:enumeration value="P11038" />
+      <xsd:enumeration value="P11039" />
+      <xsd:enumeration value="P11040" />
+      <xsd:enumeration value="P11041" />
+      <xsd:enumeration value="P11042" />
+      <xsd:enumeration value="P13001" />
+      <xsd:enumeration value="P13002" />
+      <xsd:enumeration value="P13003" />
+      <xsd:enumeration value="P13004" />
+      <xsd:enumeration value="P13006" />
+      <xsd:enumeration value="P13007" />
+      <xsd:enumeration value="P13008" />
+      <xsd:enumeration value="P13009" />
+      <xsd:enumeration value="P13010" />
+      <xsd:enumeration value="P13011" />
+      <xsd:enumeration value="P13012" />
+      <xsd:enumeration value="P13013" />
+      <xsd:enumeration value="P13014" />
+      <xsd:enumeration value="P13015" />
+      <xsd:enumeration value="P13016" />
+      <xsd:enumeration value="P13017" />
+      <xsd:enumeration value="P13018" />
+      <xsd:enumeration value="P13019" />
+      <xsd:enumeration value="P13020" />
+      <xsd:enumeration value="P13021" />
+      <xsd:enumeration value="P13022" />
+      <xsd:enumeration value="P13023" />
+      <xsd:enumeration value="P13024" />
+      <xsd:enumeration value="P13025" />
+      <xsd:enumeration value="P13026" />
+      <xsd:enumeration value="P13027" />
+      <xsd:enumeration value="P13028" />
+      <xsd:enumeration value="P13029" />
+      <xsd:enumeration value="P13030" />
+      <xsd:enumeration value="P13031" />
+      <xsd:enumeration value="P13032" />
+      <xsd:enumeration value="P13033" />
+      <xsd:enumeration value="P13034" />
+      <xsd:enumeration value="P13035" />
+      <xsd:enumeration value="P13036" />
+      <xsd:enumeration value="P13037" />
+      <xsd:enumeration value="P13038" />
+      <xsd:enumeration value="P13039" />
+      <xsd:enumeration value="P13040" />
+      <xsd:enumeration value="P13041" />
+      <xsd:enumeration value="P13042" />
+      <xsd:enumeration value="P13043" />
+      <xsd:enumeration value="P13044" />
+      <xsd:enumeration value="P13045" />
+      <xsd:enumeration value="P13046" />
+      <xsd:enumeration value="P13047" />
+      <xsd:enumeration value="P13048" />
+      <xsd:enumeration value="P13049" />
+      <xsd:enumeration value="P13050" />
+      <xsd:enumeration value="P13051" />
+      <xsd:enumeration value="P13052" />
+      <xsd:enumeration value="P13053" />
+      <xsd:enumeration value="P13054" />
+      <xsd:enumeration value="P13055" />
+      <xsd:enumeration value="P13056" />
+      <xsd:enumeration value="P13057" />
+      <xsd:enumeration value="P13058" />
+      <xsd:enumeration value="P13059" />
+      <xsd:enumeration value="P13060" />
+      <xsd:enumeration value="P13061" />
+      <xsd:enumeration value="P13062" />
+      <xsd:enumeration value="P13063" />
+      <xsd:enumeration value="P13064" />
+      <xsd:enumeration value="P13065" />
+      <xsd:enumeration value="P13066" />
+      <xsd:enumeration value="P13067" />
+      <xsd:enumeration value="P13068" />
+      <xsd:enumeration value="P13070" />
+      <xsd:enumeration value="P13071" />
+      <xsd:enumeration value="P13072" />
+      <xsd:enumeration value="P13073" />
+      <xsd:enumeration value="P13074" />
+      <xsd:enumeration value="P13075" />
+      <xsd:enumeration value="P13076" />
+      <xsd:enumeration value="P13077" />
+      <xsd:enumeration value="P13078" />
+      <xsd:enumeration value="P13079" />
+      <xsd:enumeration value="P14001" />
+      <xsd:enumeration value="P14002" />
+      <xsd:enumeration value="P14003" />
+      <xsd:enumeration value="P14004" />
+      <xsd:enumeration value="P14005" />
+      <xsd:enumeration value="P14006" />
+      <xsd:enumeration value="P14007" />
+      <xsd:enumeration value="P14008" />
+      <xsd:enumeration value="P14009" />
+      <xsd:enumeration value="P14010" />
+      <xsd:enumeration value="P14011" />
+      <xsd:enumeration value="P14012" />
+      <xsd:enumeration value="P14013" />
+      <xsd:enumeration value="P14014" />
+      <xsd:enumeration value="P14015" />
+      <xsd:enumeration value="P14016" />
+      <xsd:enumeration value="P14017" />
+      <xsd:enumeration value="P14018" />
+      <xsd:enumeration value="P14019" />
+      <xsd:enumeration value="P14020" />
+      <xsd:enumeration value="P14021" />
+      <xsd:enumeration value="P14022" />
+      <xsd:enumeration value="P14023" />
+      <xsd:enumeration value="P14024" />
+      <xsd:enumeration value="P14025" />
+      <xsd:enumeration value="P14026" />
+      <xsd:enumeration value="P14027" />
+      <xsd:enumeration value="P14028" />
+      <xsd:enumeration value="P14029" />
+      <xsd:enumeration value="P14030" />
+      <xsd:enumeration value="P14031" />
+      <xsd:enumeration value="P14032" />
+      <xsd:enumeration value="P14033" />
+      <xsd:enumeration value="P14034" />
+      <xsd:enumeration value="P14035" />
+      <xsd:enumeration value="P14036" />
+      <xsd:enumeration value="P14037" />
+      <xsd:enumeration value="P14038" />
+      <xsd:enumeration value="P14039" />
+      <xsd:enumeration value="P15001" />
+      <xsd:enumeration value="P15002" />
+      <xsd:enumeration value="P15003" />
+      <xsd:enumeration value="P15004" />
+      <xsd:enumeration value="P15005" />
+      <xsd:enumeration value="P15006" />
+      <xsd:enumeration value="P15007" />
+      <xsd:enumeration value="P15008" />
+      <xsd:enumeration value="P15009" />
+      <xsd:enumeration value="P15010" />
+      <xsd:enumeration value="P15011" />
+      <xsd:enumeration value="P15012" />
+      <xsd:enumeration value="P15013" />
+      <xsd:enumeration value="P15014" />
+      <xsd:enumeration value="P15015" />
+      <xsd:enumeration value="P16001" />
+      <xsd:enumeration value="P16002" />
+      <xsd:enumeration value="P16003" />
+      <xsd:enumeration value="P16004" />
+      <xsd:enumeration value="P16005" />
+      <xsd:enumeration value="P16006" />
+      <xsd:enumeration value="P17001" />
+      <xsd:enumeration value="P17002" />
+      <xsd:enumeration value="P17003" />
+      <xsd:enumeration value="P17004" />
+      <xsd:enumeration value="P17005" />
+      <xsd:enumeration value="P17006" />
+      <xsd:enumeration value="P17007" />
+      <xsd:enumeration value="P17008" />
+      <xsd:enumeration value="P17009" />
+      <xsd:enumeration value="P17010" />
+      <xsd:enumeration value="P17011" />
+      <xsd:enumeration value="P17012" />
+      <xsd:enumeration value="P17013" />
+      <xsd:enumeration value="P17014" />
+      <xsd:enumeration value="P17015" />
+      <xsd:enumeration value="P17016" />
+      <xsd:enumeration value="P17017" />
+      <xsd:enumeration value="P17018" />
+      <xsd:enumeration value="P17019" />
+      <xsd:enumeration value="P17020" />
+      <xsd:enumeration value="P17022" />
+      <xsd:enumeration value="P17023" />
+      <xsd:enumeration value="P17024" />
+      <xsd:enumeration value="P17025" />
+      <xsd:enumeration value="P17026" />
+      <xsd:enumeration value="P17027" />
+      <xsd:enumeration value="P17028" />
+      <xsd:enumeration value="P17029" />
+      <xsd:enumeration value="P17030" />
+      <xsd:enumeration value="P17031" />
+      <xsd:enumeration value="P17032" />
+      <xsd:enumeration value="P17033" />
+      <xsd:enumeration value="P17034" />
+      <xsd:enumeration value="P17035" />
+      <xsd:enumeration value="P17036" />
+      <xsd:enumeration value="P17037" />
+      <xsd:enumeration value="P17038" />
+      <xsd:enumeration value="P17039" />
+      <xsd:enumeration value="P17040" />
+      <xsd:enumeration value="P17041" />
+      <xsd:enumeration value="P17042" />
+      <xsd:enumeration value="P17043" />
+      <xsd:enumeration value="P17044" />
+      <xsd:enumeration value="P18001" />
+      <xsd:enumeration value="P18015" />
+      <xsd:enumeration value="P18016" />
+      <xsd:enumeration value="P18017" />
+      <xsd:enumeration value="P18018" />
+      <xsd:enumeration value="P18040" />
+      <xsd:enumeration value="P18041" />
+      <xsd:enumeration value="P18042" />
+      <xsd:enumeration value="P18043" />
+      <xsd:enumeration value="P18044" />
+      <xsd:enumeration value="P18045" />
+      <xsd:enumeration value="P18046" />
+      <xsd:enumeration value="P18047" />
+      <xsd:enumeration value="P18049" />
+      <xsd:enumeration value="P18050" />
+      <xsd:enumeration value="P18051" />
+      <xsd:enumeration value="P18052" />
+      <xsd:enumeration value="P21001" />
+      <xsd:enumeration value="P21002" />
+      <xsd:enumeration value="P21003" />
+      <xsd:enumeration value="P21004" />
+      <xsd:enumeration value="P21005" />
+      <xsd:enumeration value="P23001" />
+      <xsd:enumeration value="P23003" />
+      <xsd:enumeration value="P23004" />
+      <xsd:enumeration value="P23005" />
+      <xsd:enumeration value="P23006" />
+      <xsd:enumeration value="P23007" />
+      <xsd:enumeration value="P23010" />
+      <xsd:enumeration value="P23011" />
+      <xsd:enumeration value="P23012" />
+      <xsd:enumeration value="P23013" />
+      <xsd:enumeration value="P23014" />
+      <xsd:enumeration value="P23015" />
+      <xsd:enumeration value="P23016" />
+      <xsd:enumeration value="P24001" />
+      <xsd:enumeration value="P24002" />
+      <xsd:enumeration value="P24003" />
+      <xsd:enumeration value="P25001" />
+      <xsd:enumeration value="P25002" />
+      <xsd:enumeration value="P25003" />
+      <xsd:enumeration value="P25004" />
+      <xsd:enumeration value="P25005" />
+      <xsd:enumeration value="P25006" />
+      <xsd:enumeration value="P25007" />
+      <xsd:enumeration value="P25008" />
+      <xsd:enumeration value="P26001" />
+      <xsd:enumeration value="P26002" />
+      <xsd:enumeration value="P26003" />
+      <xsd:enumeration value="P26004" />
+      <xsd:enumeration value="P26005" />
+      <xsd:enumeration value="V00000" />
+      <xsd:enumeration value="V00010" />
+      <xsd:enumeration value="V00015" />
+      <xsd:enumeration value="V00016" />
+      <xsd:enumeration value="V00020" />
+      <xsd:enumeration value="V00030" />
+      <xsd:enumeration value="V00040" />
+      <xsd:enumeration value="V00050" />
+      <xsd:enumeration value="V00051" />
+      <xsd:enumeration value="V00060" />
+      <xsd:enumeration value="V00070" />
+      <xsd:enumeration value="V00100" />
+      <xsd:enumeration value="V00110" />
+      <xsd:enumeration value="V00120" />
+      <xsd:enumeration value="V00130" />
+      <xsd:enumeration value="V00140" />
+      <xsd:enumeration value="V00144" />
+      <xsd:enumeration value="V00200" />
+      <xsd:enumeration value="V00210" />
+      <xsd:enumeration value="V00220" />
+      <xsd:enumeration value="V00240" />
+      <xsd:enumeration value="V00245" />
+      <xsd:enumeration value="V00320" />
+      <xsd:enumeration value="V00321" />
+      <xsd:enumeration value="V00322" />
+      <xsd:enumeration value="V00330" />
+      <xsd:enumeration value="V00331" />
+      <xsd:enumeration value="V00332" />
+      <xsd:enumeration value="V00420" />
+      <xsd:enumeration value="V00430" />
+      <xsd:enumeration value="V00450" />
+      <xsd:enumeration value="V00455" />
+      <xsd:enumeration value="V00456" />
+      <xsd:enumeration value="V00460" />
+      <xsd:enumeration value="V00461" />
+      <xsd:enumeration value="V00470" />
+      <xsd:enumeration value="V00471" />
+      <xsd:enumeration value="V00510" />
+      <xsd:enumeration value="V00520" />
+      <xsd:enumeration value="V00530" />
+      <xsd:enumeration value="V00540" />
+      <xsd:enumeration value="V00550" />
+      <xsd:enumeration value="V00560" />
+      <xsd:enumeration value="V00570" />
+      <xsd:enumeration value="V00571" />
+      <xsd:enumeration value="V00580" />
+      <xsd:enumeration value="V00581" />
+      <xsd:enumeration value="V00590" />
+      <xsd:enumeration value="V00591" />
+      <xsd:enumeration value="V00600" />
+      <xsd:enumeration value="V00650" />
+      <xsd:enumeration value="V00700" />
+      <xsd:enumeration value="V00710" />
+      <xsd:enumeration value="V00711" />
+      <xsd:enumeration value="V00712" />
+      <xsd:enumeration value="V00718" />
+      <xsd:enumeration value="V00720" />
+      <xsd:enumeration value="V00730" />
+      <xsd:enumeration value="V00740" />
+      <xsd:enumeration value="V00741" />
+      <xsd:enumeration value="V00742" />
+      <xsd:enumeration value="V00750" />
+      <xsd:enumeration value="V00751" />
+      <xsd:enumeration value="V00755" />
+      <xsd:enumeration value="V00760" />
+      <xsd:enumeration value="V00777" />
+      <xsd:enumeration value="V00778" />
+      <xsd:enumeration value="V00780" />
+      <xsd:enumeration value="V00790" />
+      <xsd:enumeration value="V00800" />
+      <xsd:enumeration value="V00810" />
+      <xsd:enumeration value="V00812" />
+      <xsd:enumeration value="V00830" />
+      <xsd:enumeration value="V00832" />
+      <xsd:enumeration value="V00840" />
+      <xsd:enumeration value="V00842" />
+      <xsd:enumeration value="V00860" />
+      <xsd:enumeration value="V00862" />
+      <xsd:enumeration value="V00870" />
+      <xsd:enumeration value="V00880" />
+      <xsd:enumeration value="V00882" />
+      <xsd:enumeration value="V00890" />
+      <xsd:enumeration value="V00892" />
+      <xsd:enumeration value="V00900" />
+      <xsd:enumeration value="V00999" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="VerwendungEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="arzneimittel" />
+      <xsd:enumeration value="pflanzenschutzmittel" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="ErfinderEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="erfinder-nichtnennung" />
+      <xsd:enumeration value="erfinder-benennung-nicht-vorliegend" />
+      <xsd:enumeration value="erfinder-ist-anmelder" />
+      <xsd:enumeration value="erfinder" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="VertreterEnumType">
+    <xsd:restriction base="xsd:NMTOKEN">
+      <xsd:enumeration value="kein-vertreter-bestellt" />
+      <xsd:enumeration value="vertreter" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <!-- ========================== -->
+  <!-- Mehrfach verwendbare Typen -->
+  <!-- ========================== -->
+
+  <xsd:complexType name="AktenzeichenType">
+    <xsd:sequence>
+      <xsd:element name="NormiertesAktenzeichen" type="TextType16" />
+      <xsd:element name="DruckaufbereitetesAktenzeichen" type="TextType20" />
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="AktenzeichenListeType">
+    <xsd:sequence>
+      <xsd:element name="Aktenzeichen" type="AktenzeichenType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="IPCHauptklasseType">
+    <xsd:sequence>
+      <xsd:element name="NormiertesIPCSymbol">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType18">
+              <xsd:attribute ref="suchfeld" fixed="ICM" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DruckaufbereitetesIPCSymbol" type="TextType24" />
+      <xsd:element name="IPCVersion">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="ICMV" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FruehereIPCHauptklasseType">
+    <xsd:sequence>
+      <xsd:element name="NormiertesIPCSymbol">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType18">
+              <xsd:attribute ref="suchfeld" fixed="ICMF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DruckaufbereitetesIPCSymbol" type="TextType24" />
+      <xsd:element name="IPCVersion">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="ICMVF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="IPCNebenklasseType">
+    <xsd:sequence>
+      <xsd:element name="NormiertesIPCSymbol">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType18">
+              <xsd:attribute ref="suchfeld" fixed="ICS" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DruckaufbereitetesIPCSymbol" type="TextType24" />
+      <xsd:element name="IPCVersion">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="ICSV" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FruehereIPCNebenklasseType">
+    <xsd:sequence>
+      <xsd:element name="NormiertesIPCSymbol">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType18">
+              <xsd:attribute ref="suchfeld" fixed="ICSF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="DruckaufbereitetesIPCSymbol" type="TextType24" />
+      <xsd:element name="IPCVersion">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="ICSVF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FruehereIPCNebenklasseListeType">
+    <xsd:sequence>
+      <xsd:element name="FruehereIPC" type="FruehereIPCNebenklasseType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="IPCNebenklasseListeType">
+    <xsd:sequence>
+      <xsd:element name="IPC" type="IPCNebenklasseType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="JahresgebuehrType">
+    <xsd:sequence>
+      <xsd:element name="JahresNummer">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="JahresNummerEnumType">
+              <xsd:attribute ref="suchfeld" fixed="FG" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Faelligkeit">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:date">
+              <xsd:attribute ref="suchfeld" fixed="FT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- Prioritaeten  -->
+
+  <xsd:complexType name="AuslaendischePrioritaetType">
+    <xsd:sequence>
+      <xsd:element name="Aktenzeichen">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="PRNA" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PrioritaetsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="PRDA" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Land">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType2">
+              <xsd:attribute ref="suchfeld" fixed="PRC" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="AusstellungsPrioritaetType">
+    <xsd:sequence>
+      <xsd:element name="Ausstellung">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="APR" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PrioritaetsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="APRD" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GeschmacksmusterPrioritaetType">
+    <xsd:sequence>
+      <xsd:element name="Aktenzeichen">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="GPRN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PrioritaetsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="GPRD" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Land">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType2">
+              <xsd:attribute ref="suchfeld" fixed="GPRC" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntnahmePrioritaetType">
+    <xsd:sequence>
+      <xsd:element name="Aktenzeichen">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="EPRN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PrioritaetsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="EPRD" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="InlaendischePrioritaetType">
+    <xsd:sequence>
+      <xsd:element name="Aktenzeichen">
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="AktenzeichenType">
+              <xsd:attribute ref="suchfeld" fixed="PRN" />
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="PrioritaetsTag">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="PRD" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- Listen von Prioritaeten  -->
+  <xsd:complexType name="InlaendischePrioritaetListeType">
+    <xsd:sequence>
+      <xsd:element name="InlaendischePrioritaet" type="InlaendischePrioritaetType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntnahmePrioritaetListeType">
+    <xsd:sequence>
+      <xsd:element name="EntnahmePrioritaet" type="EntnahmePrioritaetType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="AuslaendischePrioritaetListeType">
+    <xsd:sequence>
+      <xsd:element name="AuslaendischePrioritaet" type="AuslaendischePrioritaetType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GeschmacksmusterPrioritaetListeType">
+    <xsd:sequence>
+      <xsd:element name="GeschmacksmusterPrioritaet" type="GeschmacksmusterPrioritaetType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="AusstellungsPrioritaetListeType">
+    <xsd:sequence>
+      <xsd:element name="AusstellungsPrioritaet" type="AusstellungsPrioritaetType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="HeftteilType">
+    <xsd:simpleContent>
+      <xsd:extension base="HeftteilEnumType" />
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PublikationsartType">
+    <xsd:simpleContent>
+      <xsd:extension base="PublikationsartEnumType">
+        <xsd:attribute ref="suchfeld" fixed="PART" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="SchutzrechtsartType">
+    <xsd:simpleContent>
+      <xsd:extension base="SchutzrechtsartEnumType">
+        <xsd:attribute ref="suchfeld" fixed="SART" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="StatusType">
+    <xsd:simpleContent>
+      <xsd:extension base="StatusEnumType">
+        <xsd:attribute ref="suchfeld" fixed="ST" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerfahrensartType">
+    <xsd:simpleContent>
+      <xsd:extension base="VerfahrensartEnumType">
+        <xsd:attribute ref="suchfeld" fixed="VART" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerfahrensstandType">
+    <xsd:simpleContent>
+      <xsd:extension base="VerfahrensstandEnumType">
+        <xsd:attribute ref="suchfeld" fixed="VST" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="VerwendungType">
+    <xsd:simpleContent>
+      <xsd:extension base="VerwendungEnumType">
+        <xsd:attribute ref="suchfeld" fixed="VZ" />
+      </xsd:extension>
+    </xsd:simpleContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="LizenzType">
+    <xsd:sequence>
+      <xsd:element name="Lizenzerklaerung">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="LizenzEnumType">
+              <xsd:attribute ref="suchfeld" fixed="LIZ" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="DokidType">
+    <xsd:sequence>
+      <xsd:element name="NormierteDokid" type="TextType" />
+      <xsd:element name="DruckaufbereiteteDokid" type="TextType" />
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="DokidListeType">
+    <xsd:sequence>
+      <xsd:element name="Dokid" type="DokidType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="VeroeffentlichungsNummerType">
+    <xsd:sequence>
+      <xsd:element name="NormierteVN" type="TextType10" />
+      <xsd:element name="DruckaufbereiteteVN" type="TextType10" />
+      <xsd:element name="Sortierschluessel" type="xsd:string" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="VeroeffentlichungsNummerListeType">
+    <xsd:sequence>
+      <xsd:element name="VeroeffentlichungsNummer" type="VeroeffentlichungsNummerType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntgegenhaltungType">
+    <xsd:complexContent>
+      <xsd:extension base="DokidType">
+        <xsd:attribute ref="suchfeld" fixed="CT" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntgegenhaltungNPLType">
+  
+    <xsd:sequence>
+      <xsd:element name="Zitat">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="CTNP" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="CMid" type="xsd:string" minOccurs="0"/>
+      <xsd:element name="Format"  minOccurs="0">
+        <xsd:simpleType>
+          <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="pdf" />
+          </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntgegenhaltungListeType">
+    <xsd:sequence>
+      <xsd:element name="Entgegenhaltung" type="EntgegenhaltungType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="EntgegenhaltungNPLListeType">
+    <xsd:sequence>
+      <xsd:element name="EntgegenhaltungNPL" type="EntgegenhaltungNPLType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GenehmigungInlandListeType">
+    <xsd:sequence>
+      <xsd:element name="GenehmigungInland" type="GenehmigungInlandType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GenehmigungInlandType">
+    <xsd:sequence>
+      <xsd:element name="Stelle">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="GIS" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Nummer">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="GIN" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Datum">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="GIT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GenehmigungEUListeType">
+    <xsd:sequence>
+      <xsd:element name="GenehmigungEU" type="GenehmigungEUType" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="GenehmigungEUType">
+    <xsd:sequence>
+      <xsd:element name="Stelle">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="GES" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Nummer">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="GEN" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Datum">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="GET" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Land">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="GEC" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ErfinderType">
+    <xsd:sequence>
+      <xsd:element name="ErfinderTyp" type="ErfinderEnumType" />
+      <xsd:element name="ErfinderContent">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="IN" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ErfinderListeType">
+    <xsd:sequence>
+      <xsd:element name="Erfinder" type="ErfinderType" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FruehererErfinderType">
+    <xsd:sequence>
+      <xsd:element name="ErfinderTyp" type="ErfinderEnumType" />
+      <xsd:element name="ErfinderContent">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="TextType">
+              <xsd:attribute ref="suchfeld" fixed="INF" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="FruehererErfinderListeType">
+    <xsd:sequence>
+      <xsd:element name="FruehererErfinder" type="FruehererErfinderType" minOccurs="1" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="VertreterType">
+    <xsd:sequence>
+      <xsd:element name="VertreterTyp" type="VertreterEnumType" />
+      <xsd:element name="VertreterContent" type="TextType" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="VeroeffentlichungsInfoType">
+    <xsd:sequence>
+      <xsd:element name="Heftnummer" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:unsignedShort">
+              <xsd:attribute ref="suchfeld" fixed="HN" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Jahr" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="xsd:unsignedShort">
+              <xsd:attribute ref="suchfeld" fixed="PJ" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="VeroeffentlichungsTag" minOccurs="0">
+        <xsd:complexType>
+          <xsd:simpleContent>
+            <xsd:extension base="DateType">
+              <xsd:attribute ref="suchfeld" fixed="VT" />
+            </xsd:extension>
+          </xsd:simpleContent>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="Publikationsart" type="PublikationsartType" minOccurs="0" />
+      <xsd:element name="Heftteil" type="HeftteilType" minOccurs="0" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

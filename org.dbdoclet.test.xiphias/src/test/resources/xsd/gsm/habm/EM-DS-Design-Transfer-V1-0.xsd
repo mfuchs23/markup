@@ -1,0 +1,1474 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+	xmlns="http://www.dpma.de/EM-DS-TRANSFER_Download" 
+	targetNamespace="http://www.dpma.de/EM-DS-TRANSFER_Download" 
+	elementFormDefault="qualified" 
+	attributeFormDefault="unqualified" 
+	version="1.0">
+
+	<!-- ********************************************************************** -->
+	<!-- *                                                                    * -->
+	<!-- * Schema based on : EM-DS-Design-V1-0.xsd XML Schema      2012-02-01 * -->
+	<!--  Modified : see DPMAHABMFS marked lines                   2011-02-01 * -->  
+	<!-- ********************************************************************** -->
+	<xs:annotation>
+		<xs:documentation>EM-Design-Transfer-V1-0  for DPMA Fachsystem Gemeinschaftsgeschmacksmuster (HABMGSMFS) </xs:documentation>  <!--DPMAHABMFS-->
+		<xs:documentation> Version 23.02.2012 </xs:documentation>  		
+	</xs:annotation>
+
+	<!-- ====================================================================== -->
+	<!-- Include of external standard types                                     -->
+	<!-- ====================================================================== -->
+	<xs:include schemaLocation="ISOCountryCodeType-V2010.xsd"/>
+	<xs:include schemaLocation="WIPOST3CodeType-V2011.xsd"/>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * TRANSACTION/MESSAGE TYPES LIBRARY ********************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Root Messages                                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Top Level Transaction for all Types of Message                         -->
+	<!-- ====================================================================== -->
+     <xs:element name="Design" type="DesignType"/>						<!--DPMAHABMFS-->                           
+	<!-- ====================================================================== -->
+		<!--      : HABMFSType               added DPMAHABMFS                       -->
+		<!-- ====================================================================== -->
+		<xs:complexType name="HABMFSType">
+				  <xs:sequence> 
+				    <xs:element name="Bestandsart" type="BestandsartEnum" minOccurs="0" />				   		
+				    <xs:element name="ApplicationNumberSortierschluessel"   type="xs:string" minOccurs="0"/>
+					<xs:element name="DesignIdentifierSortierschluessel"   type="xs:string" minOccurs="0"/>					
+				    <xs:element name="Datenbestand" type="xs:string" minOccurs="0" /> 
+				    <xs:element name="Bild" type="xs:string" minOccurs="0" /> 
+				    <xs:element name="Thumb" type="xs:string" minOccurs="0" /> 
+				    				    
+				    <xs:element name="FirstImportDate" type="xs:date" minOccurs="1" /> 
+				    <xs:element name="History" type="HistoryType" minOccurs="1" /> 	
+		    </xs:sequence>
+		</xs:complexType>
+		<!-- ====================================================================== -->
+		<!--      : HistoryType               added DPMAHABMFS                      -->
+		<!-- ====================================================================== -->
+		
+			<xs:complexType name="HistoryType">
+				<xs:sequence>
+					<xs:element name="HistoryRecord" minOccurs="1"  maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+									<xs:element name="ImportFilenameDate"  type="xs:date"  minOccurs="1"  maxOccurs="1" > <!-- unused/info only -->
+									</xs:element>
+		   							<xs:element name="ImportDate"  type="xs:date" minOccurs="1"  maxOccurs="1" >           <!-- used for Kurier --> 		   		
+		   							</xs:element>						
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			
+		<!-- ====================================================================== -->
+		<!--    BestandsartEnum :                 added DPMAHABMFS                  -->
+		<!-- ====================================================================== -->
+		<xs:simpleType name="BestandsartEnum">
+		        <xs:restriction base="xs:token">
+		            <xs:enumeration value="aktiv"/>
+		            <xs:enumeration value="nichtaktiv"/>
+		        </xs:restriction>
+		</xs:simpleType>    
+	
+	<!-- ====================================================================== -->
+	<!-- Filename    : TransactionBodyType.xsd                                  -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionBodyType">
+		<xs:sequence>
+			<xs:element name="TransactionContentDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TransactionIdentifier" type="xs:token"/>
+						<xs:element name="TransactionCode" type="TransactionCodeType"/>
+						<xs:element name="TransactionData" type="TransactionDataType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : TransactionDataType.xsd                                  -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionDataType">
+		<xs:sequence>
+			<!-- ================================================================= -->
+			<!-- Set of Designs                                                    -->
+			<!-- ================================================================= -->
+			<xs:element name="DesignDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Design" type="DesignType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- ================================================================= -->
+			<!-- Set of Appeals                                                    -->
+			<!-- ================================================================= -->
+			<xs:element name="AppealDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Appeal" type="AppealType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- ================================================================= -->
+			<!-- Set of Decisions                                                  -->
+			<!-- ================================================================= -->
+			<xs:element name="DecisionDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Decision" type="DecisionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealType.xsd                                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- EM-DS-Design                                                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AppealType">
+		<xs:sequence>
+			<xs:element name="AppealIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="AppealURI" type="URIType" minOccurs="0"/>
+			<xs:element name="AppealDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AppealDecisionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AppealProceedingLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="CaseReferenceDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CaseReference" type="CaseReferenceType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealNickname" type="xs:string" minOccurs="0"/>
+			<xs:element name="AppealDecisionStatusCode" type="xs:string" minOccurs="0"/>
+			<xs:element name="AppellantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppellantKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RespondentDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RespondentKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RespondentRepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RespondentRepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealEventDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppealEvent" type="AppealEventType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealDocumentDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppealDocument" type="DocumentType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealEventType                                            -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- EM-DS-Design                                                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AppealEventType">
+		<xs:sequence>
+			<xs:element name="AppealEventDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AppealEventCode" type="AppealEventCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : TransactionHeaderType.xsd                                -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionHeaderType">
+		<xs:sequence>
+			<xs:element name="SenderDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RequestProducerDateTime" type="xs:dateTime"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : TransactionType.xsd                                      -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionType">
+		<xs:sequence>
+			<xs:element name="TransactionHeader" type="TransactionHeaderType" minOccurs="0"/>
+			<xs:element name="DesignTransactionBody" type="TransactionBodyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * BUSINESS TYPES LIBRARY ********************************************* -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Filename    : AddressBookType.xsd                                      -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AddressBookType">
+		<xs:sequence>
+			<xs:choice minOccurs="0">
+				<xs:element name="FreeFormatAddressDetails">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FreeFormatNameAddressLine" type="TextType" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="FormattedNameAddress" type="FormattedNameAddressType"/>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ApplicantType.xsd                                        -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ApplicantType">
+		<xs:sequence>
+			<xs:element name="ApplicantIdentifier" type="IdentifierType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ClassDescriptionType.xsd                                 -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ClassDescriptionType">
+		<xs:sequence>
+			<xs:element name="ClassNumber" type="LocarnoClassNumberType"/>
+			<!--	<xs:element name="ClassDescription" type="TextType" minOccurs="0" maxOccurs="unbounded"/> -->
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignBasicRecordType.xsd                                -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!--                                                                        -->
+	<!-- Important note:                                                        -->
+	<!-- ~~~~~~~~~~~~~~~                                                        -->
+	<!--                                                                        -->
+	<!-- RenewalSequenceNumber element is for OHIM internal use                 -->
+	<!--                                                                        -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DesignBasicRecordType">
+		<xs:sequence>
+			<xs:element name="RecordIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="BasicRecordKind" type="DesignBasicRecordKindType"/>
+			<xs:element name="RecordPublicationDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RecordPublication" type="PublicationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RecordEventDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RecordEvent" type="RecordEventType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RecordCurrentStatusCode" type="RecordCurrentStatusCodeType" minOccurs="0"/>
+			<xs:element name="RecordCurrentStatusDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RenewalSequenceNumber" type="xs:integer" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignRecordType.xsd                                     -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DesignRecordType">
+		<xs:sequence>
+			<xs:element name="DesignBasicRecord" type="DesignBasicRecordType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignRepresentationSheetType.xsd                        -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DesignRepresentationSheetType">
+		<xs:sequence>
+			<xs:element name="ViewDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="View" type="ViewType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignType.xsd                                           -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DesignType">
+		<xs:sequence>
+			<xs:element name="DesignIdentifier" type="xs:string"/>
+			<xs:element name="ApplicationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ApplicationLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="SecondLanguageCode" type="EM_SecondLanguageCodeType" minOccurs="0"/>
+			<xs:element name="ApplicationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PublicationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DesignURI" type="URIType" minOccurs="0"/>
+			<xs:element name="DesignDescription" type="xs:string" minOccurs="0"/>
+			<xs:element name="VerbalElementText" type="TextType" minOccurs="0"/>
+			<xs:element name="PublicationDefermentIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="ExpiryDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DesignCurrentStatusCode" type="DesignCurrentStatusCodeType" minOccurs="0"/>
+			<xs:element name="DesignCurrentStatusDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="OtherDateTime" type="OtherDateTimeType" minOccurs="0"/>
+			<xs:element name="DesignRepresentationSheetDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DesignRepresentationSheet" type="DesignRepresentationSheetType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="IndicationProductDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="IndicationProduct" type="TextType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ClassDescriptionDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ClassDescription" type="ClassDescriptionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PriorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Priority" type="PriorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ExhibitionPriorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ExhibitionPriority" type="ExhibitionPriorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PublicationDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Publication" type="PublicationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ApplicantKey" type="KeyType" maxOccurs="unbounded"/>
+						<xs:element name="Applicant" type="ApplicantType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+						<xs:element name="Representative" type="RepresentativeType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DesignerDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Designer" type="DesignerType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DesignRecordDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DesignRecord" type="DesignRecordType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="HABMFS" type="HABMFSType" minOccurs="0" />   	<!-- added DPMAHABMFS --> 
+		</xs:sequence>
+		<xs:attribute name="operationCode" type="OperationCodeType" use="optional"/>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ClassificationType                                       -->
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignerType.xsd                                         -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DesignerType">
+		<xs:sequence>
+			<xs:element name="DesignerIdentifier" type="xs:token"/>
+			<xs:element name="DesignerAddressBook" type="AddressBookType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : DecisionType.xsd                                           -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-02-03                                     -->
+	<!--                                                                        -->
+	<!-- Important note:                                                        -->
+	<!-- ~~~~~~~~~~~~~~~                                                        -->
+	<!--                                                                        -->
+	<!-- DecisionDocumentDetails element is for OHIM internal use               -->
+	<!--                                                                        -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DecisionType">
+		<xs:sequence>
+			<xs:element name="DecisionIdentifier" type="IdentifierType" minOccurs="0"/>
+			<xs:element name="DecisionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DecisionText" type="TextType" minOccurs="0"/>
+			<xs:element name="DecisionContestedBy" type="xs:string" minOccurs="0"/>
+			<xs:element name="CaseReferenceDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CaseReference" type="CaseReferenceType" maxOccurs="unbounded"/>
+						<xs:element name="CaseReferenceName" type="xs:string" minOccurs="0"/>
+						<xs:element name="CaseReferenceDescription" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DecisionCurrentStatusCode" type="DecisionCurrentStatusCodeType" minOccurs="0"/>
+			<xs:element name="DecisionCurrentStatusDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="GroundsDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Ground" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="LegalBasisDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="LegalBasis" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="KeywordDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Keyword" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DecisionReferenceDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DecisionReference" type="DecisionReferenceType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="DecisionDocumentDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DecisionDocument" type="DocumentType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name    : DecisionReferenceType.xsd                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-02-03                                     -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DecisionReferenceType">
+		<xs:sequence>
+			<xs:element name="DecisionReferenceKind" type="xs:string" minOccurs="0"/>
+			<xs:element name="DecisionReferenceIdentifier" type="KeyType" minOccurs="0"/>
+			<xs:element name="DecisionReferenceDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name    : DocumentType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-02-03                                     -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="DocumentType">
+		<xs:sequence>
+			<xs:element name="DocumentName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DocumentURI" type="URIType" minOccurs="0"/>
+			<xs:element name="DocumentFileName" type="xs:string" minOccurs="0"/>
+			<xs:element name="DocumentFileFormat" type="FileFormatType" minOccurs="0"/>
+			<xs:element name="DocumentDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="DocumentLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="DocumentLocation" type="xs:string" minOccurs="0"/>
+			<xs:element name="DocumentVersion" type="xs:string" minOccurs="0"/>
+			<xs:element name="Comment" type="TextType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ExhibitionPriorityType.xsd                               -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ExhibitionPriorityType">
+		<xs:sequence>
+			<xs:element name="ExhibitionName" type="xs:string"/>
+			<xs:element name="ExhibitionFirstDisplayDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : FileFormatType.xsd                                         -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0a                                                     -->
+	<!-- Last Update : 2010-11-20                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="FileFormatType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="TIF"/>
+			<xs:enumeration value="JPG"/>
+			<xs:enumeration value="GIF"/>
+			<xs:enumeration value="PDF"/>
+			<xs:enumeration value="DOC"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : FormattedNameAddressType.xsd                             -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="FormattedNameAddressType">
+		<xs:sequence>
+			<xs:element name="Name" type="NameType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : FreeFormatNameType                                         -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-01-17                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="FreeFormatNameType">
+		<xs:sequence>
+			<xs:element name="FreeFormatNameDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FreeFormatNameLine" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : KeyType.xsd                                              -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="KeyType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="IdentifierType" minOccurs="0"/>
+			<xs:element name="URI" type="URIType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : NameType.xsd                                             -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="NameType">
+		<xs:sequence>
+			<xs:choice>
+				<xs:element name="FreeFormatName" type="FreeFormatNameType"/>
+				<xs:element name="FormattedName">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+							<xs:element name="LastName" type="xs:string" minOccurs="0"/>
+							<xs:element name="OrganizationName" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:choice>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name   : OtherDateTimeKindType                                    -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-05-16                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="OtherDateTimeKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Last Update"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name   : OtherDateTimeType                                        -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-05-16                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="OtherDateTimeType">
+		<xs:simpleContent>
+			<xs:extension base="xs:dateTime">
+				<xs:attribute name="otherDateTimeKind" type="OtherDateTimeKindType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : PriorityType.xsd                                         -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="PriorityType">
+		<xs:sequence>
+			<xs:element name="PriorityCountryCode" type="ExtendedWIPOST3CodeType"/>
+			<xs:element name="PriorityNumber" type="xs:string"/>
+			<xs:element name="PriorityDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PriorityStatusCode" type="PriorityStatusCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : PublicationType.xsd                                      -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!--                                                                        -->
+	<!-- Important note:                                                        -->
+	<!-- ~~~~~~~~~~~~~~~                                                        -->
+	<!--                                                                        -->
+	<!-- PublicationSequenceNumber element is for OHIM internal use             -->
+	<!--                                                                        -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="PublicationType">
+		<xs:sequence>
+			<xs:element name="PublicationIdentifier" type="xs:string" minOccurs="0"/>
+			<xs:element name="PublicationSequenceNumber" type="xs:integer" minOccurs="0"/>
+			<xs:element name="PublicationSection" type="PublicationSectionType"/>
+			<xs:element name="PublicationDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : RecordEventType.xsd                                      -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="RecordEventType">
+		<xs:sequence>
+			<xs:element name="RecordEventDate" type="xs:date"/>
+			<xs:element name="RecordEventCode" type="RecordEventCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : RepresentativeType.xsd                                   -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="RepresentativeType">
+		<xs:sequence>
+			<xs:element name="RepresentativeIdentifier" type="IdentifierType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ViewCategoryType.xsd                                     -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ViewCategoryType">
+		<xs:sequence>
+			<xs:element name="CategoryCodeDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CategoryCode" type="CategoryCodeType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ViewType.xsd                                             -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!--                                                                        -->
+	<!-- Important note:                                                        -->
+	<!-- ~~~~~~~~~~~~~~~                                                        -->
+	<!--                                                                        -->
+	<!-- ViewIdentifier element is for OHIM internal use                        -->
+	<!--                                                                        -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ViewType">
+		<xs:sequence>
+			<xs:element name="ViewIdentifier" type="IdentifierType" minOccurs="0"/>
+			<xs:element name="ViewFileFormat" type="FileFormatType" minOccurs="0"/>
+			<xs:element name="ViewURI" type="URIType" minOccurs="0"/>
+			<xs:element name="ViewCategory" type="ViewCategoryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * ADDITIONAL TYPES LIBRARY ******************************************* -->
+	<!-- * ******************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealEventCodeType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-02-03                                     -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="AppealEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Appeal filed"/>
+			<xs:enumeration value="Admissibility checked"/>
+			<xs:enumeration value="First waiting for appellant's response"/>
+			<xs:enumeration value="Second waiting for appellant's response"/>
+			<xs:enumeration value="First waiting for respondent's response"/>
+			<xs:enumeration value="Second waiting for respondent's response"/>
+			<xs:enumeration value="Designation of rapporteur done"/>
+			<xs:enumeration value="Oral procedure pending"/>
+			<xs:enumeration value="Rapport sent to parties"/>
+			<xs:enumeration value="Decision rendered and notified"/>
+			<xs:enumeration value="Appeal with the Court of Justice pending"/>
+			<xs:enumeration value="Final decision - Appeal withdrawn"/>
+			<xs:enumeration value="Final decision  Appeal rejected"/>
+			<xs:enumeration value="Final decision  Appeal rejected in part"/>
+			<xs:enumeration value="No decision  Appeal not duly entered"/>
+			<xs:enumeration value="No decision  ex parte"/>
+			<xs:enumeration value="No decision  inter partes"/>
+			<xs:enumeration value="Appeal closed"/>
+			<xs:enumeration value="Key in of Appeal"/>
+			<xs:enumeration value="Appeal on hold"/>
+			<xs:enumeration value="Appeal Formalities"/>
+			<xs:enumeration value="Appeal being Processed by a Board"/>
+			<xs:enumeration value="Decision Notifying Parties"/>
+			<xs:enumeration value="Appeal Pending with the CFI or European Court of Justice (ECJ)"/>
+			<xs:enumeration value="Appeal Closed"/>
+			<xs:enumeration value="Appeal suspended"/>
+			<xs:enumeration value="Appeal withdrawn"/>
+			<xs:enumeration value="Comments on costs recorded"/>
+			<xs:enumeration value="Appeal Formalities"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : DecisionCurrentStatusCodeType                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-12-07                                     -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="DecisionCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="---"/>
+			<xs:enumeration value="Continuation"/>
+			<xs:enumeration value="Revocation Allowed"/>
+			<xs:enumeration value="Decision Filed"/>
+			<xs:enumeration value="Double Decision"/>
+			<xs:enumeration value="Decision Pending"/>
+			<xs:enumeration value="Final Decision"/>
+			<xs:enumeration value="Total Decision"/>
+			<xs:enumeration value="Partial Decision"/>
+			<xs:enumeration value="Opposition rejected"/>
+			<xs:enumeration value="Opposition partly rejected"/>
+			<xs:enumeration value="Opposition inadmissible"/>
+			<xs:enumeration value="Opposition allowed"/>
+			<xs:enumeration value="Restitutio in integrum accepted"/>
+			<xs:enumeration value="Restitutio in integrum rejected"/>
+			<xs:enumeration value="CANCELLATION ACCEPTED"/>
+			<xs:enumeration value="Cancellation accepted"/>
+			<xs:enumeration value="Cancellation rejected"/>
+			<xs:enumeration value="Cancellation allowed"/>
+			<xs:enumeration value="Cancellation partly allowed"/>
+			<xs:enumeration value="Decision Only on Costs"/>
+			<xs:enumeration value="No Decision on Application"/>
+			<xs:enumeration value="Application allowed"/>
+			<xs:enumeration value="Application partly rejected"/>
+			<xs:enumeration value="Application rejected"/>
+			<xs:enumeration value="RCD partly Rejected"/>
+			<xs:enumeration value="RCD partly revoked"/>
+			<xs:enumeration value="RCD rejected"/>
+			<xs:enumeration value="Cancellation partly rejected"/>
+			<xs:enumeration value="No Decision on Cancellation"/>
+			<xs:enumeration value="No Decision on Opposition"/>
+			<xs:enumeration value="Remitted on Article 7/3 CTMR"/>
+			<xs:enumeration value="Proceedings terminated"/>
+			<xs:enumeration value="Decision concerning procedural issues"/>
+			<xs:enumeration value="Revocation"/>
+			<xs:enumeration value="Revocation rejected"/>
+			<xs:enumeration value="Revocation allowed"/>
+			<xs:enumeration value="Revocation partly allowed"/>
+			<xs:enumeration value="Revocation partly rejected"/>
+			<xs:enumeration value="Decision on composition of BoA"/>
+			<xs:enumeration value="Invalidity RCD allowed"/>
+			<xs:enumeration value="Invalidity RCD rejected"/>
+			<xs:enumeration value="No need to adjudicate"/>
+			<xs:enumeration value="Inadmissible"/>
+			<!-- From IReach DB -->
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : CaseReferenceKindType                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-12-07                                    -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="CaseReferenceKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Design Record"/>
+			<xs:enumeration value="Decision"/>
+			<xs:enumeration value="Design"/>
+			<xs:enumeration value="General Authorization"/>
+			<xs:enumeration value="Current Account"/>
+			<xs:enumeration value="Representative List"/>
+			<xs:enumeration value="Appeal"/>
+			<xs:enumeration value="Invalidity"/>
+			<xs:enumeration value="Registered Design"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : CaseReferenceType                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- RCD-D - Version 5 Dated 2010-12-07                                     -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="CaseReferenceType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="caseReferenceKind" type="CaseReferenceKindType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<xs:simpleType name="CategoryCodeType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9][0-9].[0-9][0-9].[0-9][0-9]|[0-9][0-9].[0-9][0-9]|([0-9][0-9]){4}|([0-9][0-9]){6}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignBasicRecordKindType.xsd                            -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="DesignBasicRecordKindType">
+		<xs:restriction base="PublicationSectionType"/>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : DesignCurrentStatusCodeType.xsd                          -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="DesignCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Registered and fully published"/>
+			<xs:enumeration value="Registered and subject to deferment"/>
+			<xs:enumeration value="Lack of effects"/>
+			<xs:enumeration value="Design surrendered"/>
+			<xs:enumeration value="Invalidity procedure pending"/>
+			<xs:enumeration value="Design declared invalid"/>
+			<xs:enumeration value="Design lapsed"/>
+			<xs:enumeration value="Expiring"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : EM_EUOfficialLanguageCodeType.xsd                        -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_EUOfficialLanguageCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="bg"/>
+			<xs:enumeration value="cs"/>
+			<xs:enumeration value="da"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="el"/>
+			<xs:enumeration value="en"/>
+			<xs:enumeration value="es"/>
+			<xs:enumeration value="et"/>
+			<xs:enumeration value="fi"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="hu"/>
+			<xs:enumeration value="it"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="lv"/>
+			<xs:enumeration value="mt"/>
+			<xs:enumeration value="nl"/>
+			<xs:enumeration value="pl"/>
+			<xs:enumeration value="pt"/>
+			<xs:enumeration value="ro"/>
+			<xs:enumeration value="sk"/>
+			<xs:enumeration value="sl"/>
+			<xs:enumeration value="sv"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : EM_SecondLanguageCodeType.xsd                            -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_SecondLanguageCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="en"/>
+			<xs:enumeration value="es"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="it"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ExtendedISOCountryCodeType.xsd                           -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ExtendedISOCountryCodeType">
+		<xs:union memberTypes="ISOCountryCodeType ISOFormerCountryCodeType"/>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ExtendedWIPOST3CodeType.xsd                              -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ExtendedWIPOST3CodeType">
+		<xs:union memberTypes="WIPOST3CodeType WIPOFormerST3CodeType"/>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : ISOFormerCountryCodeType.xsd                             -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ISOFormerCountryCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="YU"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : IdentifierType.xsd                                       -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="IdentifierType">
+		<xs:simpleContent>
+			<xs:extension base="xs:token"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : LocarnoClassNumberType.xsd                               -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="LocarnoClassNumberType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9][0-9].[0-9][0-9]|[0-9][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : OperationCodeType.xsd                                      -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-01-17                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="OperationCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="Delete"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : PriorityStatusCodeType.xsd                               -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="PriorityStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Claimed"/>
+			<xs:enumeration value="Abandoned"/>
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Partially Refused"/>
+			<xs:enumeration value="Refused"/>
+			<xs:enumeration value="Undefined"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : PublicationSectionType.xsd                               -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="PublicationSectionType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Registrations Fully Published"/>
+			<xs:enumeration value="Registrations Subject to Deferment"/>
+			<xs:enumeration value="Absolute Errors on Registration"/>
+			<xs:enumeration value="Relative Errors on Registration"/>
+			<xs:enumeration value="Absolute Errors on Record"/>
+			<xs:enumeration value="Relative Errors on Record"/>
+			<xs:enumeration value="Absolute Errors on Restitutio in Integrum"/>
+			<xs:enumeration value="Transfers of Ownership"/>
+			<xs:enumeration value="Change of Name and Address of Proprietor"/>
+			<xs:enumeration value="Invalidity Application"/>
+			<xs:enumeration value="Final Decisions on Invalidity"/>
+			<xs:enumeration value="Entitlement Application"/>
+			<xs:enumeration value="Final Decisions on Entitlement"/>
+			<xs:enumeration value="Amendment Further to Partial Invalidity"/>
+			<xs:enumeration value="Change of Ownership on Court Decision"/>
+			<xs:enumeration value="Total Surrenders"/>
+			<xs:enumeration value="Partial Surrenders"/>
+			<xs:enumeration value="Designs without effect"/>
+			<xs:enumeration value="Licences/Sub-Licences"/>
+			<xs:enumeration value="Transfers of Licences/Sub-Licences"/>
+			<xs:enumeration value="Modifications of Licences/Sub-Licences"/>
+			<xs:enumeration value="Cancellations of Licences/Sub-Licences"/>
+			<xs:enumeration value="Right in Rem"/>
+			<xs:enumeration value="Transfers of Right in Rem"/>
+			<xs:enumeration value="Modifications of Right in Rem"/>
+			<xs:enumeration value="Cancellations of Right in Rem"/>
+			<xs:enumeration value="Entry of the Charge"/>
+			<xs:enumeration value="Modifications of Charge"/>
+			<xs:enumeration value="Cancellations of Charge"/>
+			<xs:enumeration value="Entry of Indication"/>
+			<xs:enumeration value="Modifications of Indication"/>
+			<xs:enumeration value="Cancellation of Indication"/>
+			<xs:enumeration value="Change of Name and Address of Representative"/>
+			<xs:enumeration value="Modification of Representative"/>
+			<xs:enumeration value="Amendment on Legal Action"/>
+			<xs:enumeration value="Modification of Designer"/>
+			<xs:enumeration value="Other Changes"/>
+			<xs:enumeration value="Preventive Annotation"/>
+			<xs:enumeration value="Renewals"/>
+			<xs:enumeration value="Expirations"/>
+			<xs:enumeration value="Absolute Errors on Renewal"/>
+			<xs:enumeration value="Relative Errors on Renewal"/>
+			<xs:enumeration value="Restitutio in Integrum"/>
+			<xs:enumeration value="Absolute Errors on Restitutio in Integrum"/>
+			<xs:enumeration value="Relative Errors on Restitutio in Integrum"/>
+			<xs:enumeration value="Absolute Errors on Part A on Design"/>
+			<xs:enumeration value="Absolute Errors on Part B"/>
+			<xs:enumeration value="Amendment of Design Further Legal Action"/>
+			<xs:enumeration value="Applications For a Declaration of Invalidity"/>
+			<xs:enumeration value="Appointment Replacement and Deletion of Designers"/>
+			<xs:enumeration value="Appointment Replacement and Deletion of Owners"/>
+			<xs:enumeration value="Appointment Replacement and Deletion of Rep"/>
+			<xs:enumeration value="Cancellations of Entries of Rights in Rem"/>
+			<xs:enumeration value="Cancellation of Entries of Licences"/>
+			<xs:enumeration value="Change Names Addresses of Owners"/>
+			<xs:enumeration value="Change of Names and Addresses of Rep"/>
+			<xs:enumeration value="Change of Name and Address of the Designer"/>
+			<xs:enumeration value="Change of Ownership After Decision"/>
+			<xs:enumeration value="Creation of Rights in Rem"/>
+			<xs:enumeration value="Entry of the Insolvency"/>
+			<xs:enumeration value="Entry of the Levy"/>
+			<xs:enumeration value="Final Decisions on Invalidity or Other Termination"/>
+			<xs:enumeration value="Final Decision on Entitlement or Other Termination"/>
+			<xs:enumeration value="Institution of Entitlement Proceedings"/>
+			<xs:enumeration value="Licence Granted"/>
+			<xs:enumeration value="Mention that design is deemed from the outset not to have had the effects"/>
+			<xs:enumeration value="Modifications of Entries of Licences"/>
+			<xs:enumeration value="Partial Surrenders"/>
+			<xs:enumeration value="Relative Errors on Part A on Design"/>
+			<xs:enumeration value="Relative Errors on Part A on Designer"/>
+			<xs:enumeration value="Relative Errors on Part A on Holder"/>
+			<xs:enumeration value="Relative Errors on Part A on Representative"/>
+			<xs:enumeration value="Relative Errors on Part B on Design"/>
+			<xs:enumeration value="Relative Errors on Part B on Designer"/>
+			<xs:enumeration value="Relative Errors on Part B on Holder"/>
+			<xs:enumeration value="Relative Errors on Part B on Representative"/>
+			<xs:enumeration value="Relative Errors on Part B on Right in rem"/>
+			<xs:enumeration value="Relative Errors on Part B on Licence"/>
+			<xs:enumeration value="Relative Errors on Restitutio in Integrum"/>
+			<xs:enumeration value="Renewal Absolute Error"/>
+			<xs:enumeration value="Renewal Expired Registration"/>
+			<xs:enumeration value="Renewal Registration"/>
+			<xs:enumeration value="Renewal Relative Error"/>
+			<xs:enumeration value="Restitutio in Integrum"/>
+			<xs:enumeration value="Transfer of Licences"/>
+			<xs:enumeration value="Transfer of Ownership"/>
+			<xs:enumeration value="Transfer of Rights in Rem"/>
+			<xs:enumeration value="A.1">
+				<xs:annotation>
+					<xs:documentation>Applications published under article 48 and 50 CDR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2">
+				<xs:annotation>
+					<xs:documentation>Registrations of Community designs with request for deferment – First publication Article 50 CDR and Article 14(3) CDIR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.3.1">
+				<xs:annotation>
+					<xs:documentation>Absolute Errors on Designs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.3.2">
+				<xs:annotation>
+					<xs:documentation>Relative Errors on Designs</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.1.1">
+				<xs:annotation>
+					<xs:documentation>Absolute Errors Design records</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.1.2">
+				<xs:annotation>
+					<xs:documentation>Relative Errors Design records</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.2.1">
+				<xs:annotation>
+					<xs:documentation>Transfers of ownership</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.2.2">
+				<xs:annotation>
+					<xs:documentation>Change of name and address of the holder(s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.1">
+				<xs:annotation>
+					<xs:documentation>Applications for a declaration of invalidity at the Office or applications for a declaration of invalidity pursuant to a counterclaim at the relevant Community Design Court</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.2">
+				<xs:annotation>
+					<xs:documentation>Final decisions of the Office on invalidity or final judgement of a Community Design Court on a counterclaim or any other termination of the proceedings</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.3">
+				<xs:annotation>
+					<xs:documentation>Institution of entitlement proceedings before a Community Design Court</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.4">
+				<xs:annotation>
+					<xs:documentation>Final decisions on entitlement proceedings before a Community Design Court</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.5">
+				<xs:annotation>
+					<xs:documentation>Amendment of a design further to a partial invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3.6">
+				<xs:annotation>
+					<xs:documentation>Change of ownership after a decision of a Community Design Court on entitlement</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.4.1">
+				<xs:annotation>
+					<xs:documentation>Total surrenders</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.4.2">
+				<xs:annotation>
+					<xs:documentation>Partial surrenders</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.4.3">
+				<xs:annotation>
+					<xs:documentation>Mention that design is deemed from the outset not to have had the effects</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.5.1">
+				<xs:annotation>
+					<xs:documentation>Licences/sub-licences granted</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.5.2">
+				<xs:annotation>
+					<xs:documentation>Transfer of licences/sub-licences</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.5.3">
+				<xs:annotation>
+					<xs:documentation>Modifications of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.5.4">
+				<xs:annotation>
+					<xs:documentation>Cancellation of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.6.1">
+				<xs:annotation>
+					<xs:documentation>Creation of rights in rem</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.6.2">
+				<xs:annotation>
+					<xs:documentation>Transfer of rights in rem</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.6.3">
+				<xs:annotation>
+					<xs:documentation>Modifications of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.6.4">
+				<xs:annotation>
+					<xs:documentation>Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.7.1">
+				<xs:annotation>
+					<xs:documentation>Entry of the charge</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.7.2">
+				<xs:annotation>
+					<xs:documentation>Modifications of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.7.3">
+				<xs:annotation>
+					<xs:documentation>Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.8.1">
+				<xs:annotation>
+					<xs:documentation>Entry of the indication</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.8.2">
+				<xs:annotation>
+					<xs:documentation>Modifications of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.8.3">
+				<xs:annotation>
+					<xs:documentation>Cancellation of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.9.1">
+				<xs:annotation>
+					<xs:documentation>Change of name(s) and professional address(es) of the representative(s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.9.2">
+				<xs:annotation>
+					<xs:documentation>Appointment, replacement and deletion of representative(s)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.10.1">
+				<xs:annotation>
+					<xs:documentation>Amendment of a design further to a legal action exterior to the Office</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.10.2">
+				<xs:annotation>
+					<xs:documentation>Modification of the designer</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.10.3">
+				<xs:annotation>
+					<xs:documentation>Other changes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.10.4">
+				<xs:annotation>
+					<xs:documentation>Other changes</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.1">
+				<xs:annotation>
+					<xs:documentation>Renewals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.2">
+				<xs:annotation>
+					<xs:documentation>Expired registrations</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in renewals and expired registrations</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.1">
+				<xs:annotation>
+					<xs:documentation>Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.2">
+				<xs:annotation>
+					<xs:documentation>Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.1">
+				<xs:annotation>
+					<xs:documentation>Restitutio in integrum</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.2">
+				<xs:annotation>
+					<xs:documentation>Correction of mistakes and errors in part D</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.2.1">
+				<xs:annotation>
+					<xs:documentation>Absolute Errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.2.2">
+				<xs:annotation>
+					<xs:documentation>Relative Errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : RecordCurrentStatusCodeType.xsd                          -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="RecordCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Record Filed"/>
+			<xs:enumeration value="Record Deemed Not Filed"/>
+			<xs:enumeration value="Record Payment Pending"/>
+			<xs:enumeration value="Record Rejected"/>
+			<xs:enumeration value="Record Examination Pending"/>
+			<xs:enumeration value="Record Translation Pending"/>
+			<xs:enumeration value="Record Refused"/>
+			<xs:enumeration value="Record Accepted"/>
+			<xs:enumeration value="Record Appeal Pending"/>
+			<xs:enumeration value="Record Registered"/>
+			<xs:enumeration value="Record Published"/>
+			<xs:enumeration value="Record Final Refusal"/>
+			<xs:enumeration value="Record Abandoned"/>
+			<xs:enumeration value="Record Suspended"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : RecordEventCodeType.xsd                                  -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="RecordEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Need to renew communicated"/>
+			<xs:enumeration value="Renewal application received"/>
+			<xs:enumeration value="Renewal fee paid"/>
+			<xs:enumeration value="Renewed"/>
+			<xs:enumeration value="Lapsed"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : TextType.xsd                                             -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TextType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="languageCode" type="xs:language" use="optional"/>
+				<xs:attribute name="sequenceNumber" type="xs:integer" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : TransactionCodeType.xsd                                  -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="TransactionCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="EM-Design"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : URIType.xsd                                              -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="URIType">
+		<xs:simpleContent>
+			<xs:extension base="xs:anyURI"/>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Filename    : WIPOFormerST3CodeType.xsd                                -->
+	<!-- Author      : EM-DS-Design                                             -->
+	<!-- Version     : 1.0                                                      -->
+	<!-- Last Update : 2011-16-05                                               -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="WIPOFormerST3CodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="CS"/>
+			<xs:enumeration value="DL"/>
+			<xs:enumeration value="DD"/>
+			<xs:enumeration value="SU"/>
+			<xs:enumeration value="YD"/>
+			<xs:enumeration value="YU"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

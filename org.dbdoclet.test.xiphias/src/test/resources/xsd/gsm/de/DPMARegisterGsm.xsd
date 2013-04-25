@@ -1,0 +1,704 @@
+<?xml version="1.0"?>
+  <!-- Mit XMLSpy v2009 sp1 (http://www.altova.com) von Wolfgang Pähtz (Deutsches Patent- und Markenamt) bearbeitet -->
+<xs:schema xmlns="http://dpma.hp.com/gsm/register/schema" xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://dpma.hp.com/gsm/register/schema" elementFormDefault="qualified"
+  attributeFormDefault="unqualified">
+  <!-- *****************************************************************************************************-->
+  <!-- *                                                                                                    -->
+  <!-- *     Deutsches Patent- und Markenamt/ HP                                                            -->
+  <!-- *     XML Schema für den internen Datenaustausch GSM nach DPMARegister GSM                           -->
+  <!-- *     Datenstrukturen von uebergreifenden Typen und Attributen                                       -->
+  <!-- *                                                                                                    -->
+  <!-- *     Dateiname:             DPMARegisterGsmTypen.xsd                                                -->
+  <!-- *     Autor:                 Michael Fuchs / Thomas Rueß / Bernhard Ritter                           -->
+  <!-- *     Version:               1.2                                                                     -->
+  <!-- *     Letzte Aktualisierung: 15 Januar 2010                                                          -->
+  <!-- *     E-Mail:                michael.fuchs@dpma.de  											        -->
+  <!-- *                            thomas.ruess@dpma.de  												    -->
+  <!-- *     												 												-->
+  <!-- *     Aenderungshistorie (seit 03.09)												 				-->
+  <!-- *     Datum				  Aenderung			                                                        -->
+  <!-- *     15.01.10			  Das Element Zustellanschrift wurde auf optional gesetzt.                  -->
+  <!-- *     															 			 						-->
+  <!-- *     03.09.09			  Sortierschluessel auf TextType gesetzt								    -->
+  <!-- *     					  Abwandlung, Grundmuster auf GeschmacksmusternummerType gesetzt		    -->
+  <!-- *  						  Text19Type auf Text17Type gesetzt 	    			 				    -->
+  <!-- *     															 			 						-->
+  <!-- *     21.09.09			  VerfahrensListe in MusterType auf default (minOccurs="1")  gesetzt	    -->
+  <!-- *					      Veroeffentlichungstag in MusterType hinzugefuegt						    -->
+  <!-- *     															 			 						-->
+  <!-- *     															 			 						-->
+  <!-- *     06.10.09		      Bezeichnung/Erzeugnis/Warenklasse/Uebertragungsklasse in einem Typ   	    -->
+  <!-- * 					      konsolidiert																-->
+  <!-- * 						  Loeschungsdatum in Stammdaten hinzugefuegt.								-->
+  <!-- *  						  BasisAttribute in verschiedenen Enumerations hinzugefuegt.				-->
+  <!-- * 						  Zsname in PersonType nach oben gezogen.									-->
+  <!-- * 						  papierakte-vernichtet als Musterzustand hinzugefuegt.						-->
+  <!-- * 						  SchutzdauerEnum Zustaende Java-konform benannt.							-->
+  <!-- *																									-->
+  <!-- *    08.10.09			  ErzeugnisWarenklasse auf maxOccurs="unbounded" gesetzt					-->
+  <!-- *																									-->
+  <!-- *    14.10.09              ZahlType auf nonNegativeInteger gesetzt.									-->									  
+  <!-- *																									-->
+  <!-- *    01.12.09              Das Element Veroeffentlichung wurde, genauso wie seine Kindelemente,      -->
+  <!-- *                          auf optional gesetzt.                                                     -->												 			 						  
+  <!-- *                          Neues Attribut version für Wurzelelement Muster                           -->												 			 						  
+  <!-- *                          Konsolidierung der Enumeration SchutzdauerEnum laut Spezifikation.        -->												 			 						  
+  <!-- *                          Einführung zweier geetrennter Sortierschlüssel für Aktenzeichen und       -->						 			 						  
+  <!-- *                          Geschmacksmusternummer.                                                   -->												 			 						  
+  <!-- *                          INID-Codes von aus Kindelemententen des Elements PersonType in das        -->												 			 						  
+  <!-- *                          Element PersonTypeList verschoben.                                        -->	
+  <!-- *                                                             										-->	
+  <!-- *    01.12.09              Konsolidierung der Verwendung von BasisAttribute 							-->
+  <!-- *                          Suchfeld aus BasisAttribute herausgenommen							    -->
+
+
+
+
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:element name="Muster" type="MusterType" />
+  <!-- *****************************************************************************************************-->
+  <!-- ************************************* Basis Attributes **********************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:attributeGroup name="BasisAttribute">
+    <xs:annotation>
+      <xs:documentation>Standard Attribute Typ zu allen Elementen, versehen mit INID-Code und Suchfeld.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="INID" type="xs:positiveInteger" use="optional" />
+  </xs:attributeGroup>
+  <!-- *****************************************************************************************************-->
+  <!-- *************************************** MUSTER *************************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="MusterType">
+    <xs:sequence>
+      <xs:element name="GeschmacksmusterInfo" type="GeschmacksmusterInfoType" />
+      <xs:element name="Musterzustand" type="MusterzustandEnumType" />
+      <xs:element name="Abwandlungen" type="AbwandlungTypeList" minOccurs="0" />
+      <xs:element name="Grundmuster" type="GeschmacksmusternummerType" minOccurs="0" />
+      <xs:element name="Anmeldetag" type="DateType" />
+      <xs:element name="Prioritaeten" type="PrioritaetType" minOccurs="0" />
+      <xs:element name="Eintragungstag" type="DateType" />
+      <xs:element name="EDVErfassungsDatum" type="DateType" />
+      <xs:element name="BezeichnungErzeugnisWarenklassen" type="BezeichnungErzeugnisWarenklassenType" minOccurs="1"/>
+      <xs:element name="Warenklassenversion" type="TextType" minOccurs="0" />
+      <xs:element name="Hinterlegungsart" type="HinterlegungsartEnumType" minOccurs="0" />
+      <xs:element name="AnzahlDarstellungen" type="ZahlType" minOccurs="0" />
+      <xs:element name="Musterbeschreibung" type="TextType" minOccurs="0" />
+      <xs:element name="Lizenzinteresse" type="BooleanType" minOccurs="0" />
+      <xs:element name="InhaberListe" type="PersonTypeList" />
+      <xs:element name="VertreterListe" type="PersonTypeList" minOccurs="0" />
+      <xs:element name="Zustellanschrift" type="TextTypeList" minOccurs="0"/>
+      <xs:element name="EntwerferListe" type="PersonTypeList" minOccurs="0" />
+      <xs:element name="Aufschiebungsstatus" type="AufschiebungsstatusEnumType" />
+      <xs:element name="BewirkteSchutzdauer" type="SchutzdauerEnumType" minOccurs="0" />
+      <xs:element name="WiedergabeMusterListe" type="WiedergabeMusterTypeList" />
+      <xs:element name="Zahlungsfrist" type="DateType" minOccurs="0" />
+      <xs:element name="Faelligkeit" type="DateType" minOccurs="0" />
+      <xs:element name="VernichtungPapierakte" type="DateType" minOccurs="0" />
+      <xs:element name="UnveroeffentlichteMusterbeschreibung" type="BooleanType" minOccurs="0" />
+      <xs:element name="Veroeffentlichungstag" type="DateType" />
+      <xs:element name="Loeschungsdatum" type="DateType" minOccurs="0" />
+      <xs:element name="VerfahrensListe" type="VerfahrensListeType"/>
+    </xs:sequence>
+    <xs:attribute name="version" type="xs:string" />
+  </xs:complexType>
+  <!-- *****************************************************************************************************-->
+  <!-- *************************************** Basis Verfahren *********************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="VerfahrensListeType">
+    <xs:sequence>
+      <xs:element name="Verfahren" type="VerfahrenBasisType" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="VerfahrenBasisType" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Elemente die zum komplexen VerfahrenBasisType gehoeren und allen Verfahren gleich ist.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="EDVErfassungsdatum" type="DateType" />
+      <xs:element name="Veroeffentlichung" type="VeroeffentlichungsInfoType" minOccurs="0"/>
+      <xs:element name="Verfahrenszustand" type="VerfahrenszustandEnumType" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <!-- -->
+  <!-- *****************************************************************************************************-->
+  <!-- ************************************ complex Types **************************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="GeschmacksmusterInfoType">
+    <xs:sequence>
+      <xs:element name="Datenbestand" type="Text2Type" />
+      <xs:element name="Registernummer" type="Text12Type" />
+      <xs:element name="Aktenzeichen" type="Text14Type" />
+      <xs:element name="LaufendeNummer" type="xs:nonNegativeInteger" />
+      <xs:element name="SortierschluesselGsnr" type="xs:string" />
+      <xs:element name="SortierschluesselAkz" type="xs:string" />
+      <xs:element name="Geschmacksmusternummer" type="GeschmacksmusternummerType" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="PrioritaetType">
+    <xs:sequence>
+      <xs:element name="AusstellungsPrioritaeten" type="AusstellungsPrioritaetType" minOccurs="0" />
+      <xs:element name="AuslaendischePrioritaeten" type="AuslandsPrioritaetType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="AuslandsPrioritaetType">
+    <xs:annotation>
+      <xs:documentation>AuslandsPrioritaet, bzw. AuslandsPrioritaeten</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AuslandsPrioritaet" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Datum" type="DateType" />
+            <xs:element name="Land" type="TextType" minOccurs="0" />
+            <xs:element name="AKZVoranmeldung" type="TextType" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="AusstellungsPrioritaetType">
+    <xs:annotation>
+      <xs:documentation>AusstellungsPrioritaet, bzw. AusstellungsPrioritaeten</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="AusstellungsPrioritaet" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="Datum" type="xs:date" />
+            <xs:element name="Land" type="xs:string" minOccurs="0" />
+            <xs:element name="Ausstellungsname" type="xs:string" minOccurs="0" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+    <xs:attributeGroup ref="BasisAttribute" />
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="WarenklasseType">
+    <xs:annotation>
+      <xs:documentation>Warenklasse Deklaration</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Hauptklasse" type="xs:positiveInteger" />
+      <xs:element name="Unterklasse" type="xs:nonNegativeInteger" minOccurs="0" />
+    </xs:sequence>
+    <xs:attributeGroup ref="BasisAttribute" />
+  </xs:complexType>
+  <!-- -->
+   <xs:complexType name="BezeichnungErzeugnisWarenklassenType">
+    <xs:sequence>
+      <xs:element name="ErzeugnisWarenklasse" type="ErzeugnisWarenklasseType" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="BezeichnungWarenklassen" type="BezeichnungWarenklassenType" minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="ErzeugnisWarenklasseType">
+    <xs:sequence>
+      <xs:element name="Erzeugnis" type="TextType" minOccurs="0" />
+      <xs:element name="Warenklasse" type="WarenklasseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="BezeichnungWarenklassenType">
+    <xs:sequence>
+      <xs:element name="Bezeichnung" type="TextType" />
+      <xs:element name="Warenklassen" type="WarenklassenTypeList" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="WarenklassenTypeList">
+    <xs:annotation>
+      <xs:documentation>Liste von Warenklassen
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Warenklasse" type="WarenklasseType" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="VeroeffentlichungsInfoType">
+    <xs:annotation>
+      <xs:documentation>Elemente die zum komplexen Element VeroeffentlichungsInformation gehoeren</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Heftnummer" type="ZahlType" minOccurs="0" />
+      <xs:element name="Jahr" type="ZahlType" minOccurs="0" />
+      <xs:element name="Veroeffentlichkeitsdatum" type="DateType"  minOccurs="0" />
+      <xs:element name="Teil" type="TeilInfoEnumType"  minOccurs="0" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="WiedergabeMusterTypeList">
+    <xs:annotation>
+      <xs:documentation>Abbildung von strukturierter Texte zur
+        Adressendefinition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="WiedergabeMuster" type="WiedergabeMusterType" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="WiedergabeMusterType">
+    <xs:annotation>
+      <xs:documentation>Elemente die zum komplexen Element DarstellungsInformation gehoeren</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Darstellungsnummer" type="xs:string" />
+      <xs:element name="Thumbnail" type="xs:string" />
+      <xs:element name="Bild" type="xs:string" />
+    </xs:sequence>
+    <xs:attributeGroup ref="BasisAttribute" />
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="AbwandlungTypeList">
+    <xs:annotation>
+      <xs:documentation>Abbildung von strukturierter Texte zur
+        Adressendefinition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Abwandlung" type="GeschmacksmusternummerType" minOccurs="0" maxOccurs="49" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="PersonTypeList">
+    <xs:annotation>
+      <xs:documentation>Abbildung von strukturierter Texte zur
+        Adressendefinition</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Person" type="PersonType" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="PersonType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Zsname" type="xs:string" />
+        <xs:element name="Vname" type="xs:string" />
+        <xs:element name="Name1" type="xs:string"/>
+        <xs:element name="Name2" type="xs:string"  />
+        <xs:element name="Erwname" type="xs:string"  />
+        <xs:element name="Strasse" type="xs:string" />
+        <xs:element name="Hausnummer" type="xs:string" />
+        <xs:element name="PLZ" type="xs:string"  />
+        <xs:element name="Ort" type="xs:string" />
+        <xs:element name="Zsort" type="xs:string" />
+        <xs:element name="LandKz" type="xs:string" />
+    </xs:choice>
+    <xs:attributeGroup ref="BasisAttribute" />
+  </xs:complexType>
+  <!-- -->
+  <!-- -->
+  <!-- *****************************************************************************************************-->
+  <!-- *********************************** Verfahrens Typen ********************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="BekanntmachungsNachholungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="AufrechterhaltungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="TeilungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Aktenzeichen" type="Text14Type" />
+          <xs:element name="AktenzeichenAlt" type="Text14Type" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="TeilweiseAufrechterhaltungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="NichtigkeitsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="ZwangsvollstreckungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="RechtsstreitRechtsinhaberschaftsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="BerichtigungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="DinglicheRechteVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="InsolvenzVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType">
+        <xs:sequence>
+          <xs:element name="Text" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="EintragungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="LoeschungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="WiedereinsetzungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="UmschreibungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="VerfahrenBasisType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="EntwerferAenderungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="UmschreibungsVerfahrenType">
+        <xs:sequence>
+          <xs:element name="EntwerferAlt" type="PersonTypeList" minOccurs="0" />
+          <xs:element name="EntwerferNeu" type="PersonTypeList" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="ZustellanschriftAenderungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="UmschreibungsVerfahrenType">
+        <xs:sequence>
+          <xs:element name="ZustellanschriftAlt" type="TextTypeList" minOccurs="0" />
+          <xs:element name="ZustellanschriftNeu" type="TextTypeList" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="InhaberAenderungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="UmschreibungsVerfahrenType">
+        <xs:sequence>
+          <xs:element name="InhaberAlt" type="PersonTypeList"/>
+          <xs:element name="InhaberNeu" type="PersonTypeList"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="VertreterAenderungsVerfahrenType">
+    <xs:complexContent>
+      <xs:extension base="UmschreibungsVerfahrenType">
+        <xs:sequence>
+          <xs:element name="VertreterAlt" type="PersonTypeList" minOccurs="0" />
+          <xs:element name="VertreterNeu" type="PersonTypeList" minOccurs="0" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- -->
+  <!-- *****************************************************************************************************-->
+  <!-- ********************************* generic Types **************************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="TextType">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="Text2Type">
+    <xs:simpleContent>
+      <xs:restriction base="TextType">
+        <xs:maxLength value="2" />
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="Text12Type">
+    <xs:simpleContent>
+      <xs:restriction base="TextType">
+        <xs:maxLength value="12" />
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="Text14Type">
+    <xs:simpleContent>
+      <xs:restriction base="TextType">
+        <xs:maxLength value="14" />
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="Text17Type">
+    <xs:simpleContent>
+      <xs:restriction base="TextType">
+        <xs:maxLength value="17" />
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="BooleanType">
+    <xs:simpleContent>
+      <xs:extension base="xs:boolean">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="DateType">
+    <xs:simpleContent>
+      <xs:extension base="xs:date">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="ZahlType">
+    <xs:simpleContent>
+      <xs:extension base="xs:nonNegativeInteger">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="TokenType">
+    <xs:simpleContent>
+      <xs:extension base="xs:NMTOKEN">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:complexType name="TextTypeList">
+    <xs:sequence>
+      <xs:element name="Text" type="xs:string" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+  <!-- -->
+  <!-- -->
+  <!-- *****************************************************************************************************-->
+  <!-- ***************************** Enumeration Types ************************************************-->
+  <!-- *****************************************************************************************************-->
+  <!-- -->
+  <xs:complexType name="MusterzustandEnumType">
+    <xs:simpleContent>
+      <xs:extension base="MusterzustandEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!-- -->
+  <xs:simpleType name="MusterzustandEnum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="muster-eingetragen" />
+      <xs:enumeration value="muster-geloescht" />
+      <xs:enumeration value="papierakte-vernichtet" />
+      <xs:enumeration value="wiedereinsetzung-beantragt" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- -->
+
+
+  <xs:simpleType name="AufschiebungsstatusEnum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="keine-aufschiebung" />
+      <xs:enumeration value="aufschiebung-beantragt-und-wirksam" />
+      <xs:enumeration value="aufschiebung-beantragt-nicht-mehr-wirksam" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--  -->
+  <xs:complexType name="AufschiebungsstatusEnumType">
+    <xs:simpleContent>
+      <xs:extension base="AufschiebungsstatusEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- -->
+  <xs:simpleType name="SchutzdauerEnum">
+
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="sd-18-monate" />
+      <xs:enumeration value="sd-30-monate" />
+      <xs:enumeration value="sd-5-jahre" />
+      <xs:enumeration value="sd-10-jahre" />
+      <xs:enumeration value="sd-15-jahre" />
+      <xs:enumeration value="sd-20-jahre" />
+      <xs:enumeration value="sd-25-jahre" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!-- -->
+  <xs:complexType name="SchutzdauerEnumType">
+    <xs:simpleContent>
+      <xs:extension base="SchutzdauerEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+
+  <!-- -->
+  <xs:simpleType name="HinterlegungsartEnum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="wiedergabe" />
+      <xs:enumeration value="flaechenmaessiger-musterabschnitt" />
+      <xs:enumeration value="originalmodell" />
+      <xs:enumeration value="kombination" />
+      <xs:enumeration value="wiedergabe-urspruenglich-flaechenmaessiger-musterabschnitt" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!--  -->
+
+  <xs:complexType name="HinterlegungsartEnumType">
+    <xs:simpleContent>
+      <xs:extension base="HinterlegungsartEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!--  -->
+  <xs:simpleType name="TeilInfoEnum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="teil-1a" />
+      <xs:enumeration value="teil-1b" />
+      <xs:enumeration value="teil-1d" />
+      <xs:enumeration value="teil-1e" />
+      <xs:enumeration value="teil-1f" />
+      <xs:enumeration value="teil-2" />
+      <xs:enumeration value="teil-3" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <!--  -->
+  <xs:complexType name="TeilInfoEnumType">
+    <xs:simpleContent>
+      <xs:extension base="TeilInfoEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!-- -->
+  <xs:simpleType name="VerfahrenszustandEnum">
+    <xs:restriction base="xs:NMTOKEN">
+      <xs:enumeration value="ein-eingetragen" />
+      <xs:enumeration value="bekannt-nachgeholt" />
+      <xs:enumeration value="teil-geteilt" />
+      <xs:enumeration value="aufrecht-6-10-jahr" />
+      <xs:enumeration value="aufrecht-11-15-jahr" />
+      <xs:enumeration value="aufrecht-16-20-jahr" />
+      <xs:enumeration value="aufrecht-21-25-jahr" />
+      <xs:enumeration value="teilaufrecht-erhalten" />
+      <xs:enumeration value="nichtig-nichtig" />
+      <xs:enumeration value="dinglich-eingetragen" />
+      <xs:enumeration value="dinglich-geloescht" />
+      <xs:enumeration value="zwang-eingeleitet" />
+      <xs:enumeration value="zwang-geloescht" />
+      <xs:enumeration value="insolv-eingetragen" />
+      <xs:enumeration value="insolv-geloescht" />
+      <xs:enumeration value="recht-klage-eingereicht" />
+      <xs:enumeration value="recht-beendet" />
+      <xs:enumeration value="ber-berichtigt" />
+      <xs:enumeration value="loe-ablauf-schutzfrist" />
+      <xs:enumeration value="loe-antrag-inhaber" />
+      <xs:enumeration value="loe-antrag-dritter" />
+      <xs:enumeration value="loe-nichtigkeit" />
+      <xs:enumeration value="loe-teilung-akte" />
+      <xs:enumeration value="wieder-beantragt" />
+      <xs:enumeration value="wieder-bewilligt" />
+      <xs:enumeration value="wieder-zurueckgewiesen" />
+      <xs:enumeration value="inh-geaendert" />
+      <xs:enumeration value="vertr-geaendert" />
+      <xs:enumeration value="zustell-geaendert" />
+      <xs:enumeration value="entw-geaendert" />
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- -->
+  <xs:complexType name="VerfahrenszustandEnumType">
+    <xs:simpleContent>
+      <xs:extension base="VerfahrenszustandEnum">
+        <xs:attributeGroup ref="BasisAttribute" />
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <!--  -->
+  <xs:complexType name="GeschmacksmusternummerType">
+    <xs:simpleContent>
+      <xs:extension base="Text17Type" />
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

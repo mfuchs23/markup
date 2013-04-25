@@ -1,0 +1,750 @@
+<?xml version="1.0"?>
+<!--
+  ~ Copyright (c) 2009 Deutsches Patent- und Markenamt und Hewlett-Packard GmbH
+  ~ Diese Software ist urheberrechtlich geschützt. Sie darf nur in Übereinstimmung mit den mit Hewlett-Packard getroffenen vertraglichen Vereinbarungen genutzt werden.
+  -->
+
+<xsd:schema
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://dpma.hp.com/marke/register/schema"
+        xmlns="http://dpma.hp.com/marke/register/schema"
+        elementFormDefault="qualified"
+        version="${schema-intern-version}">
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen Datenaustausch DVSM - DPMAregister        * -->
+    <!-- *     Komplexe Datenstrukturen                                              * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMARegisterTypes.xsd                                   * -->
+    <!-- *     Author      : HP/ Frank Bareuther                                     * -->
+    <!-- *     Version     : 1.4                                                     * -->
+    <!-- *     Last Update : 2009-05-29                                              * -->
+    <!-- *     Contact     : frank.bareuther@dpma.de                                 * -->
+    <!-- *                                                                           * -->
+    <!-- ***************************************************************************** -->
+
+
+    <!--<xsd:include schemaLocation="ISOCountryCodeType-V2006.xsd"/>-->
+    <xsd:include schemaLocation="WIPOST3CodeType-V2007.xsd"/>
+
+    <!--<xsd:include schemaLocation="DPMARegisterEnums.xsd"/> -->
+    <xsd:include schemaLocation="DPMARegisterBase.xsd"/>
+
+    <xsd:complexType name="LandType">
+        <xsd:simpleContent>
+            <xsd:extension base="DpmaCountryCodesType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <!-- Seniorität -->
+    <xsd:complexType name="SenioritaetType">
+        <xsd:sequence>
+            <xsd:element name="Senioritaet" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="AzGemeinschaftsmarke" type="TextType" minOccurs="0"/>
+                        <xsd:element name="VeroeffentlichungsDatum" type="DateType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Prioritäten -->
+    <xsd:complexType name="AustellungsPrioritaetType">
+        <xsd:sequence>
+            <xsd:element name="AustellungsPrioritaet" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="PrioritaetDatum" type="DateType"/>
+                        <xsd:element name="AngabenZurAusstellung" type="TextType" minOccurs="0"/>
+                        <xsd:element name="Wdvz" type="WdvzBasisType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="AuslaendischePrioritaetType">
+        <xsd:sequence>
+            <xsd:element name="AuslaendischePrioritaet" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="PrioritaetDatum" type="DateType"/>
+                        <xsd:element name="Aktenzeichen" type="TextType" minOccurs="0"/>
+                        <xsd:element name="Land" type="LandType"/>
+                        <xsd:element name="Wdvz" type="WdvzBasisType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="PrioritaetType">
+        <xsd:sequence>
+            <xsd:element name="AustellungsPrioritaeten" type="AustellungsPrioritaetType" minOccurs="0"/>
+            <xsd:element name="AuslaendischePrioritaeten" type="AuslaendischePrioritaetType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Internationale Registrierungen -->
+    <xsd:complexType name="InternationaleRegistrierungType">
+        <xsd:sequence>
+            <xsd:element name="IR" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Registrierungsnummer" type="TextType"/>
+                        <xsd:element name="RegistrierungsDatum" type="DateType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Registerstamm Type -->
+
+    <xsd:group name="StammdatenBasisGroup">
+        <xsd:sequence>
+            <xsd:element name="MarkenwiedergabeText" type="TextType" minOccurs="0"/>
+            <xsd:element name="MarkenwiedergabeTextIntern" type="TextType" minOccurs="0"/>
+            <xsd:element name="MarkenwiedergabeBild" type="BildwiedergabeType" minOccurs="0"/>
+            <xsd:element name="Markenform" type="MarkenformEnumType"/>
+            <xsd:element name="Kollektivmarke" type="BooleanType" minOccurs="0"/>
+            <xsd:element name="TelleQuelle" type="BooleanType" minOccurs="0"/>
+            <xsd:element name="Senioritaeten" type="SenioritaetType" minOccurs="0"/>
+            <xsd:element name="Anmeldetag" type="DateType" minOccurs="0"/>
+            <xsd:element name="Vertreter" type="TextType" minOccurs="0"/>
+            <xsd:element name="Zustellanschrift" type="TextType" minOccurs="0"/>
+            <xsd:element name="NizzaKlassifikation" type="NizzaType" minOccurs="0"/>
+            <xsd:element name="Leitklasse" type="SingleKlasseType" minOccurs="0"/>
+            <xsd:element name="Klassen" type="KlassenListeType" minOccurs="0"/>
+            <xsd:element name="Prioritaeten" type="PrioritaetType" minOccurs="0"/>
+            <xsd:element name="WienerBildklassifikation" type="WienerBildklassifikationListeType" minOccurs="0"/>
+            <xsd:element name="Aktenzustand" type="AktenzustandEnumType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+
+    <xsd:complexType abstract="true" name="StammdatenBasisType">
+        <xsd:sequence>
+            <xsd:group ref="StammdatenBasisGroup"/>
+            <xsd:element name="BestandsArt" type="TokenType"/>
+            <xsd:element name="LetzteAenderung" type="DateType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="EingetrageneMarkeStammdatenType">
+        <xsd:complexContent>
+            <xsd:extension base="StammdatenBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Inhaber" type="TextType"/>
+                    <xsd:element name="Identifikation" type="MarkenIdentifikationBasisType"/>
+                    <xsd:element name="FarbigEintragung" type="BooleanType" minOccurs="0"/>
+                    <xsd:element name="BezeichnungFarben" type="TextType" minOccurs="0"/>
+                    <xsd:element name="VerkehrsdurchgesetzteMarke" type="BooleanType" minOccurs="0"/>
+                    <xsd:element name="VerkehrsdurchgesetzterBestandteil" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Zeitrang" type="DateType" minOccurs="0"/>
+                    <xsd:element name="TagDerBekanntmachung" type="DateType" minOccurs="0"/>
+                    <xsd:element name="TagDerEintragungInRegister" type="DateType"/>
+                    <xsd:element name="TagDerVeroeffentlichung" type="DateType" minOccurs="0"/>
+                    <xsd:element name="VerlaengerungDerSchutzdauer" type="DateType" minOccurs="0"/>
+                    <xsd:element name="Schutzende" type="DateType" minOccurs="0"/>
+                    <xsd:element name="InternationaleRegistrierungen" type="InternationaleRegistrierungType"
+                                 minOccurs="0"/>
+                    <xsd:element name="LoeschDatum" type="DateType" minOccurs="0"/>
+                    <xsd:element name="Verfuegungsbeschraenkungen" type="VerfuegungsbeschraenkungType" minOccurs="0"/>     <!-- Bug #5821 -->
+                    <xsd:element name="WDVZ" type="WdvzBasisType"/>
+                    <xsd:element name="Markenbeschreibung" type="TextType" minOccurs="0"/>
+                    <xsd:element name="BeginnWiderspruchsfrist" type="DateType" minOccurs="0"/>
+            		<xsd:element name="AblaufWiderspruchsfrist" type="DateType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="GeloeschteMarkeStammdatenType">
+        <xsd:complexContent>
+            <xsd:extension base="EingetrageneMarkeStammdatenType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="AnmeldungStammdatenType">
+        <xsd:complexContent>
+            <xsd:extension base="StammdatenBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Anmelder" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Identifikation" type="MarkenIdentifikationNichtEingetragenType"/>
+                    <xsd:element name="TeilweiseZurueckweisungZuruecknahmeDetails" type="TeilweiseZurueckweisungZuruecknahmeDetailsType" minOccurs="0"/> <!-- #5996 -->
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="EintragungNichtMoeglichStammdatenType">
+        <xsd:complexContent>
+            <xsd:extension base="StammdatenBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Anmelder" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Identifikation" type="MarkenIdentifikationNichtEingetragenType"/>
+                    <xsd:element name="Schutzhindernisse" type="SchutzhindernisType" minOccurs="0"/>
+                    <xsd:element name="VerfahrensstandAnmeldeverfahren" type="TokenType" minOccurs="0"/>
+                    <xsd:element name="WDVZ" type="WdvzBasisType" minOccurs="0"/>
+                    <xsd:element name="Markenbeschreibung" type="TextType" minOccurs="0"/>
+                	<xsd:element name="WdvzGeloescht" type="WdvzGeloeschtType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <!--  WDVZ -->
+
+    <xsd:complexType abstract="true" name="WdvzType"/>
+
+    <xsd:complexType abstract="true" name="WdvzBasisType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WdvzNichtGruppiertType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Begriff" type="TextType" minOccurs="0"/>
+                    <xsd:element name="Klassen" type="KlassenListeType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WdvzGruppiertType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzBasisType">
+                <xsd:sequence>
+                    <xsd:element name="WdvzGruppiertElement" type="WdvzGruppiertElementType" maxOccurs="45"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WdvzGruppiertElementType">
+        <xsd:sequence>
+            <xsd:element name="Begriff" type="TextType" minOccurs="0"/>
+            <xsd:element name="Klasse" type="SingleKlasseType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType abstract="true" name="WdvzGeloeschtType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzType">
+                <xsd:sequence>
+                    <xsd:element name="Schutzhindernisse" type="SchutzhindernisType" minOccurs="0"/>
+                    <!--<xsd:element name="WdvzLoeschungsDatum" type="DateType" minOccurs="0"/> Bug #5636-->
+                    <xsd:element name="TeilloeschungsArt" type="TokenType" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WdvzGeloeschtGruppiertType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzGeloeschtType">
+                <xsd:sequence>
+                    <xsd:element name="WdvzGruppiert" type="WdvzGruppiertType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="WdvzGeloeschtNichtGruppiertType">
+        <xsd:complexContent>
+            <xsd:extension base="WdvzGeloeschtType">
+                <xsd:sequence>
+                    <xsd:element name="WdvzNichtGruppiert" type="WdvzNichtGruppiertType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SchutzhindernisType">
+        <xsd:sequence>
+            <xsd:element name="Schutzhindernis" type="SchutzhindernisEnumType" maxOccurs="unbounded" minOccurs="0"/>
+            <xsd:element name="WirksamkeitsDatum" type="DateType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Klassen -->
+
+    <xsd:simpleType name="KlasseBasisType">
+        <xsd:restriction base="xsd:nonNegativeInteger">
+            <xsd:maxInclusive value="45"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:complexType name="KlassenListeType">
+        <xsd:sequence>
+            <xsd:element name="Klasse" type="SingleKlasseType" maxOccurs="45"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SingleKlasseType">
+        <xsd:simpleContent>
+            <xsd:extension base="KlasseBasisType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="KlassifikationType">
+        <xsd:sequence>
+            <xsd:element name="Nummer" type="ZahlType"/>
+            <xsd:element name="Bezeichnung" type="TextType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="WienerBildklassifikationListeType">
+        <xsd:sequence>
+            <xsd:element name="Vienna" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Kategorie" type="ZahlType"/>
+                        <xsd:element name="Abschnitt" type="ZahlType"/>
+                        <xsd:element name="Unterabschnitt" type="ZahlType" minOccurs="0"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="NizzaType">
+        <xsd:sequence>
+            <xsd:element name="Nizza" type="TokenType" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="MarkenIdentifikationBasisType" abstract="true">
+        <xsd:sequence>
+            <xsd:element name="Aktenzeichen" type="AktenzeichenType"/>
+            <xsd:element name="Art" type="LandType"/>
+            <xsd:element name="SortierschluesselAktenzeichen" type="SortierschluesselType"/>
+            <xsd:element name="AktenzeichenAlt" type="AktenzeichenType" minOccurs="0"/> <!-- Bug #5733 -->
+            <xsd:element name="AktenzeichenEinzelansicht" type="AktenzeichenType" minOccurs="0"/> <!-- Bug #5733 -->
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="MarkenIdentifikationEingetragenType">
+        <xsd:complexContent>
+            <xsd:extension base="MarkenIdentifikationBasisType">
+                <xsd:sequence>
+                    <xsd:element name="Registernummer" type="RegisternummerType"/>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="MarkenIdentifikationNichtEingetragenType">
+        <xsd:complexContent>
+            <xsd:extension base="MarkenIdentifikationBasisType"/>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="BildwiedergabeSingleType">
+        <xsd:sequence>
+            <xsd:element name="OriginalImage" type="xsd:base64Binary"/>
+            <xsd:element name="Thumbnail" type="xsd:base64Binary"/>
+        </xsd:sequence>
+        <xsd:attribute name="Id" type="xsd:long"/>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="BildwiedergabeType">
+        <xsd:complexContent>
+            <xsd:extension base="BaseComplexType">
+                <xsd:sequence>
+                    <xsd:element name="Bild" type="xsd:long">
+                        <xsd:key name="BildIdKey">
+                            <xsd:selector xpath="Bildinformationen/Bildwiedergabe"/>
+                            <xsd:field xpath="id"/>
+                        </xsd:key>
+                        <xsd:keyref name="BildIdKeyRef" refer="BildIdKey">
+                            <xsd:selector xpath="."/>
+                            <xsd:field xpath="Bild"/>
+                        </xsd:keyref>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:extension>
+        </xsd:complexContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerfuegungsbeschraenkungType">
+        <xsd:sequence>
+            <xsd:element name="VerfuegungsbeschraenkungElement" maxOccurs="unbounded">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:group ref="VerfuegungsbeschraenkungGroup"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- DPMA eigene Ländercodes -->
+    <xsd:simpleType name="DpmaCountryCodesType">
+        <xsd:union memberTypes="WIPOST3CodeType">
+            <xsd:simpleType>
+                <xsd:restriction base="xsd:NMTOKEN">
+
+                    <xsd:enumeration value="AS">
+                        <xsd:annotation>
+                            <xsd:documentation>Amerikanisch-Samoa</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="CS">
+                        <xsd:annotation>
+                            <xsd:documentation>CSSR</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="DD">
+                        <xsd:annotation>
+                            <xsd:documentation>DDR</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="FM">
+                        <xsd:annotation>
+                            <xsd:documentation>Föderierte Staaten v Mikronesien</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="MH">
+                        <xsd:annotation>
+                            <xsd:documentation>Marshallinseln</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+
+                    <xsd:enumeration value="SU">
+                        <xsd:annotation>
+                            <xsd:documentation>SU-Land/NN</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="TP">
+                        <xsd:annotation>
+                            <xsd:documentation>Osttimor</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="UM">
+                        <xsd:annotation>
+                            <xsd:documentation>United States Minor Outlying Islands</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="YU">
+                        <xsd:annotation>
+                            <xsd:documentation>Jugoslawien</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="ZR">
+                        <xsd:annotation>
+                            <xsd:documentation>Zaire</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="ZS">
+                        <xsd:annotation>
+                            <xsd:documentation>Saarland</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                    <xsd:enumeration value="ZZ">
+                        <xsd:annotation>
+                            <xsd:documentation>Sonstige</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:enumeration>
+
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:union>
+    </xsd:simpleType>
+
+    <xsd:group name="VerfuegungsbeschraenkungGroup">
+        <xsd:sequence>
+            <xsd:element name="WirksamkeitsDatum" type="DateType" minOccurs="0" />
+            <xsd:element name="Rechtsgrund" type="TokenType" minOccurs="0"/>
+            <xsd:element name="VerfuegungsbeschraenkungsArt" type="VerfuegungsbeschraenkungEnum" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:group>
+
+
+    <!-- Teilweise Zurueckweisung/Zuruecknahme -->
+    <xsd:complexType name="TeilweiseZurueckweisungZuruecknahmeDetailsType">
+        <xsd:sequence>
+            <xsd:element name="TeilweiseZurueckweisungZuruecknahme" type="WdvzGeloeschtType" minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+
+    <!--  Enumerations -->
+    <xsd:complexType name="AktenzustandEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="AktenzustandEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="MarkenformEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="MarkenformEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerfahrensartEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="VerfahrensartEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="VerfahrenszustandEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="VerfahrenszustandEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="LoeschungrechtsgrundEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="LoeschungrechtsgrundEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="SchutzhindernisEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="SchutzhindernisEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:complexType name="UmschreibungsartEnumType">    <!-- Bug #5697 -->
+         <xsd:simpleContent>
+             <xsd:extension base="UmschreibungsartEnum">
+                 <xsd:attributeGroup ref="BasisAttribute"/>
+             </xsd:extension>
+         </xsd:simpleContent>
+     </xsd:complexType>
+
+    <xsd:simpleType name="AktenzustandEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+
+            <xsd:enumeration value="akte-vernichtet"/>
+            <xsd:enumeration value="anmeldung-eingegangen"/>
+            <xsd:enumeration value="eintragung-nicht-moeglich"/>
+            <xsd:enumeration value="marke-eingetragen"/>
+            <xsd:enumeration value="widerspruchsfrist-laeuft"/>
+            <xsd:enumeration value="widerspruchsverfahren-laeuft"/>
+            <xsd:enumeration value="marke-geloescht"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="MarkenformEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="bildmarke"/>
+            <xsd:enumeration value="dreidimensionale-marke"/>
+            <xsd:enumeration value="hoermarke"/>
+            <xsd:enumeration value="kennfadenmarke"/>
+            <xsd:enumeration value="sonstige-markenform"/>
+            <xsd:enumeration value="unbekannte-markenform"/>
+            <xsd:enumeration value="wort-bildmarke"/>
+            <xsd:enumeration value="wortmarke"/>
+            <xsd:enumeration value="farbmarke"/>
+            <!-- Bug #5570 -->
+        </xsd:restriction>
+
+    </xsd:simpleType>
+
+    <!-- Verfahrensart -->
+    <xsd:simpleType name="VerfahrensartEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="verf-anmeldung"/>
+            <xsd:enumeration value="verf-loeschung-dritte"/>
+            <xsd:enumeration value="verf-loeschung-inhaber"/>
+            <xsd:enumeration value="verf-senioritaet"/>
+            <xsd:enumeration value="verf-teilung"/>
+            <xsd:enumeration value="verf-umklassifizierung"/>
+            <xsd:enumeration value="verf-umschreibung"/>
+            <xsd:enumeration value="verf-verfuegungsbeschr"/>
+            <xsd:enumeration value="verf-verlaengerung"/>
+            <xsd:enumeration value="verf-widerspruch"/>
+            <xsd:enumeration value="migrierte-berichtigung"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!-- Verfahrenszustand -->
+    <xsd:simpleType name="VerfahrenszustandEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="anm-aktenzeichenfehler"/>
+            <xsd:enumeration value="anm-doppelanmeldung"/>
+            <xsd:enumeration value="anm-frueher-bekanntgemacht"/>
+            <xsd:enumeration value="anm-gilt-als-nicht-eingereicht"/>
+            <xsd:enumeration value="anm-gilt-als-zurueckgenommen"/>
+            <xsd:enumeration value="anm-marke-eingetragen"/>
+            <xsd:enumeration value="anm-zurueckgenommen"/>
+            <xsd:enumeration value="anm-zurueckgewiesen"/>
+            <xsd:enumeration value="besch-erstellt"/>
+            <xsd:enumeration value="besch-nicht-erstellt"/>
+            <xsd:enumeration value="besch-verfahren-hinfaellig"/>
+            <xsd:enumeration value="korrektur-abgeschlossen"/>
+            <xsd:enumeration value="korrektur-angelegt"/>
+            <xsd:enumeration value="loe-dri-abschl-ohn-auswirkung"/>
+            <xsd:enumeration value="loe-dri-auf-klage-verwiesen"/>
+            <xsd:enumeration value="loe-dri-gilt-als-zurueckgenommen"/>
+            <xsd:enumeration value="loe-dri-marke-geloescht"/>
+            <xsd:enumeration value="loe-dri-marke-teilw-geloescht"/>
+            <xsd:enumeration value="loe-dri-verfahren-hinf-geloescht"/>
+            <xsd:enumeration value="loe-dri-verfahren-hinfaellig"/>
+            <xsd:enumeration value="loe-dri-zurueckgenommen"/>
+            <xsd:enumeration value="loe-dri-zurueckgewiesen"/>
+            <xsd:enumeration value="loe-inh-marke-geloescht"/>
+            <xsd:enumeration value="loe-inh-marke-teilw-geloescht"/>
+            <xsd:enumeration value="loe-inh-verfahren-hinfaellig"/>
+            <xsd:enumeration value="loe-inh-zurueckgewiesen"/>
+            <xsd:enumeration value="sen-erfasst"/>
+            <xsd:enumeration value="sen-keine-vorhanden"/>
+            <xsd:enumeration value="sen-verfahren-hinfaellig"/>
+            <xsd:enumeration value="teil-gilt-als-teilverzicht"/>
+            <xsd:enumeration value="teil-marke-geteilt"/>
+            <xsd:enumeration value="teil-marke-teiluebertragen"/>
+            <xsd:enumeration value="teil-ueb-gilt-als-nicht-gestellt"/>
+            <xsd:enumeration value="teil-verfahren-hinfaellig"/>
+            <xsd:enumeration value="teil-zurueckgewiesen"/>
+            <xsd:enumeration value="umklass-marke-umklassifiziert"/>
+            <xsd:enumeration value="umklass-nicht-notwendig"/>
+            <xsd:enumeration value="umklass-verfahren-hinfaellig"/>
+            <xsd:enumeration value="umschr-abgeschlossen"/>
+            <xsd:enumeration value="umschr-verfahren-hinfaellig"/>
+            <xsd:enumeration value="umschr-zurueckgewiesen"/>
+            <xsd:enumeration value="verfb-verfahren-abgeschlossen"/>
+            <xsd:enumeration value="verfb-verfahren-hinfaellig"/>
+            <xsd:enumeration value="verfb-zurueckgewiesen"/>
+            <xsd:enumeration value="verl-schutzdauer-verlaengert"/>
+            <xsd:enumeration value="verl-verfahren-hinfaellig"/>
+            <xsd:enumeration value="wspr-bekannt-nicht-einzutragen"/>
+            <xsd:enumeration value="wspr-hinfaellig-tw-geloescht"/>
+            <xsd:enumeration value="wspr-hinfaellig-wzg-anmeldung"/>
+            <xsd:enumeration value="wspr-marke-geloescht"/>
+            <xsd:enumeration value="wspr-marke-nicht-geloescht"/>
+            <xsd:enumeration value="wspr-marke-teilweise-geloescht"/>
+            <xsd:enumeration value="wspr-ohne-widerspr-eingetragen"/>
+            <xsd:enumeration value="wspr-verfahren-hinfaellig"/>
+            <xsd:enumeration value="wspr-verfahren-ug-hinfaellig"/>
+            <xsd:enumeration value="wspr-zurueckgenommen"/>
+            <xsd:enumeration value="wspr-zurueckgewiesen"/>
+            <!-- künstliche Verfahrenszustände-->
+            <xsd:enumeration value="loe-dri-paragr-50-veroeffentl"/>
+            <xsd:enumeration value="migrierte-berichtigung"/>
+            <xsd:enumeration value="wspr-erhoben"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="LoeschungrechtsgrundEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="loeschung-a"/>
+            <xsd:enumeration value="loeschung-ausem-recht"/>
+            <xsd:enumeration value="loeschung-paragr-47"/>
+            <xsd:enumeration value="loeschung-paragr-48"/>
+            <xsd:enumeration value="loeschung-paragr-49"/>
+            <xsd:enumeration value="loeschung-paragr-50-3"/>
+            <xsd:enumeration value="loeschung-paragr-51"/>
+            <xsd:enumeration value="loeschung-wzg"/>
+            <xsd:enumeration value="loeschung-paragr-50"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="SchutzhindernisEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="4-2-1"/>
+            <xsd:enumeration value="4-2-4"/>
+            <xsd:enumeration value="aergerniserregende-angabe"/>
+            <xsd:enumeration value="amtl-pruef-gewaehr-zeichen"/>
+            <xsd:enumeration value="art-zeit-der-herstellung"/>
+            <xsd:enumeration value="beschaffenheitsangabe"/>
+            <xsd:enumeration value="beschr-nicht-untersch-kraeftig"/>
+            <xsd:enumeration value="beschreibend"/>
+            <xsd:enumeration value="beschreibende-angabe"/>
+            <xsd:enumeration value="bestimmungsangabe"/>
+            <xsd:enumeration value="bez-internat-zw-staatl-organis"/>
+            <xsd:enumeration value="boesglaeubige-anmeldung"/>
+            <xsd:enumeration value="buchstaben-oder-zahlen"/>
+            <xsd:enumeration value="dummy-schutzhinderniss"/>
+            <xsd:enumeration value="fachabkuerzung-oder-sonst"/>
+            <xsd:enumeration value="fehlen-jegl-untersch-beschr"/>
+            <xsd:enumeration value="fehlen-jegl-untersch-kraft"/>
+            <xsd:enumeration value="fehlende-mindesterfordernisse"/>
+            <xsd:enumeration value="formelle-maengel"/>
+            <xsd:enumeration value="freizeichen"/>
+            <xsd:enumeration value="gebuehrenmangel"/>
+            <xsd:enumeration value="herkunftsangabe"/>
+            <xsd:enumeration value="hoheitszeichen"/>
+            <xsd:enumeration value="hoheitszeichen-8-2-6"/>
+            <xsd:enumeration value="kein-inlandsvertreter"/>
+            <xsd:enumeration value="keine-rechtsgruende"/>
+            <xsd:enumeration value="kennzeichen-internat-organis"/>
+            <xsd:enumeration value="mangelnde-unterscheidungskraft"/>
+            <xsd:enumeration value="nicht-graphisch-darstellbar"/>
+            <xsd:enumeration value="nicht-markenfaehig"/>
+            <xsd:enumeration value="nicht-markenfaehiger-inhaber"/>
+            <xsd:enumeration value="notorisch-bekannte-marke"/>
+            <xsd:enumeration value="notorische-zeichen"/>
+            <xsd:enumeration value="preis-mengen-gewichts-angabe"/>
+            <xsd:enumeration value="pruef-und-gewaehrzeichen"/>
+            <xsd:enumeration value="slogan-oder-ualitaetshinweis"/>
+            <xsd:enumeration value="sonstige-formelle-maengel"/>
+            <xsd:enumeration value="taeuschende-angabe-par-8-2-4"/>
+            <xsd:enumeration value="taeuschende-angaben"/>
+            <xsd:enumeration value="uebliche-bezeichnung"/>
+            <xsd:enumeration value="verkehrsdurchsetzung"/>
+            <xsd:enumeration value="verstoss-gg-gute-sitten"/>
+            <xsd:enumeration value="verstoss-gg-sonst-ben-verb"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <xsd:simpleType name="UmschreibungsartEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="name-adresse"/>
+            <xsd:enumeration value="rechtsuebergang"/>
+            <xsd:enumeration value="vertreter"/>
+            <xsd:enumeration value="vertreterniederlegung"/>
+            <xsd:enumeration value="zustellanschrift"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+     <xsd:simpleType name="VerfuegungsbeschraenkungEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="eintragung"/>
+            <xsd:enumeration value="aufhebung"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+</xsd:schema>

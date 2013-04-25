@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/irschema"
+            xmlns="http://dpma.hp.com/marke/register/irschema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${ir-schema-intern-version}">
+
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen IrDatenaustausch DVSMmarke - DPMAregister * -->
+    <!-- *     Root Schema                                                           * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMAIrRegisterSchema.xsd                                * -->
+    <!-- *     Version     : 1.0.1                                                   * -->
+    <!-- *     Last Update : 2011-03-24                                              * -->
+    <!-- *                                                                           * -->
+    <!-- ******************************************************************************-->
+
+
+
+	<!--
+	Status
+	Sprache
+	DE-WDVZ (Suchfeld WDV)
+	DE-Klassen (Suchfeld KL)
+	Beginn der Benutzungsschonfrist
+	Wirksamkeitsdatum der Schutzbewilligung in Deutschland
+	-->
+
+    <xsd:include schemaLocation="DPMAIrRegisterBase.xsd"/>
+
+    <!-- IrDaten Type -->
+
+    <xsd:complexType name="IrDatenBasisType">
+        <xsd:sequence>
+            <xsd:element name="Id" type="IdType"/>
+            <xsd:element name="Aktenzeichen" type="AktenzeichenType"/>
+            <xsd:element name="AiStatus" type="AiStatusEnumType"/>
+            <xsd:element name="Sprache" type="TextType" minOccurs="0"/>
+			<xsd:element name="DeWdvz" type="DeWdvzType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+	<!--  WDVZ -->
+
+	<xsd:complexType name="DeWdvzType">
+        <xsd:sequence>
+			<xsd:element name="Header" type="TextType" minOccurs="0" />
+			<xsd:element name="Footer" type="TextType" minOccurs="0" />
+			<xsd:element name="Leitklasse" type="TextType" minOccurs="0" />
+			<xsd:element name="FuehrendeSprache" type="TextType" minOccurs="0" />
+			<xsd:element name="DeWdvzBegriffe" type="DEWdvzBegriffeType" minOccurs="0" />
+		</xsd:sequence>
+	</xsd:complexType>
+
+    <xsd:complexType name="DEWdvzBegriffeType">
+        <xsd:sequence>
+            <xsd:element name="DEWdvzBegriff" maxOccurs="unbounded">
+                <xsd:complexType>
+			        <xsd:sequence>
+			            <xsd:element name="Begriff" type="TextType" minOccurs="0"/>
+			            <xsd:element name="Klasse" type="KlasseBasisType"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <!-- Klassen -->
+
+    <xsd:complexType name="KlassenListeType">
+        <xsd:sequence>
+            <xsd:element name="Klasse" type="SingleKlasseType" maxOccurs="45"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="SingleKlasseType">
+        <xsd:simpleContent>
+            <xsd:extension base="KlasseBasisType">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+    <xsd:simpleType name="KlasseBasisType">
+        <xsd:restriction base="xsd:nonNegativeInteger">
+            <xsd:maxInclusive value="45"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+    <!--  Sonstiges -->
+
+    <xsd:complexType name="AiStatusEnumType">
+        <xsd:simpleContent>
+            <xsd:extension base="AiStatusEnum">
+                <xsd:attributeGroup ref="BasisAttribute"/>
+            </xsd:extension>
+        </xsd:simpleContent>
+    </xsd:complexType>
+
+
+    <xsd:simpleType name="AiStatusEnum">
+        <xsd:restriction base="xsd:NMTOKEN">
+            <xsd:enumeration value="kein-schutz"/>
+            <xsd:enumeration value="vorlaeufiger-schutz"/>
+            <xsd:enumeration value="schutz-bewilligt"/>
+            <xsd:enumeration value="schutz-unbekannt"/>
+        </xsd:restriction>
+    </xsd:simpleType>
+
+
+    <xsd:simpleType name="VersionType">
+        <xsd:restriction base="xsd:token">
+          <xsd:pattern value="1(\.([0-9])+){1,2}(-SNAPSHOT)?"/>
+        </xsd:restriction>
+  </xsd:simpleType>
+
+</xsd:schema>

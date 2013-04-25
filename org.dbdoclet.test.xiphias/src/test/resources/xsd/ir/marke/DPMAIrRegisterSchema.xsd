@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://dpma.hp.com/marke/register/irschema"
+            xmlns="http://dpma.hp.com/marke/register/irschema"
+            elementFormDefault="qualified"
+            attributeFormDefault="unqualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            version="${ir-schema-intern-version}">
+
+
+
+
+    <xsd:include schemaLocation="DPMAIrRegisterTypes.xsd"/>
+
+    <!-- ***************************************************************************** -->
+    <!-- *                                                                           * -->
+    <!-- *     Deutsches Patent- und Markenamt/ HP                                   * -->
+    <!-- *     XML Schema für den internen IrDatenaustausch DVSMmarke - DPMAregister * -->
+    <!-- *     Root Schema                                                           * -->
+    <!-- *                                                                           * -->
+    <!-- *     Filename    : DPMAIrRegisterSchema.xsd                                * -->
+    <!-- *     Version     : 1.0.1                                                   * -->
+    <!-- *     Last Update : 2011-03-24                                              * -->
+    <!-- *                                                                           * -->
+    <!-- ******************************************************************************-->
+
+    <xsd:element name="IRMREG">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="IrDaten" type="IrDatenBasisType"/>
+            </xsd:sequence>
+ 		<xsd:attribute name="version" type="VersionType"/>
+        </xsd:complexType>
+    </xsd:element>
+
+	</xsd:schema>

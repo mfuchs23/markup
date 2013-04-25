@@ -1,0 +1,6 @@
+version=6.1.1
+Bundle-Name=org.dbdoclet.tag
+Bundle-SymbolicName=org.dbdoclet.tag
+Bundle-Version=${version}
+
+Export-Package: org.dbdoclet.tag.* ;version=${version}

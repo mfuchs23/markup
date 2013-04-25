@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://register.dpma.de/trademark/types"
+  xmlns="http://register.dpma.de/trademark/types" elementFormDefault="qualified"
+  attributeFormDefault="unqualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  version="0.1">
+
+  <xsd:complexType name="HistoryType">
+    <xsd:sequence>
+      <xsd:element name="HistoryRecord" minOccurs="1" maxOccurs="unbounded">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="ImportFilenameDate" type="xsd:date"
+              minOccurs="1" maxOccurs="1">
+            </xsd:element>
+            <xsd:element name="ImportDate" type="xsd:date" minOccurs="1"
+              maxOccurs="1">
+            </xsd:element>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:simpleType name="AktenzustandEnum">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="akte-vernichtet" />
+      <xsd:enumeration value="anmeldung-eingegangen" />
+      <xsd:enumeration value="eintragung-nicht-moeglich" />
+      <xsd:enumeration value="marke-eingetragen" />
+      <xsd:enumeration value="widerspruchsfrist-laeuft" />
+      <xsd:enumeration value="widerspruchsverfahren-laeuft" />
+      <xsd:enumeration value="marke-geloescht" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="MarkenformEnum">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="bildmarke" />
+      <xsd:enumeration value="dreidimensionale-marke" />
+      <xsd:enumeration value="hoermarke" />
+      <xsd:enumeration value="kennfadenmarke" />
+      <xsd:enumeration value="sonstige-markenform" />
+      <xsd:enumeration value="unbekannte-markenform" />
+      <xsd:enumeration value="wort-bildmarke" />
+      <xsd:enumeration value="wortmarke" />
+      <xsd:enumeration value="farbmarke" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:simpleType name="BestandsartEnum">
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="eingetragen" />
+      <xsd:enumeration value="anmeldung" />
+      <xsd:enumeration value="eintragung-nicht-moeglich" />
+      <xsd:enumeration value="geloescht" />
+      <xsd:enumeration value="unbekannt" />
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

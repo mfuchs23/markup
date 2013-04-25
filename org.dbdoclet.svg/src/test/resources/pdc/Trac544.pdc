@@ -1,0 +1,10 @@
+s~s1~gertrud
+a~a1~act21
+a~a2~<>
+a~a3~act31
+e~e1~act4
+b~b1~b11~s1~act221~con2.2
+a~b12~b1~act222
+be~b12~a2~con2.3
+b~b2~b21~a2~act32~con32
+be~b21~e1

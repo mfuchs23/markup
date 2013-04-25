@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- *****************************************************************************************************
+Deutsches Patent- und Markenamt
+ XML Schema des IR-Marken Fachssystems
+
+Autor:                 Michael Fuchs
+Version:               0.2
+Letzte Aktualisierung: 30.06.2011
+
+Änderungshistorie:
+20.06.2011 - (MF) Erste Version.
+30.06.2011 - (MF) Neue Elemente BeginnBenutzungsschonfrist und BeginnWiderspruchsfrist.                  
+                                   
+***************************************************************************************************** -->
+<xsd:schema targetNamespace="http://register.dpma.de/trademark/ir"
+  xmlns="http://register.dpma.de/trademark/ir" elementFormDefault="qualified"
+  xmlns:types="http://register.dpma.de/trademark/types" xmlns:mfs="http://dpma.hp.com/marke/register/irschema"
+  xmlns:romarin="http://www.wipo.int/standards/XMLSchema/trademarks"
+  attributeFormDefault="unqualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  version="0.1">
+
+  <xsd:import schemaLocation="DPMAregisterTrademarkTypes.xsd"
+    namespace="http://register.dpma.de/trademark/types" />
+  <xsd:import schemaLocation="romarin/Romarin-V1-1.xsd"
+    namespace="http://www.wipo.int/standards/XMLSchema/trademarks" />
+  <xsd:import schemaLocation="marke/DPMAIrRegisterSchema.xsd"
+    namespace="http://dpma.hp.com/marke/register/irschema" />
+
+  <xsd:element name="IrMarke">
+    <xsd:complexType>
+      <xsd:sequence>
+        <!-- Daten für die Trefferliste -->
+        <xsd:element name="IRFS">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="Bestandsart" type="types:BestandsartEnum"
+                minOccurs="0" />
+              <xsd:element name="Markenform" type="types:MarkenformEnum"
+                minOccurs="0" />
+              <xsd:element name="BeginnBenutzungsschonfrist" type="xsd:date"
+                minOccurs="0" />
+              <xsd:element name="BeginnWiderspruchsfrist" type="xsd:date"
+                minOccurs="0" />
+              <xsd:element name="SortierschluesselAktenzeichen"
+                type="xsd:string" minOccurs="0" />
+              <xsd:element name="Datenbestand" type="xsd:string"
+                minOccurs="0" />
+              <xsd:element name="Bild" type="xsd:string" minOccurs="0" />
+              <xsd:element name="Thumbnail" type="xsd:string"
+                minOccurs="0" />
+              <xsd:element name="FirstImportDate" type="xsd:date"
+                minOccurs="1" />
+              <xsd:element name="History" type="types:HistoryType"
+                minOccurs="1" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <!-- Daten des DPMAmarken Fachsystems -->
+        <xsd:element name="IrDaten" type="mfs:IrDatenBasisType" />
+        <!-- Romarin ST.66 Datensatz -->
+        <xsd:element name="TradeMark" type="romarin:TradeMarkType" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

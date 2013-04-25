@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="UmlClassDiagram">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="UmlAnnotation"/>
+          <xs:element ref="UmlClass"/>
+          <xs:element ref="UmlInterface"/>
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UmlAnnotation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="UmlExtends"/>
+          <xs:element ref="UmlImplements"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UmlClass">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="UmlExtends"/>
+          <xs:element ref="UmlImplements"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UmlInterface">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element ref="UmlExtends"/>
+          <xs:element ref="UmlImplements"/>
+        </xs:choice>
+      </xs:sequence>
+      <xs:attribute name="name" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UmlExtends">
+    <xs:complexType>
+      <xs:attribute name="super" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UmlImplements">
+    <xs:complexType>
+      <xs:attribute name="interface" type="xs:string"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

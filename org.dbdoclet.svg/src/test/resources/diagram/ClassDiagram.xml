@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<diagram>
+  <textbox row="0" column="0" text="org.animal.Flyable"/>
+  <textbox row="0" column="1" text="java.lang.Object"/>
+  <textbox row="1" column="1" text="org.animal.Animal"/>
+  <arrow fromRow="1" fromColumn="1" toRow="0" toColumn="1"/>
+  <arrow fromRow="1" fromColumn="1" toRow="0" toColumn="0"/>
+  <textbox row="2" column="1" text="org.animal.Bird"/>
+  <arrow fromRow="2" fromColumn="1" toRow="1" toColumn="1"/>
+  <textbox row="3" column="1" text="org.animal.Amsel"/>
+  <arrow fromRow="3" fromColumn="1" toRow="2" toColumn="1"/>
+</diagram>

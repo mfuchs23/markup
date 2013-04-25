@@ -1,0 +1,72 @@
+<package id="clex" relocatable="yes">
+
+  <name>clex</name>
+
+  <version>@VERSION@</version>
+  <release>@BUILDNUMBER@</release>
+
+  <archives>
+  </archives>
+
+  <summary>Clex - Softwarekonfiguration</summary> 
+
+  <description>Softwarekonfiguration.</description> 
+
+  <license>Copyright (c) 2007 by Michael Fuchs.</license> 
+  <group>Development</group>
+
+  <architectures>
+    <architecture>noarch</architecture>
+  </architectures>
+
+  <provides>clex</provides>
+
+  <prepare>
+    rm -rf <buildroot/><install-dir/>/clex
+  </prepare>
+
+  <build>
+  </build>
+
+  <install>
+
+    install -d <buildroot/><install-dir/>/clex
+    install -d <buildroot/><install-dir/>/clex/bin
+    install -d <buildroot/><install-dir/>/clex/jars
+
+    cp -r <prefix/>/clex/bin/clex <buildroot/><install-dir/>/clex/bin
+    cp -r <prefix/>/clex/jars <buildroot/><install-dir/>/clex
+
+  </install>
+
+  <postinstall>
+chmod 0555 <prefix/>/clex/bin/clex
+rm -f /usr/bin/clex
+ln -s <prefix/>/clex/bin/clex /usr/bin/clex
+  </postinstall>
+
+  <postuninstall>
+rm -f /usr/bin/clex
+  </postuninstall>
+
+  <files>
+
+    <file recursive="yes">
+      <mode>0755</mode>
+      <user/>
+      <group/>
+      <type>dir</type>
+      <path><prefix/>/clex/jars</path>
+    </file>
+
+    <file>
+      <mode>0555</mode>
+      <user/>
+      <group/>
+      <type>file</type>
+      <path><prefix/>/clex/bin/clex</path>
+    </file>
+
+  </files>
+
+</package>

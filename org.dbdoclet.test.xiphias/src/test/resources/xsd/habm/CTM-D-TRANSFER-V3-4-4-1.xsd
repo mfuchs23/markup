@@ -1,0 +1,4623 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+xmlns="http://www.dpma.de/CTM-D_TRANSFER_Download" 
+targetNamespace="http://www.dpma.de/CTM-D_TRANSFER_Download" elementFormDefault="qualified" 
+attributeFormDefault="unqualified" version="1.0">
+	<!-- ********************************************************************** -->
+	<!-- *                                                                    * -->
+	<!-- * Schma based on : CTM-Download Version 3.4.4 XML Schema  2010-02-03 * -->
+	<!--  Modified : see DPMAHABMFS marked lines 					2010-11-11  -->  
+	<!-- *                                                                    * -->
+	<!-- ********************************************************************** -->
+	<xs:annotation>
+		<xs:documentation>CTM_D-TRANSFER_V3.4.4.1  for DPMA Gemeinschaftsmarken-Fachsystem (HABMFS)</xs:documentation>  <!--DPMAHABMFS-->
+	</xs:annotation>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * TRANSACTION/MESSAGE TYPES LIBRARY ********************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Root Messages                                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- Top Level Transaction for all Types of Message                         -->
+	<!-- ====================================================================== -->
+     <xs:element name="TradeMark" type="TradeMarkType"/>						<!--DPMAHABMFS-->
+     	<!-- ====================================================================== -->
+		<!--      : HABMFSType               added DPMAHABMFS                       -->
+		<!-- ====================================================================== -->
+		<xs:complexType name="HABMFSType">
+				  <xs:sequence>
+				    <xs:element name="Aktenzustand"  minOccurs="0">
+				    	<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="AktenzustandEnum">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="AST"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+				    </xs:element>
+				    <xs:element name="Bestandsart"  minOccurs="0" >
+				   		 <xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="BestandsartEnum">				    	
+				    			    <xs:attribute name="suchfeld" type="xs:string" fixed="BA"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+				    </xs:element>
+				    <xs:element name="Markenform"  minOccurs="0">
+				    	<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="MarkenformEnum">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="MF"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType> 
+				    </xs:element>
+				    <xs:element name="FirstImportDate" minOccurs="1" > 
+				    	<xs:complexType> 
+				    		<xs:simpleContent>
+				    		<xs:extension base="xs:date">	
+				    			<xs:attribute name="suchfeld" type="xs:string" fixed="EUFT"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+				    </xs:element>
+				    <xs:element name="History" type="HistoryType" minOccurs="1" /> 	
+		    </xs:sequence>
+		</xs:complexType>
+		<!-- ====================================================================== -->
+		<!--      : HistoryType               added DPMAHABMFS                      -->
+		<!-- ====================================================================== -->
+		
+			<xs:complexType name="HistoryType">
+				<xs:sequence>
+					<xs:element name="HistoryRecord" minOccurs="1"  maxOccurs="unbounded">
+						<xs:complexType>
+							<xs:sequence>
+									<xs:element name="ImportFilenameDate"    minOccurs="1"  maxOccurs="1" > <!-- unused/info only -->
+										<xs:complexType> 
+								    		<xs:simpleContent>
+								    		<xs:extension base="xs:date">	
+								    			<xs:attribute name="suchfeld" type="xs:string" fixed="HABMEDVT"/> 
+								    		</xs:extension>
+								    		</xs:simpleContent>
+								    	</xs:complexType></xs:element>
+		   							<xs:element name="ImportDate"   minOccurs="1"  maxOccurs="1" >           <!-- used for Kurier --> 
+		   								<xs:complexType> 
+								    		<xs:simpleContent>
+								    		<xs:extension base="xs:date">	
+								    			<xs:attribute name="suchfeld" type="xs:string" fixed="EDVT"/> 
+								    		</xs:extension>
+								    		</xs:simpleContent>
+								    	</xs:complexType>
+		   							 </xs:element>						
+							</xs:sequence>
+						</xs:complexType>
+					</xs:element>
+				</xs:sequence>
+			</xs:complexType>
+			
+		 
+		<!-- ====================================================================== -->
+		<!--    AktenzustandEnum  :                 added DPMAHABMFS                -->
+		<!-- ====================================================================== -->
+		<xs:simpleType name="AktenzustandEnum">
+		        <xs:restriction base="xs:token">
+		            <xs:enumeration value="akte-vernichtet"/>
+		            <xs:enumeration value="anmeldung-eingegangen"/>
+		            <xs:enumeration value="eintragung-nicht-moeglich"/>
+		            <xs:enumeration value="marke-eingetragen"/>
+		            <xs:enumeration value="widerspruchsfrist-laeuft"/>
+		            <xs:enumeration value="widerspruchsverfahren-laeuft"/>
+		            <xs:enumeration value="marke-geloescht"/>
+		        </xs:restriction>
+		</xs:simpleType>
+		<!-- ====================================================================== -->
+		<!--   MarkenformEnum   :                 added DPMAHABMFS                  -->
+		<!-- ====================================================================== -->
+		<xs:simpleType name="MarkenformEnum">
+		        <xs:restriction base="xs:token">
+		            <xs:enumeration value="bildmarke"/>
+		            <xs:enumeration value="dreidimensionale-marke"/>
+		            <xs:enumeration value="hoermarke"/>
+		            <xs:enumeration value="kennfadenmarke"/>
+		            <xs:enumeration value="sonstige-markenform"/>
+		            <xs:enumeration value="unbekannte-markenform"/>
+		            <xs:enumeration value="wort-bildmarke"/>
+		            <xs:enumeration value="wortmarke"/>
+		            <xs:enumeration value="farbmarke"/>
+		        </xs:restriction>
+		</xs:simpleType>
+		<!-- ====================================================================== -->
+		<!--    BestandsartEnum :                 added DPMAHABMFS                  -->
+		<!-- ====================================================================== -->
+		<xs:simpleType name="BestandsartEnum">
+		        <xs:restriction base="xs:token">
+		            <xs:enumeration value="eingetragen"/>
+		            <xs:enumeration value="anmeldung"/>
+		            <xs:enumeration value="eintragung-nicht-moeglich"/>
+		            <xs:enumeration value="eintragung-nicht-moeglich"/>
+		        </xs:restriction>
+		</xs:simpleType>
+		     
+	<!-- ====================================================================== -->
+	<!-- Type Name : TransactionBodyType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionBodyType">
+		<xs:sequence>
+			<xs:element name="TransactionContentDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TransactionIdentifier" type="xs:string" minOccurs="0"/>
+						<xs:element name="TransactionCode" type="EM_CTMD_TransactionCodeType"/>
+						<xs:element name="TransactionData" type="TransactionDataType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TransactionDataType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionDataType">
+		<xs:sequence>
+			<!-- ================================================================= -->
+			<!-- Set of Trade Marks                                                -->
+			<!-- ================================================================= -->
+			<xs:element name="TradeMarkDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TradeMark" type="TradeMarkType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- ================================================================= -->
+			<!-- Only Set of Applicants                                            -->
+			<!-- ================================================================= -->
+			<xs:element name="ApplicantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Applicant" type="ApplicantType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<!-- ================================================================= -->
+			<!-- Only Set of Representatives                                       -->
+			<!-- ================================================================= -->
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Representative" type="RepresentativeType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TransactionHeaderType                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionHeaderType">
+		<xs:sequence>
+			<xs:element name="SenderDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RequestProducedDateTime" type="xs:dateTime" minOccurs="0"/>
+						<xs:element name="RequestProducerDateTime" type="xs:dateTime" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TransactionType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransactionType">
+		<xs:sequence>
+			<xs:element name="TransactionHeader" type="TransactionHeaderType" minOccurs="0"/>
+			<!-- ================================================================= -->
+			<!-- Trade mark transaction                                            -->
+			<!-- ================================================================= -->
+			<xs:element name="TradeMarkTransactionBody" type="TransactionBodyType" minOccurs="0" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * BUSINESS TYPES LIBRARY ********************************************* -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Type Name : AddressBookType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AddressBookType">
+		<xs:sequence>
+			<xs:element name="FormattedNameAddress" type="FormattedNameAddressType" minOccurs="0"/>
+			<xs:element name="ContactInformationDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Phone" type="PhoneType" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="Fax" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="Email" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="URL" type="xs:anyURI" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PostalAddress"   minOccurs="0">			
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:string">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" /> <!--  no fixed  -->
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : AddressType.xsd                                            -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AddressType">
+		<xs:sequence>
+			<xs:element name="AddressCountryCode" type="ISOCountryCodeType" minOccurs="0"/>
+			<xs:element name="FormattedAddress">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AddressStreet" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressCity" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressCounty" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressState" type="xs:string" minOccurs="0"/>
+						<xs:element name="AddressPostcode" type="xs:string" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealType.xsd                                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AppealType">
+		<xs:sequence>
+			<xs:element name="AppealIdentifier" type="xs:string"/>
+			<xs:element name="AppealDate" type="xs:date"/>
+			<xs:element name="AppealDecisionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AppealProceedingLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="CaseReferenceDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CaseReference" type="CaseReferenceType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppellantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppellantKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RespondentDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RespondentKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RespondentRepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RespondentRepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealEventDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="AppealEvent" type="AppealEventType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealEventType                                            -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="AppealEventType">
+		<xs:sequence>
+			<xs:element name="AppealEventDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="AppealEventCode" type="AppealEventCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ApplicantType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ApplicantType">
+		<xs:sequence>
+			<xs:element name="ApplicantIdentifier" type="EM_PersonIdentifierType"/>
+			<xs:element name="ApplicantNationalityCode" type="NationalityCodeType" minOccurs="0"/>
+			<xs:element name="ApplicantLegalEntity" type="xs:string" minOccurs="0"/>
+			<xs:element name="ApplicantIncorporationCountryCode" type="ISOCountryCodeType" minOccurs="0"/>
+			<xs:element name="ApplicantIncorporationState" type="xs:string" minOccurs="0"/>
+			<xs:element name="ApplicantAddressBook"  type="AddressBookType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="operationCode" type="EM_OperationCodeType" use="optional"/>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : BasicRecordType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="BasicRecordType">
+		<xs:sequence>
+			<xs:element name="BasicRecordKind" type="EM_BasicRecordKindType"/>
+			<xs:element name="RecordScope" type="RecordScopeType" minOccurs="0"/>
+			<xs:element name="ClaimantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ClaimantKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RecordCurrentStatusCode" type="EM_RecordCurrentStatusCodeType" minOccurs="0"/>
+			<xs:element name="RecordCurrentStatusDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="MarkRecordDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkRecord" type="MarkRecordType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ClassDescriptionType.xsd                                   -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ClassDescriptionType">
+		<xs:sequence>
+			<xs:element name="ClassNumber"   minOccurs="0">
+					<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="ClassNumberType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="KL"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="GoodsServicesDescription"   maxOccurs="unbounded">
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="TextType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" /> <!--  no fixed here --> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ClassNumberType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ClassNumberType">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:maxInclusive value="45"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : CorrespondenceAddressKeyType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="CorrespondenceAddressKeyType">                                 <!--  DPMAHABMFS new tag prefix CorrespondenceAddress-->     
+				<xs:sequence>
+				    <xs:element name="CorrespondenceAddressParty" type="EM_CorrespondenceAddressPartyType" minOccurs="0"/>
+					<xs:element name="CorrespondenceAddressIdentifier" type="EM_PersonIdentifierType" minOccurs="0"/>	
+					<xs:element name="CorrespondenceAddressTypeCode" type="EM_RepresentativeTypeCodeType" minOccurs="0"/>	<!-- only if coresspondece is representative DPMAHABMFS -->  			
+					<xs:element name="CorrespondenceAddressNationalityCode" type="NationalityCodeType" minOccurs="0"/>   <!--  DPMAHABMFS -->  
+					<xs:element name="CorrespondenceAddressLegalEntity" type="xs:string" minOccurs="0"/><!--  DPMAHABMFS -->  
+					<xs:element name="CorrespondenceAddressIncorporationCountryCode" type="ISOCountryCodeType" minOccurs="0"/><!--  DPMAHABMFS -->  
+					<xs:element name="CorrespondenceAddressIncorporationState" type="xs:string" minOccurs="0"/><!--  DPMAHABMFS -->  
+					<xs:element name="CorrespondenceAddressAddressBook"  type="AddressBookType" minOccurs="0"/><!--  DPMAHABMFS -->  					
+				</xs:sequence>
+				<xs:attribute name="operationCode" type="EM_OperationCodeType" use="optional"/>		
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EarlierMarkType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="EarlierMarkType">
+		<xs:sequence>
+			<xs:element name="EarlierMarkCountryCode" type="ST3CountryCodeType" minOccurs="0"/>
+			<xs:element name="DesignatedCountryDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="DesignatedCountryCode" type="ST3CountryCodeType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="ApplicationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="RegistrationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="RegistrationDate"   minOccurs="0">
+						 <xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:date">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="ET"/> 
+				    			</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkFeature" minOccurs="0">
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="EM_MarkFeatureType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="HABMMF"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			
+			<xs:element name="WordMarkSpecification" type="WordMarkSpecificationType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ExhibitionPriorityType.xsd                                 -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="ExhibitionPriorityType">
+		<xs:sequence>
+			<xs:element name="ExhibitionName" >  <!--register: APR=CeBIT Hannover--> 
+				<xs:complexType> 
+		    		<xs:simpleContent>
+  							<xs:extension base="xs:string">				    	
+		    				<xs:attribute name="suchfeld" type="xs:string" fixed="APR"/> 
+		    		</xs:extension>
+		    		</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ExhibitionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ExhibitionFirstDisplayDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ExhibitionStatusCode" type="ExhibitionStatusCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ExhibitionStatusCodeType.xsd                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ExhibitionStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="To determine"/>
+			<xs:enumeration value="Claimed"/>
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Refused"/>
+			<xs:enumeration value="Partially refused"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : FormattedNameAddressType.xsd                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="FormattedNameAddressType">
+		<xs:sequence>
+			<xs:element name="Name" type="NameType"/>
+			<xs:element name="Address" type="AddressType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : GoodsServicesType.xsd                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="GoodsServicesType">
+		<xs:sequence>
+			<xs:element name="ClassDescriptionDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ClassDescription" type="ClassDescriptionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : InternationalMarkKeyType.xsd                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="InternationalMarkKeyType">
+		<xs:sequence>
+			<xs:element name="InternationalMarkIdentifier" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : KeyType.xsd                                                -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="KeyType">
+		<xs:sequence>
+			<xs:element name="Identifier" type="EM_PersonIdentifierType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : MarkEventType                                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="MarkEventType">
+		<xs:sequence>
+			<xs:element name="MarkEventDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="MarkEventCode" type="EM_MarkEventCodeType"/>
+			<xs:element name="Comment" type="TextType" minOccurs="0"/>
+			<xs:element name="MarkSubEventCodeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkSubEventCode" type="EM_MarkSubEventCodeType"/>
+						<xs:element name="MarkSubEventDate" type="xs:date" minOccurs="0"/>
+						<xs:element name="MarkSubEventCodeStatusIndicator" type="xs:boolean" minOccurs="0"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : MarkImageCategoryType.xsd                                  -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="MarkImageCategoryType">
+		<xs:sequence>
+			<xs:element name="CategoryCodeDetails">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CategoryCode"  maxOccurs="unbounded">
+							<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="EM_CategoryCodeType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="WBK"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    		</xs:complexType>
+						</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : MarkImageType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="MarkImageType">
+		<xs:sequence>
+			<xs:element name="MarkImageFilename" type="xs:string"/>
+			<xs:element name="MarkImageFileFormat" type="EM_FileFormatType" minOccurs="0"/>
+			<xs:element name="MarkImageColourClaimedText"   minOccurs="0" maxOccurs="unbounded">
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="TextType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="FA"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkImageCategory" type="MarkImageCategoryType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : MarkRecordType.xsd                                         -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="MarkRecordType">
+		<xs:sequence>
+			<xs:element name="BasicRecord" type="BasicRecordType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : MarkSoundType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="MarkSoundType">
+		<xs:sequence>
+			<xs:element name="MarkSoundFilename" type="xs:string"/>
+			<xs:element name="MarkSoundFileFormat" type="EM_SoundFileFormatType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : NameType.xsd                                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="NameType">
+		<xs:sequence>
+			<xs:element name="FormattedName">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="FirstName" type="xs:string" minOccurs="0"/>
+						<xs:element name="MiddleName" type="xs:string" minOccurs="0"/>
+						<xs:element name="LastName" type="xs:string"/>
+						<xs:element name="OrganizationName" type="xs:string" minOccurs="0"/>
+						<xs:element name="NameSynonym" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+						<xs:element name="LegalForm" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : NationalityCodeType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="NationalityCodeType">
+		<xs:union memberTypes="ISOCountryCodeType">
+			<xs:simpleType>
+				<xs:restriction base="xs:token">
+					<xs:enumeration value="Stateless"/>
+					<xs:enumeration value="Unidentified"/>
+				</xs:restriction>
+			</xs:simpleType>
+		</xs:union>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : OppositionEventType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="OppositionEventType">
+		<xs:sequence>
+			<xs:element name="OppositionEventDate" type="xs:date"/>
+			<xs:element name="OppositionEventCode" type="EM_OppositionEventCodeType"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : OppositionType.xsd                                         -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="OppositionType">
+		<xs:sequence>
+			<xs:element name="OppositionIdentifier" type="EM_EntityIdentifierType" minOccurs="0"/>
+			<xs:element name="OppositionDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ProceedingLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="EarlierRightDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="OppositionBasisCode" type="EM_OppositionBasisCodeType" minOccurs="0"/>
+			<xs:element name="OppositionGroundText" type="TextType" minOccurs="0"/>
+			<xs:element name="EarlierMarkDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="EarlierMark" type="EarlierMarkType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OpponentDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OpponentKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RepresentativeKey" type="KeyType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OppositionEventDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="OppositionEvent" type="OppositionEventType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Appeal" type="AppealType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : PhoneKindType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="PhoneKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Fixed"/>
+			<xs:enumeration value="Mobile Phone"/>
+			<xs:enumeration value="Unknown"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : PhoneType.xsd                                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="PhoneType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="phoneKind" type="PhoneKindType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : PriorityType.xsd                                           -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="PriorityType">
+		<xs:sequence>
+			<xs:element name="PriorityCountryCode"  >
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="ST3CountryCodeType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="PRC"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="PriorityNumber" >		
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:string">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="PRN"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="PriorityDate" >
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:date">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="PRD"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="PriorityPartialIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="PriorityStatusCode" type="EM_PriorityStatusCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : PublicationType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="PublicationType">
+		<xs:sequence>
+			<xs:element name="PublicationIdentifier" type="xs:string"/>
+			<xs:element name="PublicationSection" type="EM_PublicationSectionType"/>
+			<xs:element name="PublicationDate"  >
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:date">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string"  /> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="PublicationPage" type="xs:string" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : RecordScopeType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="RecordScopeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Partial"/>
+			<xs:enumeration value="Total"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : RepresentativeType.xsd                                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="RepresentativeType">
+		<xs:sequence>
+			<xs:element name="RepresentativeIdentifier" type="EM_PersonIdentifierType"/>
+			<xs:element name="RepresentativeTypeCode" type="EM_RepresentativeTypeCodeType" minOccurs="0"/>
+			<xs:element name="RepresentativeNationalityCode" type="NationalityCodeType" minOccurs="0"/>
+			<xs:element name="RepresentativeLegalEntity" type="xs:string" minOccurs="0"/>
+			<xs:element name="RepresentativeIncorporationCountryCode" type="ISOCountryCodeType" minOccurs="0"/>
+			<xs:element name="RepresentativeIncorporationState" type="xs:string" minOccurs="0"/>
+			<xs:element name="RepresentativeAddressBook"   type="AddressBookType" minOccurs="0"/>
+		</xs:sequence>
+		<xs:attribute name="operationCode" type="EM_OperationCodeType" use="optional"/>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : SeniorityType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="SeniorityType">
+		<xs:sequence>
+			<xs:element name="SeniorityCountryCode" type="ST3CountryCodeType"/>
+			<xs:element name="SeniorityApplicationNumber"   minOccurs="0">
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:string">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="SEN"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="SeniorityApplicationDate"  minOccurs="0">
+									<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:date">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="SENVT"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="SeniorityRegistrationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="SeniorityRegistrationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="SeniorityFilingDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="InternationalTradeMarkIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SeniorityPartialIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="SeniorityStatusCode" type="EM_SeniorityStatusCodeType" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TextType.xsd                                               -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TextType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="languageCode" type="EM_EUOfficialLanguageCodeType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>	
+	<!-- ====================================================================== -->
+	<!-- Type Name : TradeMarkType.xsd                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TradeMarkType">
+		<xs:sequence>
+			<xs:element name="RegistrationOfficeCode"   minOccurs="0">
+				<xs:complexType>
+				<xs:simpleContent>
+				    <xs:extension base="ST3CountryCodeType">				  
+				      <xs:attribute name="suchfeld" type="xs:string" fixed="DB"/> 				   
+				    </xs:extension>
+  				</xs:simpleContent>
+  				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicationNumber" >
+				<xs:complexType>
+				<xs:simpleContent>
+				    <xs:extension base="EM_EntityIdentifierType">				  
+				      <xs:attribute name="suchfeld" type="xs:string" fixed="AKZ,RN"/> 				   
+				    </xs:extension>
+  				</xs:simpleContent>
+  				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicationDate"   minOccurs="0">
+				<xs:complexType>
+				<xs:simpleContent>
+				    <xs:extension base="xs:date">				  
+				      <xs:attribute name="suchfeld" type="xs:string" fixed="AT"/> 				   
+				    </xs:extension>
+  				</xs:simpleContent>
+  				</xs:complexType>
+			</xs:element>
+			<xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="ApplicationLanguageCode" type="EM_EUOfficialLanguageCodeType" minOccurs="0"/>
+			<xs:element name="SecondLanguageCode" type="EM_SecondLanguageCodeType" minOccurs="0"/>
+			<xs:element name="ExpiryDate"   minOccurs="0">	
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="xs:date">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="VED"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkCurrentStatusCode"   minOccurs="0">
+				<xs:complexType>
+				<xs:simpleContent>
+				    <xs:extension base="EM_MarkCurrentStatusCodeType">				  
+				      <xs:attribute name="suchfeld" type="xs:string" fixed="HABMAST"/> 				   
+				    </xs:extension>
+  				</xs:simpleContent>
+  				</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkCurrentStatusDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="InternationalMarkKey" type="InternationalMarkKeyType" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="KindMark"   minOccurs="0">
+				<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="EM_KindMarkType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="KM"/> 
+				    			</xs:extension>
+				    		</xs:simpleContent>
+				 </xs:complexType> 
+			</xs:element>
+			<xs:element name="MarkFeature" type="EM_MarkFeatureType" minOccurs="0"/>
+			<xs:element name="MarkDescriptionDetails" minOccurs="0">
+				<xs:complexType> 
+					<xs:sequence>
+						<xs:element name="MarkDescription" type="TextType" maxOccurs="unbounded"/>
+					</xs:sequence>
+					<xs:attribute name="suchfeld" type="xs:string" fixed="BM"/>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkDisclaimerDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkDisclaimer" type="TextType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TradeDistinctivenessIndicator" type="xs:boolean" minOccurs="0"/>
+			<xs:element name="WordMarkSpecification" type="WordMarkSpecificationType" minOccurs="0"/>
+			<xs:element name="MarkImageDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkImage" type="MarkImageType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkSoundDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkSound" type="MarkSoundType"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="GoodsServicesDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="GoodsServices" type="GoodsServicesType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PriorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Priority" type="PriorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ExhibitionPriorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="ExhibitionPriority" type="ExhibitionPriorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TransformationPriorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TransformationPriority" type="TransformationPriorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SeniorityDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Seniority" type="SeniorityType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="PublicationDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Publication" type="PublicationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="ApplicantDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+            			<xs:element name="Applicant"  type="ApplicantType" minOccurs="0" maxOccurs="unbounded">  <!-- DPMAHABMFS -->  	           			
+            			</xs:element>	
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="RepresentativeDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+            			<xs:element name="Representative" type="RepresentativeType"  minOccurs="0" maxOccurs="unbounded"> <!--   DPMAHABMFS -->           			 
+            			</xs:element>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="CorrespondenceAddress" type="CorrespondenceAddressKeyType" minOccurs="0"/>
+			<xs:element name="OppositionDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Opposition" type="OppositionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkRecordDetails" minOccurs="0">
+				<xs:complexType>
+						<xs:sequence>
+						<xs:element name="MarkRecord" type="MarkRecordType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="AppealDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="Appeal" type="AppealType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="TradeMarkRelationDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="TradeMarkRelation" type="TradeMarkRelationType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MarkEventDetails" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="MarkEvent" type="MarkEventType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			 <xs:element name="HABMFS" type="HABMFSType" minOccurs="0" />   	<!-- added DPMAHABMFS --> 
+		</xs:sequence>
+	
+		<xs:attribute name="operationCode" type="EM_OperationCodeType" use="optional"/>
+		
+	</xs:complexType>
+	
+
+	<!-- ====================================================================== -->
+	<!-- Type Name : TradeMarkRelationType                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TradeMarkRelationType">
+		<xs:sequence>
+			<xs:element name="TradeMarkIdentifier" type="xs:token"/>
+			<xs:element name="TradeMarkRelationKind" type="TradeMarkRelationKindType"/>
+			<xs:element name="RelatedTradeMarkIdentifier" type="xs:token"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TransformationPriorityType                                 -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2009-11-26.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="TransformationPriorityType">
+		<xs:sequence>
+			<xs:element name="TransformationCountryCode" type="ST3CountryCodeType" fixed="WO" minOccurs="0"/>
+			<xs:element name="RegistrationNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="RegistrationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="CancellationDate" type="xs:date" minOccurs="0"/>
+			<xs:element name="PriorityDate" type="xs:date" minOccurs="0"/>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : WordMarkSpecificationType.xsd                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="WordMarkSpecificationType">
+		<xs:sequence>
+			<xs:element name="MarkVerbalElementText"  >
+						<xs:complexType> 
+				    		<xs:simpleContent>
+    							<xs:extension base="TextType">				    	
+				    				<xs:attribute name="suchfeld" type="xs:string" fixed="WM"/> 
+				    		</xs:extension>
+				    		</xs:simpleContent>
+				    	</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * COUNTRY SPECIFIC TYPES LIBRARY ************************************* -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Type Name : AppealEventCodeType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="AppealEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Appeal filed"/>
+			<xs:enumeration value="Admissibility checked"/>
+			<xs:enumeration value="First waiting for appellant's response"/>
+			<xs:enumeration value="Second waiting for appellant's response"/>
+			<xs:enumeration value="First waiting for respondent's response"/>
+			<xs:enumeration value="Second waiting for respondent's response"/>
+			<xs:enumeration value="Designation of rapporteur done"/>
+			<xs:enumeration value="Oral procedure pending"/>
+			<xs:enumeration value="Rapport sent to parties"/>
+			<xs:enumeration value="Decision rendered and notified"/>
+			<xs:enumeration value="Appeal with the Court of Justice pending"/>
+			<xs:enumeration value="Final decision - Appeal withdrawn"/>
+			<xs:enumeration value="Final decision  Appeal rejected"/>
+			<xs:enumeration value="Final decision  Appeal rejected in part"/>
+			<xs:enumeration value="No decision  Appeal not duly entered"/>
+			<xs:enumeration value="No decision  ex parte"/>
+			<xs:enumeration value="No decision  inter partes"/>
+			<xs:enumeration value="Appeal closed"/>
+			<xs:enumeration value="Key in of Appeal"/>
+			<xs:enumeration value="Appeal on hold"/>
+			<xs:enumeration value="Appeal Formalities"/>
+			<xs:enumeration value="Appeal being Processed by a Board"/>
+			<xs:enumeration value="Decision Notifying Parties"/>
+			<xs:enumeration value="Appeal Pending with the CFI or European Court of Justice (ECJ)"/>
+			<xs:enumeration value="Appeal Closed"/>
+			<xs:enumeration value="Appeal suspended"/>
+			<xs:enumeration value="Appeal withdrawn"/>
+			<xs:enumeration value="Comments on costs recorded"/>
+			<xs:enumeration value="Appeal Formalities"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_BasicRecordKindType.xsd                                 -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_BasicRecordKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Registrations resulting from a partial transfer of goods and services"/>
+			<xs:enumeration value="Correction of errors - Absolute errors"/>
+			<xs:enumeration value="Correction of errors - Relative errors"/>
+			<xs:enumeration value="D.1 Renewal of a mark"/>
+			<xs:enumeration value="Partial Cancellation"/>
+			<xs:enumeration value="Total Cancellation"/>
+			<xs:enumeration value="Cancellation - Partial Cancellation"/>
+			<xs:enumeration value="Cancellation - Total Cancellation"/>
+			<xs:enumeration value="Proprietor - Total transfers"/>
+			<xs:enumeration value="Proprietor - Partial transfers"/>
+			<xs:enumeration value="Proprietor - Change of name and address"/>
+			<xs:enumeration value="Proprietor - Other Entries"/>
+			<xs:enumeration value="Representative - Change of name and professional address"/>
+			<xs:enumeration value="Representative - Replacement of representative"/>
+			<xs:enumeration value="Representative - Appointement of a new representative"/>
+			<xs:enumeration value="Representative - Deletion of the representative"/>
+			<xs:enumeration value="Total Surrender"/>
+			<xs:enumeration value="Partial Surrender"/>
+			<xs:enumeration value="Alteration to the representation of trade marks"/>
+			<xs:enumeration value="Amendments to regulations governing the use of collective trade marks"/>
+			<xs:enumeration value="Licences granted"/>
+			<xs:enumeration value="Sub-licences granted"/>
+			<xs:enumeration value="Transfers of licences or sub-licences"/>
+			<xs:enumeration value="Licences - Modifications to entries"/>
+			<xs:enumeration value="Licences - Cancellations of entries"/>
+			<xs:enumeration value="Creation of rights in rem"/>
+			<xs:enumeration value="Transfers of rights in rem"/>
+			<xs:enumeration value="Rights in rem - Modifications to entries"/>
+			<xs:enumeration value="Rights in rem - Cancellations of entries"/>
+			<xs:enumeration value="Insolvency - Entry of mentions"/>
+			<xs:enumeration value="Insolvency - Modifications to entries"/>
+			<xs:enumeration value="Insolvency - Cancellations of entries"/>
+			<xs:enumeration value="Levy of execution - Entry of the indication"/>
+			<xs:enumeration value="Levy of execution - Modifications to entries"/>
+			<xs:enumeration value="Levy of execution - Cancellations of entries"/>
+			<xs:enumeration value="Claims of seniority"/>
+			<xs:enumeration value="Cancellations of seniority"/>
+			<xs:enumeration value="Application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Decision on application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Decisions on counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Correction of errors and mistakes - Absolute errors"/>
+			<xs:enumeration value="Correction of errors and mistakes - Relative errors"/>
+			<xs:enumeration value="Conversion of a CTM into a national trade mark"/>
+			<xs:enumeration value="Licences - Modifications to entries"/>
+			<xs:enumeration value="Licences - Cancellations of entries"/>
+			<xs:enumeration value="Creation of rights in rem"/>
+			<xs:enumeration value="Transfers of rights in rem"/>
+			<xs:enumeration value="Rights in rem - Modifications to entries"/>
+			<xs:enumeration value="Rights in rem - Cancellations of entries"/>
+			<xs:enumeration value="Insolvency - Entry of mentions"/>
+			<xs:enumeration value="Insolvency - Modifications to entries"/>
+			<xs:enumeration value="Insolvency - Cancellations of entries"/>
+			<xs:enumeration value="Levy of execution - Entry of the indication"/>
+			<xs:enumeration value="Levy of execution - Modifications to entries"/>
+			<xs:enumeration value="Levy of execution - Cancellations of entries"/>
+			<xs:enumeration value="Claims of seniority"/>
+			<xs:enumeration value="Cancellations of seniority"/>
+			<xs:enumeration value="Application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Decision on application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Decisions on counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Correction of errors and mistakes - Absolute errors"/>
+			<xs:enumeration value="Correction of errors and mistakes - Relative errors"/>
+			<xs:enumeration value="Conversion of a CTM into a national trade mark"/>
+			<xs:enumeration value="Correction of errors - Absolute errors"/>
+			<xs:enumeration value="Correction of errors - Relative errors"/>
+			<xs:enumeration value="Proprietor - Total transfers"/>
+			<xs:enumeration value="Proprietor - Partial transfers"/>
+			<xs:enumeration value="Proprietor - Change of name and address"/>
+			<xs:enumeration value="Proprietor - Other Entries"/>
+			<xs:enumeration value="Representative - Change of name and professional address"/>
+			<xs:enumeration value="Representative - Replacement of representative"/>
+			<xs:enumeration value="Representative - Appointement of a new representative"/>
+			<xs:enumeration value="Representative - Deletion of the representative"/>
+			<xs:enumeration value="Trade mark - Total Surrender"/>
+			<xs:enumeration value="Trade mark - Partial Surrender"/>
+			<xs:enumeration value="Trade mark - Alteration to the representation of trade marks"/>
+			<xs:enumeration value="Trade mark - Amendments to regulations governing the use of collective trade marks"/>
+			<xs:enumeration value="Licences - Licences granted"/>
+			<xs:enumeration value="Licences - Sub-licences granted"/>
+			<xs:enumeration value="Licences - Transfers of licences or sub-licences"/>
+			<xs:enumeration value="Licences - Modifications to entries"/>
+			<xs:enumeration value="Licences - Cancellations of entries"/>
+			<xs:enumeration value="Rights in rem - Creation of rights in rem"/>
+			<xs:enumeration value="Rights in rem - Transfers of rights in rem"/>
+			<xs:enumeration value="Rights in rem - Modifications to entries"/>
+			<xs:enumeration value="Rights in rem - Cancellations of entries"/>
+			<xs:enumeration value="Insolvency - Entry of mentions"/>
+			<xs:enumeration value="Insolvency - Modifications to entries"/>
+			<xs:enumeration value="Insolvency - Cancellations of entries"/>
+			<xs:enumeration value="Levy of execution - Entry of the indication"/>
+			<xs:enumeration value="Levy of execution - Modifications to entries"/>
+			<xs:enumeration value="Levy of execution - Cancellations of entries"/>
+			<xs:enumeration value="Seniority - Claims of seniority"/>
+			<xs:enumeration value="Seniority - Cancellations of seniority"/>
+			<xs:enumeration value="Revocation and declaration of invalidity - Application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Revocation and declaration of invalidity - Decision on application for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Revocation and declaration of invalidity - Counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Revocation and declaration of invalidity - Decisions on counterclaims for revocation or for a declaration of invalidity"/>
+			<xs:enumeration value="Correction of errors and mistakes - Absolute errors"/>
+			<xs:enumeration value="Correction of errors and mistakes - Relative errors"/>
+			<xs:enumeration value="Conversion - Conversion of a CTM into a national trade mark"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_CTMD_TransactionCodeType.xsd                            -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_CTMD_TransactionCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="CTMD Trade Mark Complete"/>
+			<xs:enumeration value="CTMD Applicant Complete"/>
+			<xs:enumeration value="CTMD Representative Complete"/>
+			<xs:enumeration value="CTMD Trade Mark Differential"/>
+			<xs:enumeration value="CTMD Applicant Differential"/>
+			<xs:enumeration value="CTMD Representative Differential"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : CaseReferenceKindType                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="CaseReferenceKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Trade Mark"/>
+			<xs:enumeration value="Opposition"/>
+			<xs:enumeration value="Mark Record"/>
+			<xs:enumeration value="Decision"/>
+			<xs:enumeration value="General Authorization"/>
+			<xs:enumeration value="Current Account"/>
+			<xs:enumeration value="Representative List"/>
+			<xs:enumeration value="Appeal"/>
+			<xs:enumeration value="Cancellation"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : CaseReferenceType                                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:complexType name="CaseReferenceType">
+		<xs:simpleContent>
+			<xs:extension base="xs:string">
+				<xs:attribute name="caseReferenceKind" type="CaseReferenceKindType" use="optional"/>
+			</xs:extension>
+		</xs:simpleContent>
+	</xs:complexType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_CategoryCodeType.xsd                                    -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_CategoryCodeType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9][0-9].[0-9][0-9].[0-9][0-9]|[0-9][0-9].[0-9][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_CorrespondenceAddressPartyType.xsd                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_CorrespondenceAddressPartyType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Applicant"/>
+			<xs:enumeration value="Representative"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_EntityIdentifierType.xsd                                -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_EntityIdentifierType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{9}|W[0-9]{8}"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_EUOfficialLanguageCodeType.xsd                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_EUOfficialLanguageCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="bg"/>
+			<xs:enumeration value="cs"/>
+			<xs:enumeration value="da"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="el"/>
+			<xs:enumeration value="en"/>
+			<xs:enumeration value="es"/>
+			<xs:enumeration value="et"/>
+			<xs:enumeration value="fi"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="hu"/>
+			<xs:enumeration value="it"/>
+			<xs:enumeration value="lt"/>
+			<xs:enumeration value="lv"/>
+			<xs:enumeration value="mt"/>
+			<xs:enumeration value="nl"/>
+			<xs:enumeration value="pl"/>
+			<xs:enumeration value="pt"/>
+			<xs:enumeration value="ro"/>
+			<xs:enumeration value="sk"/>
+			<xs:enumeration value="sl"/>
+			<xs:enumeration value="sv"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_FileFormatType.xsd                                      -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_FileFormatType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="TIFF"/>
+			<xs:enumeration value="TIF"/>
+			<xs:enumeration value="JPG"/>
+			<xs:enumeration value="GIF"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_KindMarkType.xsd                                        -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_KindMarkType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Individual"/>
+			<xs:enumeration value="Collective"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_MarkCurrentStatusCodeType.xsd                           -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_MarkCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="CTM Application received"/>
+			<xs:enumeration value="Filing date provisionally granted"/>
+			<xs:enumeration value="Classification pending"/>
+			<xs:enumeration value="Classification completed"/>
+			<xs:enumeration value="Formalities pending"/>
+			<xs:enumeration value="Formalities completed"/>
+			<xs:enumeration value="Absolute grounds pending"/>
+			<xs:enumeration value="CTM application pending publication"/>
+			<xs:enumeration value="CTM application published"/>
+			<xs:enumeration value="CTM application opposed"/>
+			<xs:enumeration value="CTM application opposed - Opposition procedures closed"/>
+			<xs:enumeration value="CTM Application refused"/>
+			<xs:enumeration value="Registration of CTM pending"/>
+			<xs:enumeration value="Registration fee paid"/>
+			<xs:enumeration value="CTM registered"/>
+			<xs:enumeration value="CTM decision appealed"/>
+			<xs:enumeration value="CTM Application withdrawn"/>
+			<xs:enumeration value="CTM Registration surrendered"/>
+			<xs:enumeration value="CTM Converted"/>
+			<xs:enumeration value="Cancellation pending"/>
+			<xs:enumeration value="CTM Registration cancelled"/>
+			<xs:enumeration value="CTM Registration lapsed"/>
+			<xs:enumeration value="Application filed"/>
+			<xs:enumeration value="Application pre-publication A"/>
+			<xs:enumeration value="Application published"/>
+			<xs:enumeration value="Application examination"/>
+			<xs:enumeration value="Application - translation and search"/>
+			<xs:enumeration value="Registration pending"/>
+			<xs:enumeration value="Registration published"/>
+			<xs:enumeration value="Application refused"/>
+			<xs:enumeration value="Application withdrawn"/>
+			<xs:enumeration value="Decision appealed"/>
+			<xs:enumeration value="Application opposed"/>
+			<xs:enumeration value="Conversion requested"/>
+			<xs:enumeration value="Trade Mark converted"/>
+			<xs:enumeration value="Application registered"/>
+			<xs:enumeration value="Appeal pending"/>
+			<xs:enumeration value="Cancellation pending"/>
+			<xs:enumeration value="Registration cancelled"/>
+			<xs:enumeration value="Interruption of proceedings"/>
+			<xs:enumeration value="Registration expired"/>
+			<xs:enumeration value="Registration surrendered"/>
+			<xs:enumeration value="Expired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_MarkEventCodeType.xsd                                   -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_MarkEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="CTM Application received"/>
+			<xs:enumeration value="Filing date provisionally granted"/>
+			<xs:enumeration value="Classification pending"/>
+			<xs:enumeration value="Classification completed"/>
+			<xs:enumeration value="Formalities pending"/>
+			<xs:enumeration value="Formalities completed"/>
+			<xs:enumeration value="Absolute grounds pending"/>
+			<xs:enumeration value="CTM application pending publication"/>
+			<xs:enumeration value="CTM application published"/>
+			<xs:enumeration value="CTM application opposed"/>
+			<xs:enumeration value="CTM application opposed - Opposition procedures closed"/>
+			<xs:enumeration value="CTM Application refused"/>
+			<xs:enumeration value="Registration of CTM pending"/>
+			<xs:enumeration value="Registration fee paid"/>
+			<xs:enumeration value="CTM registered"/>
+			<xs:enumeration value="CTM decision appealed"/>
+			<xs:enumeration value="CTM Application withdrawn"/>
+			<xs:enumeration value="CTM Registration surrendered"/>
+			<xs:enumeration value="CTM Converted"/>
+			<xs:enumeration value="Cancellation pending"/>
+			<xs:enumeration value="CTM Registration cancelled"/>
+			<xs:enumeration value="CTM Registration lapsed"/>
+			<xs:enumeration value="Application filed"/>
+			<xs:enumeration value="Application published"/>
+			<xs:enumeration value="Application examination"/>
+			<xs:enumeration value="Application - translation and search"/>
+			<xs:enumeration value="Registration pending"/>
+			<xs:enumeration value="Registration published"/>
+			<xs:enumeration value="Application refused"/>
+			<xs:enumeration value="Application withdrawn"/>
+			<xs:enumeration value="Decision appealed"/>
+			<xs:enumeration value="Application opposed"/>
+			<xs:enumeration value="Conversion requested"/>
+			<xs:enumeration value="Trade Mark converted"/>
+			<xs:enumeration value="Application registered"/>
+			<xs:enumeration value="Appeal pending"/>
+			<xs:enumeration value="Cancellation pending"/>
+			<xs:enumeration value="Registration cancelled"/>
+			<xs:enumeration value="Interruption of proceedings"/>
+			<xs:enumeration value="Registration expired"/>
+			<xs:enumeration value="Registration surrendered"/>
+			<xs:enumeration value="Expired"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_MarkSubEventCodeType.xsd                                -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_MarkSubEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Classification completed"/>
+			<xs:enumeration value="Formalities completed"/>
+			<xs:enumeration value="Seniority examination completed"/>
+			<xs:enumeration value="Absolute grounds completed"/>
+			<xs:enumeration value="Translation Completed"/>
+			<xs:enumeration value="Search Completed"/>
+			<xs:enumeration value="Application Published"/>
+			<xs:enumeration value="Application Withdrawn"/>
+			<xs:enumeration value="Application Refused"/>
+			<xs:enumeration value="Appeal Pending"/>
+			<xs:enumeration value="Appeal Decision Closed"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_MarkFeatureType.xsd                                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_MarkFeatureType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Word"/>
+			<xs:enumeration value="Figurative"/>
+			<xs:enumeration value="3-D"/>
+			<xs:enumeration value="Colour"/>
+			<xs:enumeration value="Sound"/>
+			<xs:enumeration value="Hologram"/>
+			<xs:enumeration value="Olfactory"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_OperationCodeType.xsd                                   -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_OperationCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="Insert"/>
+			<xs:enumeration value="Update"/>
+			<xs:enumeration value="Delete"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_OppositionBasicCodeType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_OppositionBasisCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Mark"/>
+			<xs:enumeration value="Registered mark with reputation"/>
+			<xs:enumeration value="Well-known mark"/>
+			<xs:enumeration value="Non-registered mark"/>
+			<xs:enumeration value="Sign used in trade"/>
+			<xs:enumeration value="Mark filed by an agent"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_OppositionCurrentStatusCodeType.xsd                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_OppositionCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Key-in of opposition"/>
+			<xs:enumeration value="Admissibility check OK"/>
+			<xs:enumeration value="Cooling-off period"/>
+			<xs:enumeration value="Opposition decision appealed"/>
+			<xs:enumeration value="Opposition closed - CTM rejected by ED"/>
+			<xs:enumeration value="Opposition closed - CTM withdrawn"/>
+			<xs:enumeration value="Opposition closed - CTM limited"/>
+			<xs:enumeration value="Opposition closed - CTM rejected in part"/>
+			<xs:enumeration value="Opposition closed - Opposition withdrawn"/>
+			<xs:enumeration value="Opposition closed - CTM rejected"/>
+			<xs:enumeration value="Opposition closed - Opposition rejected"/>
+			<xs:enumeration value="Opposition not duly entered"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected by ED"/>
+			<xs:enumeration value="Opposition closed - Trade Mark withdrawn"/>
+			<xs:enumeration value="Opposition closed - Trade Mark limited"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected in part"/>
+			<xs:enumeration value="Opposition closed - Opposition withdrawn"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected"/>
+			<xs:enumeration value="Opposition closed - Opposition rejected"/>
+			<xs:enumeration value="Opposition not duly entered (decision)"/>
+			<xs:enumeration value="Opposition not duly entered (no decision)"/>
+			<xs:enumeration value="Joined opposition on hold"/>
+			<xs:enumeration value="Opposition procedure suspended"/>
+			<xs:enumeration value="Opposition rejected - not admissible"/>
+			<xs:enumeration value="Opposition filed"/>
+			<xs:enumeration value="Filed"/>
+			<xs:enumeration value="Closed"/>
+			<xs:enumeration value="Suspended"/>
+			<xs:enumeration value="Appealed"/>
+			<xs:enumeration value="Blocked per Joinder"/>
+			<xs:enumeration value="Adversarial proceedings"/>
+			<xs:enumeration value="Decision rendered"/>
+			<xs:enumeration value="Admissibility checked"/>
+			<xs:enumeration value="Cooling-off period"/>
+			<xs:enumeration value="Commencement of proceeding"/>
+			<xs:enumeration value="Agreement between parties"/>
+			<xs:enumeration value="Final decision - CTM limited"/>
+			<xs:enumeration value="Withdrawn"/>
+			<xs:enumeration value="Final decision - CTM rejected by ED"/>
+			<xs:enumeration value="Final decision - CTM rejected in part"/>
+			<xs:enumeration value="Final decision - CTM rejected"/>
+			<xs:enumeration value="Final decision - Opposition rejected"/>
+			<xs:enumeration value="Final decision - Opposition not duly entered"/>
+			<xs:enumeration value="No decision - Opposition not duly entered"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_OppositionEventCodeType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_OppositionEventCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Key-in of opposition"/>
+			<xs:enumeration value="Admissibility check OK"/>
+			<xs:enumeration value="Cooling-off period"/>
+			<xs:enumeration value="Commencement of proceeding"/>
+			<xs:enumeration value="Opposition decision appealed"/>
+			<xs:enumeration value="Opposition closed - CTM rejected by ED"/>
+			<xs:enumeration value="Opposition closed - CTM withdrawn"/>
+			<xs:enumeration value="Opposition closed - CTM limited"/>
+			<xs:enumeration value="Opposition closed - CTM rejected in part"/>
+			<xs:enumeration value="Opposition closed - Opposition withdrawn"/>
+			<xs:enumeration value="Opposition closed - CTM rejected"/>
+			<xs:enumeration value="Opposition closed - Opposition rejected"/>
+			<xs:enumeration value="Opposition not duly entered"/>
+			<xs:enumeration value="Opposition filed"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected by ED"/>
+			<xs:enumeration value="Opposition closed - Trade Mark withdrawn"/>
+			<xs:enumeration value="Opposition closed - Trade Mark limited"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected in part"/>
+			<xs:enumeration value="Opposition closed - Opposition withdrawn"/>
+			<xs:enumeration value="Opposition closed - Trade Mark rejected"/>
+			<xs:enumeration value="Opposition closed - Opposition rejected"/>
+			<xs:enumeration value="Opposition not duly entered (decision)"/>
+			<xs:enumeration value="Opposition not duly entered (no decision)"/>
+			<xs:enumeration value="Joined opposition on hold"/>
+			<xs:enumeration value="Opposition procedure suspended"/>
+			<xs:enumeration value="Opposition rejected - not admissible"/>
+			<xs:enumeration value="Opposition filed"/>
+			<xs:enumeration value="Filed"/>
+			<xs:enumeration value="Appealable"/>
+			<xs:enumeration value="Closed"/>
+			<xs:enumeration value="Suspended"/>
+			<xs:enumeration value="Appealed"/>
+			<xs:enumeration value="Blocked per Joinder"/>
+			<xs:enumeration value="Adversarial proceedings"/>
+			<xs:enumeration value="Decision rendered"/>
+			<xs:enumeration value="Admissibility checked"/>
+			<xs:enumeration value="Cooling-off period"/>
+			<xs:enumeration value="Agreement between parties"/>
+			<xs:enumeration value="Withdrawn"/>
+			<xs:enumeration value="Final decision - CTM limited"/>
+			<xs:enumeration value="Final decision - CTM rejected by ED"/>
+			<xs:enumeration value="Final decision - CTM rejected in part"/>
+			<xs:enumeration value="Final decision - CTM rejected"/>
+			<xs:enumeration value="Final decision - Opposition rejected"/>
+			<xs:enumeration value="Final decision - Opposition not duly entered"/>
+			<xs:enumeration value="No decision - Opposition not duly entered"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_PersonIdentifierType.xsd                                -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_PersonIdentifierType">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="0"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_PriorityStatusCodeType.xsd                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_PriorityStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Claimed"/>
+			<xs:enumeration value="Abandonned"/>
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Partially Refused"/>
+			<xs:enumeration value="Refused"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_PublicationIdentifierType.xsd                           -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_PublicationIdentifierType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]{4}/[0-9][0-9]"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_PublicationSectionType.xsd                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_PublicationSectionType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="A.1">
+				<xs:annotation>
+					<xs:documentation>Applications published under article 40 CTMR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2">
+				<xs:annotation>
+					<xs:documentation>Amendments to published Community Trade Mark application</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes (No longer in use)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.1.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.1.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.2">
+				<xs:annotation>
+					<xs:documentation>Withdrawals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.3">
+				<xs:annotation>
+					<xs:documentation>Restrictions</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.4.1">
+				<xs:annotation>
+					<xs:documentation>Total refusals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.4.2">
+				<xs:annotation>
+					<xs:documentation>Partial refusals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.5.1">
+				<xs:annotation>
+					<xs:documentation>Divisions of CTM applications</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="A.2.5.2">
+				<xs:annotation>
+					<xs:documentation>Resulting divisional applications</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.1">
+				<xs:annotation>
+					<xs:documentation>Registrations with no amendments since the applicationwas published</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.2">
+				<xs:annotation>
+					<xs:documentation>Registrations with amendments since the application was published</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.3">
+				<xs:annotation>
+					<xs:documentation>Registrations resulting from a partial transfer of goods and services</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.4.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="B.4.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.1.1">
+				<xs:annotation>
+					<xs:documentation>Proprietor - Total transfers</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.1.2">
+				<xs:annotation>
+					<xs:documentation>Proprietor - Partial transfers</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.1.3">
+				<xs:annotation>
+					<xs:documentation>Proprietor - Change of name and address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.1.4">
+				<xs:annotation>
+					<xs:documentation>Proprietor - Other entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.2.1">
+				<xs:annotation>
+					<xs:documentation>Representative - Change of name and professional address</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.2.2">
+				<xs:annotation>
+					<xs:documentation>Representative - Replacement of representative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.2.3">
+				<xs:annotation>
+					<xs:documentation>Representative - Appointement of a new representative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.2.4">
+				<xs:annotation>
+					<xs:documentation>Representative - Deletion of the representative</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.1">
+				<xs:annotation>
+					<xs:documentation>Total surrender</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.2">
+				<xs:annotation>
+					<xs:documentation>Trade mark - Total surrender</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.4">
+				<xs:annotation>
+					<xs:documentation>Alteration to the representation of trade marks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.5">
+				<xs:annotation>
+					<xs:documentation>Amendments to regulations governing the use of collective trade marks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.6">
+				<xs:annotation>
+					<xs:documentation>International trade marks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.7">
+				<xs:annotation>
+					<xs:documentation>Replacements of CTM registrations</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.8.1">
+				<xs:annotation>
+					<xs:documentation>Division of CTM registrations</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.3.8.2">
+				<xs:annotation>
+					<xs:documentation>Resulting divisional registration</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.4.1">
+				<xs:annotation>
+					<xs:documentation>Licences granted</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.4.2">
+				<xs:annotation>
+					<xs:documentation>Sub-Licences granted</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.4.3">
+				<xs:annotation>
+					<xs:documentation>Transfers of licences or sub-licences</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.4.4">
+				<xs:annotation>
+					<xs:documentation>Licences - Modifications to entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.4.5">
+				<xs:annotation>
+					<xs:documentation>Licences - Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.5.1">
+				<xs:annotation>
+					<xs:documentation>Creation of rights in rem</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.5.2">
+				<xs:annotation>
+					<xs:documentation>Transfers of rights in rem</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.5.3">
+				<xs:annotation>
+					<xs:documentation>Rights in rem - Modifications to entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.5.4">
+				<xs:annotation>
+					<xs:documentation>Rights in rem - Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.6.1">
+				<xs:annotation>
+					<xs:documentation>Insolvency - Entry of mentions</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.6.2">
+				<xs:annotation>
+					<xs:documentation>Insolvency - Modifications to entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.6.3">
+				<xs:annotation>
+					<xs:documentation>Insolvency - Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.7.1">
+				<xs:annotation>
+					<xs:documentation>Levy of execution - Entry of the indication</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.7.2">
+				<xs:annotation>
+					<xs:documentation>Levy of execution - Modifications to entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.7.3">
+				<xs:annotation>
+					<xs:documentation>Levy of execution - Cancellations of entries</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.8.1">
+				<xs:annotation>
+					<xs:documentation>Claims of seniority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.8.2">
+				<xs:annotation>
+					<xs:documentation>Cancellations of seniority</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.9.1">
+				<xs:annotation>
+					<xs:documentation>Application for revocation or for a declaration of invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.9.2">
+				<xs:annotation>
+					<xs:documentation>Decision on application for revocation or for a declaration of invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.9.3">
+				<xs:annotation>
+					<xs:documentation>Counterclaims for revocation or for a declaration of invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.9.4">
+				<xs:annotation>
+					<xs:documentation>Decisions on counterclaims for revocation or for a declaration of invalidity</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.10.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors and mistakes - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="C.10.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors and mistakes - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.1">
+				<xs:annotation>
+					<xs:documentation>Renewals</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.2.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors and mistakes in renewals - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="D.2.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors and mistakes in renewals - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.1">
+				<xs:annotation>
+					<xs:documentation>Requests for conversion of a CTM application into a national trade mark application</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.2.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.1 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.2.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.1 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.3">
+				<xs:annotation>
+					<xs:documentation>Requests for conversion of a CTM into a national trade mark application</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.4.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.3 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.4.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.3 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.5.1">
+				<xs:annotation>
+					<xs:documentation>Requests for conversion of an International Registration into a national trade mark application</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.5.2">
+				<xs:annotation>
+					<xs:documentation>Requests for conversion of an International Registration into a designation of a Member State party to the Madrid Protocol or the Madrid Agreement</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.6.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.5 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="E.6.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes of requests published in Section E.5 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F.1">
+				<xs:annotation>
+					<xs:documentation>Restitutio in integrum</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F.2.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section F.1 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="F.2.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section F.1 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.1">
+				<xs:annotation>
+					<xs:documentation>International registrations and subsequent designations published under Article 147(1) of the CTMR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.2.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section M.1 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.2.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section M.1 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.3.4">
+				<xs:annotation>
+					<xs:documentation>International registrations with no amendments since their publication under Article 147 (1) of the CTMR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.3.4">
+				<xs:annotation>
+					<xs:documentation>International registrations with amendments since their publication under Article 147 (1) of the CTMR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.4.1">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section M.3 - Absolute errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.4.2">
+				<xs:annotation>
+					<xs:documentation>Correction of errors or mistakes in Section M.3 - Relative errors</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="M.5">
+				<xs:annotation>
+					<xs:documentation>Amendments to regulations governing the use of collective trade marks</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_RecordCurrentStatusCodeType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_RecordCurrentStatusCodeType">
+		<xs:union memberTypes="EM_RenewalCurrentStatusCodeType"/>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_RenewalCurrentStatusCodeType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_RenewalCurrentStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Notification of expiry of trade mark"/>
+			<xs:enumeration value="Renewal fee paid"/>
+			<xs:enumeration value="Trade mark renewed"/>
+			<xs:enumeration value="Trade mark expired"/>
+			<xs:enumeration value="Notified"/>
+			<xs:enumeration value="Registered"/>
+			<xs:enumeration value="Published"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_RepresentativeTypeCodeType.xsd                          -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_RepresentativeTypeCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Professional Representative"/>
+			<xs:enumeration value="Lawyer"/>
+			<xs:enumeration value="Association"/>
+			<xs:enumeration value="Employee"/>
+			<xs:enumeration value="Other"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_SecondLanguageCodeType.xsd                              -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_SecondLanguageCodeType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="en"/>
+			<xs:enumeration value="es"/>
+			<xs:enumeration value="fr"/>
+			<xs:enumeration value="de"/>
+			<xs:enumeration value="it"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_SeniorityStatusCodeType.xsd                             -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_SeniorityStatusCodeType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Claimed"/>
+			<xs:enumeration value="Abandonned"/>
+			<xs:enumeration value="Accepted"/>
+			<xs:enumeration value="Partially Refused"/>
+			<xs:enumeration value="Refused"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : EM_SoundFileFormatType.xsd                                 -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="EM_SoundFileFormatType">
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="mp3"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : TradeMarkRelationKindType                                  -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="TradeMarkRelationKindType">
+		<xs:restriction base="xs:token">
+			<xs:enumeration value="Parent Division"/>
+			<xs:enumeration value="Child Division"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- * STANDARD LIST TYPES LIBRARY **************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ********************************************************************** -->
+	<!-- ====================================================================== -->
+	<!-- Type Name : ISOCountryCodeType.xsd                                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ISOCountryCodeType">
+		<xs:annotation>
+			<xs:documentation>ISO 3166-1:1997 Version Newsletter V-12, 2006-09-26</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="AD">
+				<xs:annotation>
+					<xs:documentation>ANDORRA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AE">
+				<xs:annotation>
+					<xs:documentation>UNITED ARAB EMIRATES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AF">
+				<xs:annotation>
+					<xs:documentation>AFGHANISTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AG">
+				<xs:annotation>
+					<xs:documentation>ANTIGUA AND BARBUDA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AI">
+				<xs:annotation>
+					<xs:documentation>ANGUILLA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AL">
+				<xs:annotation>
+					<xs:documentation>ALBANIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AM">
+				<xs:annotation>
+					<xs:documentation>ARMENIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AN">
+				<xs:annotation>
+					<xs:documentation>NETHERLANDS ANTILLES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AO">
+				<xs:annotation>
+					<xs:documentation>ANGOLA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AQ">
+				<xs:annotation>
+					<xs:documentation>ANTARCTICA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AR">
+				<xs:annotation>
+					<xs:documentation>ARGENTINA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AS">
+				<xs:annotation>
+					<xs:documentation>AMERICAN SAMOA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AT">
+				<xs:annotation>
+					<xs:documentation>AUSTRIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AU">
+				<xs:annotation>
+					<xs:documentation>AUSTRALIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AW">
+				<xs:annotation>
+					<xs:documentation>ARUBA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AX">
+				<xs:annotation>
+					<xs:documentation>ÅLAND ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AZ">
+				<xs:annotation>
+					<xs:documentation>AZERBAIJAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BA">
+				<xs:annotation>
+					<xs:documentation>BOSNIA AND HERZEGOVINA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BB">
+				<xs:annotation>
+					<xs:documentation>BARBADOS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BD">
+				<xs:annotation>
+					<xs:documentation>BANGLADESH</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BE">
+				<xs:annotation>
+					<xs:documentation>BELGIUM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BF">
+				<xs:annotation>
+					<xs:documentation>BURKINA FASO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BG">
+				<xs:annotation>
+					<xs:documentation>BULGARIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BH">
+				<xs:annotation>
+					<xs:documentation>BAHRAIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BI">
+				<xs:annotation>
+					<xs:documentation>BURUNDI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BJ">
+				<xs:annotation>
+					<xs:documentation>BENIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BM">
+				<xs:annotation>
+					<xs:documentation>BERMUDA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BN">
+				<xs:annotation>
+					<xs:documentation>BRUNEI DARUSSALAM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BO">
+				<xs:annotation>
+					<xs:documentation>BOLIVIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BR">
+				<xs:annotation>
+					<xs:documentation>BRAZIL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BS">
+				<xs:annotation>
+					<xs:documentation>BAHAMAS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BT">
+				<xs:annotation>
+					<xs:documentation>BHUTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BV">
+				<xs:annotation>
+					<xs:documentation>BOUVET ISLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BW">
+				<xs:annotation>
+					<xs:documentation>BOTSWANA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BY">
+				<xs:annotation>
+					<xs:documentation>BELARUS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BZ">
+				<xs:annotation>
+					<xs:documentation>BELIZE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CA">
+				<xs:annotation>
+					<xs:documentation>CANADA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CC">
+				<xs:annotation>
+					<xs:documentation>COCOS (KEELING) ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CD">
+				<xs:annotation>
+					<xs:documentation>CONGO, THE DEMOCRATIC REPUBLIC OF THE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CF">
+				<xs:annotation>
+					<xs:documentation>CENTRAL AFRICAN REPUBLIC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CG">
+				<xs:annotation>
+					<xs:documentation>CONGO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CH">
+				<xs:annotation>
+					<xs:documentation>SWITZERLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CI">
+				<xs:annotation>
+					<xs:documentation>COTE D&apos;IVOIRE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CK">
+				<xs:annotation>
+					<xs:documentation>COOK ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CL">
+				<xs:annotation>
+					<xs:documentation>CHILE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CM">
+				<xs:annotation>
+					<xs:documentation>CAMEROON</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CN">
+				<xs:annotation>
+					<xs:documentation>CHINA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CO">
+				<xs:annotation>
+					<xs:documentation>COLOMBIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CR">
+				<xs:annotation>
+					<xs:documentation>COSTA RICA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CU">
+				<xs:annotation>
+					<xs:documentation>CUBA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CV">
+				<xs:annotation>
+					<xs:documentation>CAPE VERDE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CX">
+				<xs:annotation>
+					<xs:documentation>CHRISTMAS ISLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CY">
+				<xs:annotation>
+					<xs:documentation>CYPRUS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CZ">
+				<xs:annotation>
+					<xs:documentation>CZECH REPUBLIC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DE">
+				<xs:annotation>
+					<xs:documentation>GERMANY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DJ">
+				<xs:annotation>
+					<xs:documentation>DJIBOUTI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DK">
+				<xs:annotation>
+					<xs:documentation>DENMARK</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DM">
+				<xs:annotation>
+					<xs:documentation>DOMINICA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DO">
+				<xs:annotation>
+					<xs:documentation>DOMINICAN REPUBLIC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DZ">
+				<xs:annotation>
+					<xs:documentation>ALGERIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EC">
+				<xs:annotation>
+					<xs:documentation>ECUADOR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EE">
+				<xs:annotation>
+					<xs:documentation>ESTONIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EG">
+				<xs:annotation>
+					<xs:documentation>EGYPT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EH">
+				<xs:annotation>
+					<xs:documentation>WESTERN SAHARA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ER">
+				<xs:annotation>
+					<xs:documentation>ERITREA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ES">
+				<xs:annotation>
+					<xs:documentation>SPAIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ET">
+				<xs:annotation>
+					<xs:documentation>ETHIOPIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FI">
+				<xs:annotation>
+					<xs:documentation>FINLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FJ">
+				<xs:annotation>
+					<xs:documentation>FIJI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FK">
+				<xs:annotation>
+					<xs:documentation>FALKLAND ISLANDS (MALVINAS)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FM">
+				<xs:annotation>
+					<xs:documentation>MICRONESIA, FEDERATED STATES OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FO">
+				<xs:annotation>
+					<xs:documentation>FAROE ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FR">
+				<xs:annotation>
+					<xs:documentation>FRANCE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GA">
+				<xs:annotation>
+					<xs:documentation>GABON</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GB">
+				<xs:annotation>
+					<xs:documentation>UNITED KINGDOM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GD">
+				<xs:annotation>
+					<xs:documentation>GRENADA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GE">
+				<xs:annotation>
+					<xs:documentation>GEORGIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GF">
+				<xs:annotation>
+					<xs:documentation>FRENCH GUIANA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GG">
+				<xs:annotation>
+					<xs:documentation>GUERNSEY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GH">
+				<xs:annotation>
+					<xs:documentation>GHANA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GI">
+				<xs:annotation>
+					<xs:documentation>GIBRALTAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GL">
+				<xs:annotation>
+					<xs:documentation>GREENLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GM">
+				<xs:annotation>
+					<xs:documentation>GAMBIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GN">
+				<xs:annotation>
+					<xs:documentation>GUINEA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GP">
+				<xs:annotation>
+					<xs:documentation>GUADELOUPE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GQ">
+				<xs:annotation>
+					<xs:documentation>EQUATORIAL GUINEA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GR">
+				<xs:annotation>
+					<xs:documentation>GREECE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GS">
+				<xs:annotation>
+					<xs:documentation>SOUTH GEORGIA AND THE SOUTH SANDWICH ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GT">
+				<xs:annotation>
+					<xs:documentation>GUATEMALA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GU">
+				<xs:annotation>
+					<xs:documentation>GUAM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GW">
+				<xs:annotation>
+					<xs:documentation>GUINEA-BISSAU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GY">
+				<xs:annotation>
+					<xs:documentation>GUYANA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HK">
+				<xs:annotation>
+					<xs:documentation>HONG KONG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HM">
+				<xs:annotation>
+					<xs:documentation>HEARD ISLAND AND MCDONALD ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HN">
+				<xs:annotation>
+					<xs:documentation>HONDURAS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HR">
+				<xs:annotation>
+					<xs:documentation>CROATIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HT">
+				<xs:annotation>
+					<xs:documentation>HAITI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HU">
+				<xs:annotation>
+					<xs:documentation>HUNGARY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ID">
+				<xs:annotation>
+					<xs:documentation>INDONESIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IE">
+				<xs:annotation>
+					<xs:documentation>IRELAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IL">
+				<xs:annotation>
+					<xs:documentation>ISRAEL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IM">
+				<xs:annotation>
+					<xs:documentation>ISLE OF MAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IN">
+				<xs:annotation>
+					<xs:documentation>INDIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IO">
+				<xs:annotation>
+					<xs:documentation>BRITISH INDIAN OCEAN TERRITORY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IQ">
+				<xs:annotation>
+					<xs:documentation>IRAQ</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IR">
+				<xs:annotation>
+					<xs:documentation>IRAN, ISLAMIC REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IS">
+				<xs:annotation>
+					<xs:documentation>ICELAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IT">
+				<xs:annotation>
+					<xs:documentation>ITALY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JE">
+				<xs:annotation>
+					<xs:documentation>JERSEY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JM">
+				<xs:annotation>
+					<xs:documentation>JAMAICA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JO">
+				<xs:annotation>
+					<xs:documentation>JORDAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JP">
+				<xs:annotation>
+					<xs:documentation>JAPAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KE">
+				<xs:annotation>
+					<xs:documentation>KENYA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KG">
+				<xs:annotation>
+					<xs:documentation>KYRGYZSTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KH">
+				<xs:annotation>
+					<xs:documentation>CAMBODIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KI">
+				<xs:annotation>
+					<xs:documentation>KIRIBATI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KM">
+				<xs:annotation>
+					<xs:documentation>COMOROS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KN">
+				<xs:annotation>
+					<xs:documentation>SAINT KITTS AND NEVIS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KP">
+				<xs:annotation>
+					<xs:documentation>KOREA, DEMOCRATIC PEOPLE&apos;S REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KR">
+				<xs:annotation>
+					<xs:documentation>KOREA, REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KW">
+				<xs:annotation>
+					<xs:documentation>KUWAIT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KY">
+				<xs:annotation>
+					<xs:documentation>CAYMAN ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KZ">
+				<xs:annotation>
+					<xs:documentation>KAZAKHSTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LA">
+				<xs:annotation>
+					<xs:documentation>LAO PEOPLE&apos;S DEMOCRATIC REPUBLIC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LB">
+				<xs:annotation>
+					<xs:documentation>LEBANON</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LC">
+				<xs:annotation>
+					<xs:documentation>SAINT LUCIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LI">
+				<xs:annotation>
+					<xs:documentation>LIECHTENSTEIN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LK">
+				<xs:annotation>
+					<xs:documentation>SRI LANKA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LR">
+				<xs:annotation>
+					<xs:documentation>LIBERIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LS">
+				<xs:annotation>
+					<xs:documentation>LESOTHO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LT">
+				<xs:annotation>
+					<xs:documentation>LITHUANIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LU">
+				<xs:annotation>
+					<xs:documentation>LUXEMBOURG</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LV">
+				<xs:annotation>
+					<xs:documentation>LATVIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LY">
+				<xs:annotation>
+					<xs:documentation>LIBYAN ARAB JAMAHIRIYA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MA">
+				<xs:annotation>
+					<xs:documentation>MOROCCO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MC">
+				<xs:annotation>
+					<xs:documentation>MONACO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MD">
+				<xs:annotation>
+					<xs:documentation>MOLDOVA, REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ME">
+				<xs:annotation>
+					<xs:documentation>MONTENEGRO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MG">
+				<xs:annotation>
+					<xs:documentation>MADAGASCAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MH">
+				<xs:annotation>
+					<xs:documentation>MARSHALL ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MK">
+				<xs:annotation>
+					<xs:documentation>MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ML">
+				<xs:annotation>
+					<xs:documentation>MALI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MM">
+				<xs:annotation>
+					<xs:documentation>MYANMAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MN">
+				<xs:annotation>
+					<xs:documentation>MONGOLIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MO">
+				<xs:annotation>
+					<xs:documentation>MACAO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MP">
+				<xs:annotation>
+					<xs:documentation>NORTHERN MARIANA ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MQ">
+				<xs:annotation>
+					<xs:documentation>MARTINIQUE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MR">
+				<xs:annotation>
+					<xs:documentation>MAURITANIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MS">
+				<xs:annotation>
+					<xs:documentation>MONTSERRAT</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MT">
+				<xs:annotation>
+					<xs:documentation>MALTA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MU">
+				<xs:annotation>
+					<xs:documentation>MAURITIUS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MV">
+				<xs:annotation>
+					<xs:documentation>MALDIVES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MW">
+				<xs:annotation>
+					<xs:documentation>MALAWI</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MX">
+				<xs:annotation>
+					<xs:documentation>MEXICO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MY">
+				<xs:annotation>
+					<xs:documentation>MALAYSIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MZ">
+				<xs:annotation>
+					<xs:documentation>MOZAMBIQUE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>NAMIBIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NC">
+				<xs:annotation>
+					<xs:documentation>NEW CALEDONIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NE">
+				<xs:annotation>
+					<xs:documentation>NIGER</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NF">
+				<xs:annotation>
+					<xs:documentation>NORFOLK ISLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NG">
+				<xs:annotation>
+					<xs:documentation>NIGERIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NI">
+				<xs:annotation>
+					<xs:documentation>NICARAGUA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NL">
+				<xs:annotation>
+					<xs:documentation>NETHERLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO">
+				<xs:annotation>
+					<xs:documentation>NORWAY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NP">
+				<xs:annotation>
+					<xs:documentation>NEPAL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NR">
+				<xs:annotation>
+					<xs:documentation>NAURU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NU">
+				<xs:annotation>
+					<xs:documentation>NIUE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NZ">
+				<xs:annotation>
+					<xs:documentation>NEW ZEALAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OM">
+				<xs:annotation>
+					<xs:documentation>OMAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PA">
+				<xs:annotation>
+					<xs:documentation>PANAMA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PE">
+				<xs:annotation>
+					<xs:documentation>PERU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PF">
+				<xs:annotation>
+					<xs:documentation>FRENCH POLYNESIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PG">
+				<xs:annotation>
+					<xs:documentation>PAPUA NEW GUINEA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PH">
+				<xs:annotation>
+					<xs:documentation>PHILIPPINES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PK">
+				<xs:annotation>
+					<xs:documentation>PAKISTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PL">
+				<xs:annotation>
+					<xs:documentation>POLAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PM">
+				<xs:annotation>
+					<xs:documentation>SAINT PIERRE AND MIQUELON</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PN">
+				<xs:annotation>
+					<xs:documentation>PITCAIRN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PR">
+				<xs:annotation>
+					<xs:documentation>PUERTO RICO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PS">
+				<xs:annotation>
+					<xs:documentation>PALESTINIAN TERRITORY, OCCUPIED</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PT">
+				<xs:annotation>
+					<xs:documentation>PORTUGAL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PW">
+				<xs:annotation>
+					<xs:documentation>PALAU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PY">
+				<xs:annotation>
+					<xs:documentation>PARAGUAY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QA">
+				<xs:annotation>
+					<xs:documentation>QATAR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RE">
+				<xs:annotation>
+					<xs:documentation>REUNION</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RO">
+				<xs:annotation>
+					<xs:documentation>ROMANIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RS">
+				<xs:annotation>
+					<xs:documentation>SERBIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RU">
+				<xs:annotation>
+					<xs:documentation>RUSSIAN FEDERATION</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RW">
+				<xs:annotation>
+					<xs:documentation>RWANDA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SA">
+				<xs:annotation>
+					<xs:documentation>SAUDI ARABIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SB">
+				<xs:annotation>
+					<xs:documentation>SOLOMON ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SC">
+				<xs:annotation>
+					<xs:documentation>SEYCHELLES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SD">
+				<xs:annotation>
+					<xs:documentation>SUDAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SE">
+				<xs:annotation>
+					<xs:documentation>SWEDEN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SG">
+				<xs:annotation>
+					<xs:documentation>SINGAPORE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SH">
+				<xs:annotation>
+					<xs:documentation>SAINT HELENA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SI">
+				<xs:annotation>
+					<xs:documentation>SLOVENIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SJ">
+				<xs:annotation>
+					<xs:documentation>SVALBARD AND JAN MAYEN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SK">
+				<xs:annotation>
+					<xs:documentation>SLOVAKIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SL">
+				<xs:annotation>
+					<xs:documentation>SIERRA LEONE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SM">
+				<xs:annotation>
+					<xs:documentation>SAN MARINO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SN">
+				<xs:annotation>
+					<xs:documentation>SENEGAL</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SO">
+				<xs:annotation>
+					<xs:documentation>SOMALIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SR">
+				<xs:annotation>
+					<xs:documentation>SURINAME</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ST">
+				<xs:annotation>
+					<xs:documentation>SAO TOME AND PRINCIPE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SV">
+				<xs:annotation>
+					<xs:documentation>EL SALVADOR</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SY">
+				<xs:annotation>
+					<xs:documentation>SYRIAN ARAB REPUBLIC</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SZ">
+				<xs:annotation>
+					<xs:documentation>SWAZILAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TC">
+				<xs:annotation>
+					<xs:documentation>TURKS AND CAICOS ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TD">
+				<xs:annotation>
+					<xs:documentation>CHAD</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TF">
+				<xs:annotation>
+					<xs:documentation>FRENCH SOUTHERN TERRITORIES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TG">
+				<xs:annotation>
+					<xs:documentation>TOGO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TH">
+				<xs:annotation>
+					<xs:documentation>THAILAND</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TJ">
+				<xs:annotation>
+					<xs:documentation>TAJIKISTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TK">
+				<xs:annotation>
+					<xs:documentation>TOKELAU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TL">
+				<xs:annotation>
+					<xs:documentation>TIMOR-LESTE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TM">
+				<xs:annotation>
+					<xs:documentation>TURKMENISTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TN">
+				<xs:annotation>
+					<xs:documentation>TUNISIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TO">
+				<xs:annotation>
+					<xs:documentation>TONGA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TR">
+				<xs:annotation>
+					<xs:documentation>TURKEY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TT">
+				<xs:annotation>
+					<xs:documentation>TRINIDAD AND TOBAGO</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TV">
+				<xs:annotation>
+					<xs:documentation>TUVALU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TW">
+				<xs:annotation>
+					<xs:documentation>TAIWAN, PROVINCE OF CHINA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TZ">
+				<xs:annotation>
+					<xs:documentation>TANZANIA, UNITED REPUBLIC OF</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UA">
+				<xs:annotation>
+					<xs:documentation>UKRAINE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UG">
+				<xs:annotation>
+					<xs:documentation>UGANDA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UM">
+				<xs:annotation>
+					<xs:documentation>UNITED STATES MINOR OUTLYING ISLANDS</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="US">
+				<xs:annotation>
+					<xs:documentation>UNITED STATES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UY">
+				<xs:annotation>
+					<xs:documentation>URUGUAY</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UZ">
+				<xs:annotation>
+					<xs:documentation>UZBEKISTAN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VA">
+				<xs:annotation>
+					<xs:documentation>HOLY SEE (VATICAN CITY STATE)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VC">
+				<xs:annotation>
+					<xs:documentation>SAINT VINCENT AND THE GRENADINES</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VE">
+				<xs:annotation>
+					<xs:documentation>VENEZUELA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VG">
+				<xs:annotation>
+					<xs:documentation>VIRGIN ISLANDS, BRITISH</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VI">
+				<xs:annotation>
+					<xs:documentation>VIRGIN ISLANDS, U.S.</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VN">
+				<xs:annotation>
+					<xs:documentation>VIET NAM</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VU">
+				<xs:annotation>
+					<xs:documentation>VANUATU</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WF">
+				<xs:annotation>
+					<xs:documentation>WALLIS AND FUTUNA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WS">
+				<xs:annotation>
+					<xs:documentation>SAMOA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YE">
+				<xs:annotation>
+					<xs:documentation>YEMEN</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YT">
+				<xs:annotation>
+					<xs:documentation>MAYOTTE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZA">
+				<xs:annotation>
+					<xs:documentation>SOUTH AFRICA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZM">
+				<xs:annotation>
+					<xs:documentation>ZAMBIA</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZW">
+				<xs:annotation>
+					<xs:documentation>ZIMBABWE</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- ====================================================================== -->
+	<!-- Type Name : ST3CountryCodeType.xsd                                     -->
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+	<!-- CTM-Download Version 3.4.4 Dated 2010-09-14.                           -->
+	<!-- ====================================================================== -->
+	<xs:simpleType name="ST3CountryCodeType">
+		<xs:annotation>
+			<xs:documentation>WIPO Standard ST.3 - Country Codes - Version October 2006</xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:NMTOKEN">
+			<xs:enumeration value="AD">
+				<xs:annotation>
+					<xs:documentation>Andorra</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AE">
+				<xs:annotation>
+					<xs:documentation>United Arab Emirates</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AF">
+				<xs:annotation>
+					<xs:documentation>Afghanistan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AG">
+				<xs:annotation>
+					<xs:documentation>Antigua And Barbuda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AI">
+				<xs:annotation>
+					<xs:documentation>Anguilla</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AL">
+				<xs:annotation>
+					<xs:documentation>Albania</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AM">
+				<xs:annotation>
+					<xs:documentation>Armenia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AN">
+				<xs:annotation>
+					<xs:documentation>Netherlands Antilles</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AO">
+				<xs:annotation>
+					<xs:documentation>Angola</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AP">
+				<xs:annotation>
+					<xs:documentation>African Regional Industrial Property Organization (ARIPO)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AR">
+				<xs:annotation>
+					<xs:documentation>Argentina</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AS">
+				<xs:annotation>
+					<xs:documentation>American Samoa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AT">
+				<xs:annotation>
+					<xs:documentation>Austria</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AU">
+				<xs:annotation>
+					<xs:documentation>Australia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AW">
+				<xs:annotation>
+					<xs:documentation>Aruba</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="AZ">
+				<xs:annotation>
+					<xs:documentation>Azerbaijan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BA">
+				<xs:annotation>
+					<xs:documentation>Bosnia and Herzegovina</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BB">
+				<xs:annotation>
+					<xs:documentation>Barbados</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BD">
+				<xs:annotation>
+					<xs:documentation>Bangladesh</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BE">
+				<xs:annotation>
+					<xs:documentation>Belgium</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BF">
+				<xs:annotation>
+					<xs:documentation>Burkina Faso</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BG">
+				<xs:annotation>
+					<xs:documentation>Bulgaria</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BH">
+				<xs:annotation>
+					<xs:documentation>Bahrain</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BI">
+				<xs:annotation>
+					<xs:documentation>Burundi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BJ">
+				<xs:annotation>
+					<xs:documentation>Benin</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BM">
+				<xs:annotation>
+					<xs:documentation>Bermuda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BN">
+				<xs:annotation>
+					<xs:documentation>Brunei Darussalam</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BO">
+				<xs:annotation>
+					<xs:documentation>Bolivia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BR">
+				<xs:annotation>
+					<xs:documentation>Brazil</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BS">
+				<xs:annotation>
+					<xs:documentation>Bahamas</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BT">
+				<xs:annotation>
+					<xs:documentation>Bhutan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BV">
+				<xs:annotation>
+					<xs:documentation>Bouvet Island</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BW">
+				<xs:annotation>
+					<xs:documentation>Botswana</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BX">
+				<xs:annotation>
+					<xs:documentation>Benelux Trademark Office (BBM) and Benelux Designs Office (BBDM)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BY">
+				<xs:annotation>
+					<xs:documentation>Belarus</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="BZ">
+				<xs:annotation>
+					<xs:documentation>Belize</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CA">
+				<xs:annotation>
+					<xs:documentation>Canada</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CD">
+				<xs:annotation>
+					<xs:documentation>Democratic Republic of the Congo</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CF">
+				<xs:annotation>
+					<xs:documentation>Central African Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CG">
+				<xs:annotation>
+					<xs:documentation>Congo</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CH">
+				<xs:annotation>
+					<xs:documentation>Switzerland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CI">
+				<xs:annotation>
+					<xs:documentation>Cote D'Ivoire</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CK">
+				<xs:annotation>
+					<xs:documentation>Cook Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CL">
+				<xs:annotation>
+					<xs:documentation>Chile</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CM">
+				<xs:annotation>
+					<xs:documentation>Cameroon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CN">
+				<xs:annotation>
+					<xs:documentation>China</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CO">
+				<xs:annotation>
+					<xs:documentation>Colombia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CR">
+				<xs:annotation>
+					<xs:documentation>Costa Rica</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CU">
+				<xs:annotation>
+					<xs:documentation>Cuba</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CV">
+				<xs:annotation>
+					<xs:documentation>Cape Verde</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CY">
+				<xs:annotation>
+					<xs:documentation>Cyprus</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="CZ">
+				<xs:annotation>
+					<xs:documentation>Czech Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DE">
+				<xs:annotation>
+					<xs:documentation>Germany</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DJ">
+				<xs:annotation>
+					<xs:documentation>Djibouti</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DK">
+				<xs:annotation>
+					<xs:documentation>Denmark</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DM">
+				<xs:annotation>
+					<xs:documentation>Dominica</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DO">
+				<xs:annotation>
+					<xs:documentation>Dominican Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="DZ">
+				<xs:annotation>
+					<xs:documentation>Algeria</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EA">
+				<xs:annotation>
+					<xs:documentation>Eurasian Patent Organization (EAPO)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EC">
+				<xs:annotation>
+					<xs:documentation>Ecuador</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EE">
+				<xs:annotation>
+					<xs:documentation>Estonia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EG">
+				<xs:annotation>
+					<xs:documentation>Egypt</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EH">
+				<xs:annotation>
+					<xs:documentation>Western Sahara</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EM">
+				<xs:annotation>
+					<xs:documentation>Office for Harmonization in the Internal Market (Trademarks and Designs) (OHIM)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="EP">
+				<xs:annotation>
+					<xs:documentation>European Patent Office (EPO)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ER">
+				<xs:annotation>
+					<xs:documentation>Eritrea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ES">
+				<xs:annotation>
+					<xs:documentation>Spain</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ET">
+				<xs:annotation>
+					<xs:documentation>Ethiopia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FI">
+				<xs:annotation>
+					<xs:documentation>Finland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FJ">
+				<xs:annotation>
+					<xs:documentation>Fiji</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FK">
+				<xs:annotation>
+					<xs:documentation>Falkland Islands (Malvinas)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FO">
+				<xs:annotation>
+					<xs:documentation>Faroe Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="FR">
+				<xs:annotation>
+					<xs:documentation>France</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GA">
+				<xs:annotation>
+					<xs:documentation>Gabon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GB">
+				<xs:annotation>
+					<xs:documentation>United Kingdom</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GC">
+				<xs:annotation>
+					<xs:documentation>Patent Office of the Cooperation Council for the Arab States of the Gulf (GCC)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GD">
+				<xs:annotation>
+					<xs:documentation>Grenada</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GE">
+				<xs:annotation>
+					<xs:documentation>Georgia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GG">
+				<xs:annotation>
+					<xs:documentation>Guernsey</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GH">
+				<xs:annotation>
+					<xs:documentation>Ghana</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GI">
+				<xs:annotation>
+					<xs:documentation>Gibraltar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GL">
+				<xs:annotation>
+					<xs:documentation>Greenland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GM">
+				<xs:annotation>
+					<xs:documentation>Gambia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GN">
+				<xs:annotation>
+					<xs:documentation>Guinea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GQ">
+				<xs:annotation>
+					<xs:documentation>Equatorial Guinea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GR">
+				<xs:annotation>
+					<xs:documentation>Greece</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GS">
+				<xs:annotation>
+					<xs:documentation>South Georgia and South Sandwich Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GT">
+				<xs:annotation>
+					<xs:documentation>Guatemala</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GW">
+				<xs:annotation>
+					<xs:documentation>Guinea-Bissau</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="GY">
+				<xs:annotation>
+					<xs:documentation>Guyana</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HK">
+				<xs:annotation>
+					<xs:documentation>The Hong Kong Special Administration Region of the People's Republic of China</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HN">
+				<xs:annotation>
+					<xs:documentation>Honduras</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HR">
+				<xs:annotation>
+					<xs:documentation>Croatia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HT">
+				<xs:annotation>
+					<xs:documentation>Haiti</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="HU">
+				<xs:annotation>
+					<xs:documentation>Hungary</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IB">
+				<xs:annotation>
+					<xs:documentation>International Bureau of the World Intellectual Property Organization (WIPO)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ID">
+				<xs:annotation>
+					<xs:documentation>Indonesia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IE">
+				<xs:annotation>
+					<xs:documentation>Ireland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IL">
+				<xs:annotation>
+					<xs:documentation>Israel</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IM">
+				<xs:annotation>
+					<xs:documentation>Isle of Man</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IN">
+				<xs:annotation>
+					<xs:documentation>India</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IQ">
+				<xs:annotation>
+					<xs:documentation>Iraq</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IR">
+				<xs:annotation>
+					<xs:documentation>Iran (Islamic Republic of)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IS">
+				<xs:annotation>
+					<xs:documentation>Iceland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="IT">
+				<xs:annotation>
+					<xs:documentation>Italy</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JE">
+				<xs:annotation>
+					<xs:documentation>Jersey</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JM">
+				<xs:annotation>
+					<xs:documentation>Jamaica</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JO">
+				<xs:annotation>
+					<xs:documentation>Jordan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="JP">
+				<xs:annotation>
+					<xs:documentation>Japan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KE">
+				<xs:annotation>
+					<xs:documentation>Kenya</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KG">
+				<xs:annotation>
+					<xs:documentation>Kyrgyzstan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KH">
+				<xs:annotation>
+					<xs:documentation>Cambodia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KI">
+				<xs:annotation>
+					<xs:documentation>Kiribati</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KM">
+				<xs:annotation>
+					<xs:documentation>Comoros</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KN">
+				<xs:annotation>
+					<xs:documentation>Saint Kitts and Nevis</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KP">
+				<xs:annotation>
+					<xs:documentation>Democratic People's Republic of Korea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KR">
+				<xs:annotation>
+					<xs:documentation>Republic of Korea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KW">
+				<xs:annotation>
+					<xs:documentation>Kuwait</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KY">
+				<xs:annotation>
+					<xs:documentation>Cayman Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="KZ">
+				<xs:annotation>
+					<xs:documentation>Kazakhstan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LA">
+				<xs:annotation>
+					<xs:documentation>Lao People's Democratic Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LB">
+				<xs:annotation>
+					<xs:documentation>Lebanon</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LC">
+				<xs:annotation>
+					<xs:documentation>Saint Lucia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LI">
+				<xs:annotation>
+					<xs:documentation>Liechtenstein</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LK">
+				<xs:annotation>
+					<xs:documentation>Sri Lanka</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LR">
+				<xs:annotation>
+					<xs:documentation>Liberia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LS">
+				<xs:annotation>
+					<xs:documentation>Lesotho</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LT">
+				<xs:annotation>
+					<xs:documentation>Lithuania</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LU">
+				<xs:annotation>
+					<xs:documentation>Luxembourg</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LV">
+				<xs:annotation>
+					<xs:documentation>Latvia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="LY">
+				<xs:annotation>
+					<xs:documentation>Libyan Arab Jamahiriya</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MA">
+				<xs:annotation>
+					<xs:documentation>Morocco</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MC">
+				<xs:annotation>
+					<xs:documentation>Monaco</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MD">
+				<xs:annotation>
+					<xs:documentation>Republic of Moldova</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MG">
+				<xs:annotation>
+					<xs:documentation>Madagascar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MK">
+				<xs:annotation>
+					<xs:documentation>The former Yugoslav Republic of Macedonia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ML">
+				<xs:annotation>
+					<xs:documentation>Mali</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MM">
+				<xs:annotation>
+					<xs:documentation>Myanmar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MN">
+				<xs:annotation>
+					<xs:documentation>Mongolia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MO">
+				<xs:annotation>
+					<xs:documentation>Macau</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MP">
+				<xs:annotation>
+					<xs:documentation>Northern Mariana Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MR">
+				<xs:annotation>
+					<xs:documentation>Mauritania</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MS">
+				<xs:annotation>
+					<xs:documentation>Montserrat</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MT">
+				<xs:annotation>
+					<xs:documentation>Malta</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MU">
+				<xs:annotation>
+					<xs:documentation>Mauritius</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MV">
+				<xs:annotation>
+					<xs:documentation>Maldives</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MW">
+				<xs:annotation>
+					<xs:documentation>Malawi</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MX">
+				<xs:annotation>
+					<xs:documentation>Mexico</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MY">
+				<xs:annotation>
+					<xs:documentation>Malaysia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="MZ">
+				<xs:annotation>
+					<xs:documentation>Mozambique</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NA">
+				<xs:annotation>
+					<xs:documentation>Namibia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NE">
+				<xs:annotation>
+					<xs:documentation>Niger</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NG">
+				<xs:annotation>
+					<xs:documentation>Nigeria</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NI">
+				<xs:annotation>
+					<xs:documentation>Nicaragua</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NL">
+				<xs:annotation>
+					<xs:documentation>Netherlands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NO">
+				<xs:annotation>
+					<xs:documentation>Norway</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NP">
+				<xs:annotation>
+					<xs:documentation>Nepal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NR">
+				<xs:annotation>
+					<xs:documentation>Nauru</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="NZ">
+				<xs:annotation>
+					<xs:documentation>New Zealand</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OA">
+				<xs:annotation>
+					<xs:documentation>African Intellectual Property Organization (OAPI)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="OM">
+				<xs:annotation>
+					<xs:documentation>Oman</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PA">
+				<xs:annotation>
+					<xs:documentation>Panama</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PE">
+				<xs:annotation>
+					<xs:documentation>Peru</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PG">
+				<xs:annotation>
+					<xs:documentation>Papua New Guinea</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PH">
+				<xs:annotation>
+					<xs:documentation>Philippines</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PK">
+				<xs:annotation>
+					<xs:documentation>Pakistan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PL">
+				<xs:annotation>
+					<xs:documentation>Poland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PT">
+				<xs:annotation>
+					<xs:documentation>Portugal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PW">
+				<xs:annotation>
+					<xs:documentation>Palau</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="PY">
+				<xs:annotation>
+					<xs:documentation>Paraguay</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="QA">
+				<xs:annotation>
+					<xs:documentation>Qatar</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RO">
+				<xs:annotation>
+					<xs:documentation>Romania</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RU">
+				<xs:annotation>
+					<xs:documentation>Russian Federation</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="RW">
+				<xs:annotation>
+					<xs:documentation>Rwanda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SA">
+				<xs:annotation>
+					<xs:documentation>Saudi Arabia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SB">
+				<xs:annotation>
+					<xs:documentation>Solomon Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SC">
+				<xs:annotation>
+					<xs:documentation>Seychelles</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SD">
+				<xs:annotation>
+					<xs:documentation>Sudan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SE">
+				<xs:annotation>
+					<xs:documentation>Sweden</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SG">
+				<xs:annotation>
+					<xs:documentation>Singapore</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SH">
+				<xs:annotation>
+					<xs:documentation>Saint Helena</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SI">
+				<xs:annotation>
+					<xs:documentation>Slovenia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SK">
+				<xs:annotation>
+					<xs:documentation>Slovakia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SL">
+				<xs:annotation>
+					<xs:documentation>Sierra Leone</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SM">
+				<xs:annotation>
+					<xs:documentation>San Marino</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SN">
+				<xs:annotation>
+					<xs:documentation>Senegal</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SO">
+				<xs:annotation>
+					<xs:documentation>Somalia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SR">
+				<xs:annotation>
+					<xs:documentation>Suriname</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ST">
+				<xs:annotation>
+					<xs:documentation>Sao Tome and Principe</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SV">
+				<xs:annotation>
+					<xs:documentation>El Salvador</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SY">
+				<xs:annotation>
+					<xs:documentation>Syrian Arab Republic</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="SZ">
+				<xs:annotation>
+					<xs:documentation>Swaziland</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TC">
+				<xs:annotation>
+					<xs:documentation>Turks and Caicos Islands</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TD">
+				<xs:annotation>
+					<xs:documentation>Chad</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TG">
+				<xs:annotation>
+					<xs:documentation>Togo</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TH">
+				<xs:annotation>
+					<xs:documentation>Thailand</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TJ">
+				<xs:annotation>
+					<xs:documentation>Tajikistan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TL">
+				<xs:annotation>
+					<xs:documentation>Timor-Leste</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TM">
+				<xs:annotation>
+					<xs:documentation>Turkmenistan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TN">
+				<xs:annotation>
+					<xs:documentation>Tunisia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TO">
+				<xs:annotation>
+					<xs:documentation>Tonga</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TR">
+				<xs:annotation>
+					<xs:documentation>Turkey</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TT">
+				<xs:annotation>
+					<xs:documentation>Trinidad and Tobago</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TV">
+				<xs:annotation>
+					<xs:documentation>Tuvalu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TW">
+				<xs:annotation>
+					<xs:documentation>Taiwan, Province of China</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="TZ">
+				<xs:annotation>
+					<xs:documentation>United Republic of Tanzania</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UA">
+				<xs:annotation>
+					<xs:documentation>Ukraine</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UG">
+				<xs:annotation>
+					<xs:documentation>Uganda</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="US">
+				<xs:annotation>
+					<xs:documentation>United States of America</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UY">
+				<xs:annotation>
+					<xs:documentation>Uruguay</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="UZ">
+				<xs:annotation>
+					<xs:documentation>Uzbekistan</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VA">
+				<xs:annotation>
+					<xs:documentation>Holy See</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VC">
+				<xs:annotation>
+					<xs:documentation>Saint Vincent and the Grenadines</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VE">
+				<xs:annotation>
+					<xs:documentation>Venezuela</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VG">
+				<xs:annotation>
+					<xs:documentation>Virgin Islands (British)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VN">
+				<xs:annotation>
+					<xs:documentation>Viet Nam</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="VU">
+				<xs:annotation>
+					<xs:documentation>Vanuatu</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WO">
+				<xs:annotation>
+					<xs:documentation>World Intellectual Property Organization (WIPO) (International Bureau of)</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="WS">
+				<xs:annotation>
+					<xs:documentation>Samoa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YE">
+				<xs:annotation>
+					<xs:documentation>Yemen</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="YU">
+				<xs:annotation>
+					<xs:documentation>Yugoslavia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZA">
+				<xs:annotation>
+					<xs:documentation>South Africa</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZM">
+				<xs:annotation>
+					<xs:documentation>Zambia</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+			<xs:enumeration value="ZW">
+				<xs:annotation>
+					<xs:documentation>Zimbabwe</xs:documentation>
+				</xs:annotation>
+			</xs:enumeration>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>
