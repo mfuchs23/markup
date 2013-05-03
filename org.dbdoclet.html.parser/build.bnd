@@ -1,4 +1,4 @@
-version=6.1.1
+version=7.0.0
 Bundle-Name=org.dbdoclet.html.parser
 Bundle-SymbolicName=org.dbdoclet.html.parser
 Bundle-Version=${version}
@@ -7,4 +7,5 @@ Service-Component: OSGI-INF/component-description.xml
 Include-Resource: \
   OSGI-INF/component-description.xml=OSGI-INF/component-description.xml
 
-Export-Package: org.dbdoclet.html.parser.* ;version=${version}
+Export-Package: org.dbdoclet.html.parser.* ;version=${version}, \
+  org.dbdoclet.html.tokenizer.*; version=${version}

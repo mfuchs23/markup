@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HTML Parser
 Bundle-SymbolicName: org.dbdoclet.html.parser
-Bundle-Version: 6.1.0
-Export-Package: org.dbdoclet.trafo.html.parser,
- org.dbdoclet.trafo.html.tokenizer,
- org.dbdoclet.trafo.html.tokenizer.parser
+Bundle-Version: 7.0.0
+Export-Package: org.dbdoclet.html.parser,
+ org.dbdoclet.html.tokenizer,
+ org.dbdoclet.html.tokenizer.parser
 Import-Package: org.dbdoclet.tag,
  org.dbdoclet.tag.html
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
