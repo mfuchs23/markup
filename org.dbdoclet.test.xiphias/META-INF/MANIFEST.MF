@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.dbdoclet.test.xiphias
 Bundle-SymbolicName: org.dbdoclet.test.xiphias
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 6.1.0
 Fragment-Host: org.dbdoclet.xiphias;bundle-version="6.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.dbdoclet.xiphias,
