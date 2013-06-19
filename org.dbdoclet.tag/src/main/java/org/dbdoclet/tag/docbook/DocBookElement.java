@@ -20,8 +20,6 @@ public class DocBookElement extends ElementImpl {
 	private DocBookVersion docBookVersion = DocBookVersion.V5_0;
 	private boolean isContentModel = false;
 
-	private boolean isNew = true;
-
 	DocBookElement(String name) {
 		super(name);
 	}
@@ -74,10 +72,6 @@ public class DocBookElement extends ElementImpl {
 		}
 
 		return false;
-	}
-
-	public void closed() {
-		//
 	}
 
 	public String getCondition() {
@@ -150,14 +144,6 @@ public class DocBookElement extends ElementImpl {
 	public void isMixedContentModel(boolean isMixedContentModel) {
 
 		this.isContentModel = !isMixedContentModel;
-	}
-
-	public boolean isNew() {
-		return isNew;
-	}
-
-	public void isNew(boolean isNew) {
-		this.isNew = isNew;
 	}
 
 	public boolean isSection() {

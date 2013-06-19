@@ -117,7 +117,12 @@ public class DocumentImpl extends NodeImpl implements Document {
 	}
 
 	@Override
-	public ElementImpl getDocumentElement() {
+	public Element getDocumentElement() {
+		
+		if (documentElement == null) {
+			return (Element) getFirstElement();
+		}
+		
 		return documentElement;
 	}
 

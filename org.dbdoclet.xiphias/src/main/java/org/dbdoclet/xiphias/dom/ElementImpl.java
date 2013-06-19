@@ -461,4 +461,7 @@ public class ElementImpl extends NodeImpl implements Element {
 
 		return list;
 	}
+
+	public void closed() {
+	}
 }

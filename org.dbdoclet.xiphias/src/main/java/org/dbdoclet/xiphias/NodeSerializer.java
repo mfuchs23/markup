@@ -3,6 +3,7 @@ package org.dbdoclet.xiphias;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
@@ -33,9 +34,6 @@ public class NodeSerializer {
 
 	private static Log logger = LogFactory.getLog(NodeSerializer.class);
 
-	private ArrayList<ProgressListener> listeners;
-	private int literalContext = 0;
-
 	public static String toXML(Node node) {
 
 		try {
@@ -51,7 +49,6 @@ public class NodeSerializer {
 			return oops.getMessage();
 		}
 	}
-
 	public static void writeDocumentType(DocumentType docType, Writer out)
 			throws IOException {
 
@@ -83,6 +80,69 @@ public class NodeSerializer {
 
 		out.write(">");
 		out.write(Sfv.LSEP);
+	}
+
+	private ArrayList<ProgressListener> listeners;
+
+	private int literalContext = 0;
+
+	public void addProgressListener(ProgressListener listener) {
+		
+		if (listener == null) {
+			return;
+		}
+		
+		if (listeners == null) {
+			listeners = new ArrayList<ProgressListener>();
+		}
+		
+		listeners.add(listener);
+	}
+
+	private void fireProgressEvent(ProgressEvent event) {
+
+		if (listeners != null) {
+			for (ProgressListener listener : listeners) {
+				listener.progress(event);
+			}
+		}
+	}
+
+	private boolean isInsideLiteralElement() {
+		if (literalContext > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	protected boolean isInsideLiteralElement(Text text) {
+
+		Node parent = text.getParentNode();
+
+		while (parent != null) {
+
+			if (parent instanceof ElementImpl) {
+				ElementImpl elem = (ElementImpl) parent;
+				if (elem.isLiteral()) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private String resolveEntityReference(String entityName) {
+
+		if (entityName == null) {
+			return null;
+		}
+
+		if (entityName.equals("linefeed")) {
+			return "#x0A";
+		}
+
+		return entityName;
 	}
 
 	public void setProgressListeners(ArrayList<ProgressListener> listeners) {
@@ -279,55 +339,9 @@ public class NodeSerializer {
 		}
 	}
 
-	private boolean isInsideLiteralElement() {
-		if (literalContext > 0) {
-			return true;
-		}
-		return false;
-	}
-
-	protected boolean isInsideLiteralElement(Text text) {
-
-		Node parent = text.getParentNode();
-
-		while (parent != null) {
-
-			if (parent instanceof ElementImpl) {
-				ElementImpl elem = (ElementImpl) parent;
-				if (elem.isLiteral()) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	private String resolveEntityReference(String entityName) {
-
-		if (entityName == null) {
-			return null;
-		}
-
-		if (entityName.equals("linefeed")) {
-			return "#x0A";
-		}
-
-		return entityName;
-	}
-
 	public void write(Node node, Writer out, String indent) throws IOException {
 
 		write(node, out, false, indent);
-	}
-
-	private void fireProgressEvent(ProgressEvent event) {
-
-		if (listeners != null) {
-			for (ProgressListener listener : listeners) {
-				listener.progress(event);
-			}
-		}
 	}
 
 	private void writeElement(Node node, Writer out, boolean inMixedContent,
@@ -425,5 +439,8 @@ public class NodeSerializer {
 		if (elemImpl != null && elemImpl.isLiteral()) {
 			literalContext--;
 		}
+	}
+	public void write(Node node, OutputStream out) throws IOException {
+		write(node, new OutputStreamWriter(out));
 	}
 }

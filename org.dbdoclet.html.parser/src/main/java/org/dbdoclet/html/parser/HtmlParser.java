@@ -456,13 +456,13 @@ public class HtmlParser {
 		if (token.isJavadoc()) {
 
 			tagName = tagName.substring("javadoc:".length());
-			className = "org.dbdoclet.trafo.tag.javadoc."
+			className = "org.dbdoclet.tag.javadoc."
 					+ capFirstLetter(tagName);
 			logger.debug("Javadoc classname = '" + className + "'.");
 
 		} else {
 
-			className = "org.dbdoclet.trafo.tag.html."
+			className = "org.dbdoclet.tag.html."
 					+ capFirstLetter(tagName);
 		}
 
