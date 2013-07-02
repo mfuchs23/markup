@@ -12,10 +12,18 @@ import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
 
 public class DocBookFragment extends DocumentFragmentImpl {
 
-    public DocBookFragment() {
+	public DocBookFragment() {
 
-	super();
-	setNodeType(DOCUMENT_FRAGMENT_NODE);
-	setParentNode(null);
-    }
+		super();
+		setNodeType(DOCUMENT_FRAGMENT_NODE);
+		setParentNode(null);
+	}
+	
+	public Section addSection() {
+		
+		Section section = new Section();
+		section.setAttribute("xmlns", DocBookElement.DOCBOOK_NAMESPACE);
+		appendChild(section);
+		return section;
+	}
 }

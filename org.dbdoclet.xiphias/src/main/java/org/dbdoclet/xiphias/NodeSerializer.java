@@ -99,6 +99,19 @@ public class NodeSerializer {
 		listeners.add(listener);
 	}
 
+	public void addProgressListeners(ArrayList<ProgressListener> newListeners) {
+		
+		if (newListeners == null) {
+			return;
+		}
+		
+		if (listeners == null) {
+			listeners = new ArrayList<ProgressListener>();
+		}
+		
+		listeners.addAll(newListeners);
+	}
+
 	private void fireProgressEvent(ProgressEvent event) {
 
 		if (listeners != null) {
@@ -184,6 +197,10 @@ public class NodeSerializer {
 				out.close();
 			}
 		}
+	}
+
+	public void write(Node node, OutputStream out) throws IOException {
+		write(node, new OutputStreamWriter(out));
 	}
 
 	public void write(Node node, Writer out) throws IOException {
@@ -338,12 +355,12 @@ public class NodeSerializer {
 			break;
 		}
 	}
-
+	
 	public void write(Node node, Writer out, String indent) throws IOException {
 
 		write(node, out, false, indent);
 	}
-
+	
 	private void writeElement(Node node, Writer out, boolean inMixedContent,
 			String indent) throws IOException {
 
@@ -439,8 +456,5 @@ public class NodeSerializer {
 		if (elemImpl != null && elemImpl.isLiteral()) {
 			literalContext--;
 		}
-	}
-	public void write(Node node, OutputStream out) throws IOException {
-		write(node, new OutputStreamWriter(out));
 	}
 }

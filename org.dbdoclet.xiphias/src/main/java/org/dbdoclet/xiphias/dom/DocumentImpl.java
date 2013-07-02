@@ -210,6 +210,7 @@ public class DocumentImpl extends NodeImpl implements Document {
 
 	public void setDocumentElement(ElementImpl documentElement) {
 		this.documentElement = documentElement;
+		
 	}
 
 	public void setDoctype(DocumentType docType) {

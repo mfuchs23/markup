@@ -161,7 +161,12 @@ public class NodeImpl implements Node {
 		if (node != null) {
 
 			if (node instanceof Document) {
-				node = ((Document) node).getDocumentElement();
+				
+				Document doc = (Document) node;
+				
+				if (doc.getDocumentElement() != null) {
+					node = doc.getDocumentElement();
+				}
 			}
 
 			if (visitor != null) {

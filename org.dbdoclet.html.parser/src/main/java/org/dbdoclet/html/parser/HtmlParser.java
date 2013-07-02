@@ -57,6 +57,7 @@ import org.w3c.dom.NodeList;
  */
 public class HtmlParser {
 
+	private static final String HTML = "html";
 	public final static int CONTEXT_HTML = 1;
 	public final static int CONTEXT_BODY = 2;
 
@@ -114,16 +115,20 @@ public class HtmlParser {
 			ParserException, TokenizerException {
 
 		String htmlCode = FileServices.readToString(file);
-		HtmlDocument doc = new HtmlDocument();
-
-		parseInternal(htmlCode, doc, null);
-		return doc;
+		return parseDocument(htmlCode);
 	}
 
 	public HtmlDocument parseDocument(String htmlCode) throws ParserException,
 			TokenizerException {
 
 		HtmlDocument doc = new HtmlDocument();
+
+		if (parseInternal(htmlCode, doc, null)) {
+			return doc;
+		}
+
+		doc = new HtmlDocument();
+		setCodeContext(CONTEXT_BODY);
 		parseInternal(htmlCode, doc, null);
 		return doc;
 	}
@@ -208,6 +213,33 @@ public class HtmlParser {
 		codeContext = context;
 	}
 
+	public boolean isFragment(String htmlCode) throws TokenizerException {
+		
+		if (htmlCode == null) {
+			throw new IllegalArgumentException("The argument htmlCode must not be null!");
+		}
+	
+		Tokenizer tokenizer = new Tokenizer(htmlCode);
+		tokenizer.tokenize();
+		
+		Token token = null;
+		
+		while (tokenizer.hasNext()) {
+			
+			token = tokenizer.next();
+			
+			if (token.isTag()) {
+				if (HTML.equalsIgnoreCase(token.getTagName())) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+		}
+		
+		return true;
+	}
+	
 	private void addOpenTag(NodeImpl elem) {
 
 		String tag = elem.getNodeName();
@@ -494,7 +526,7 @@ public class HtmlParser {
 		return node;
 	}
 
-	private void parseInternal(String htmlCode, NodeImpl root, String skipTo)
+	private boolean parseInternal(String htmlCode, NodeImpl root, String skipTo)
 			throws ParserException, TokenizerException {
 
 		ProgressManager pm = new ProgressManager(listeners);
@@ -503,11 +535,12 @@ public class HtmlParser {
 
 		String errorBuffer = "";
 		boolean firstElement = true;
+		boolean rc = true;
 		int index = 0;
 		int nesting = 0;
 
 		if ((htmlCode == null) || htmlCode.equals("")) {
-			return;
+			return false;
 		}
 
 		boolean skip = false;
@@ -552,7 +585,7 @@ public class HtmlParser {
 					tagName = tagName.toLowerCase();
 				}
 
-				if ((tagName != null) && tagName.equals("html")) {
+				if ((tagName != null) && tagName.equals(HTML)) {
 
 					firstElement = false;
 
@@ -576,6 +609,8 @@ public class HtmlParser {
 								errorBuffer += "More...\n";
 							}
 						}
+						
+						rc = false;
 					}
 
 					continue;
@@ -737,6 +772,7 @@ public class HtmlParser {
 							if (currentNode instanceof HtmlDocument) {
 								((HtmlDocument) currentNode)
 										.setDocumentElement((ElementImpl) node);
+								currentNode.appendChild(node);								
 							} else {
 								currentNode.appendChild(node);
 								treeSize++;
@@ -799,6 +835,8 @@ public class HtmlParser {
 			root.appendChild(new CommentImpl("ERRORS:\n" + errorBuffer));
 			treeSize++;
 		}
+		
+		return rc;
 	}
 
 	private HtmlElement removeOpenTag() {
