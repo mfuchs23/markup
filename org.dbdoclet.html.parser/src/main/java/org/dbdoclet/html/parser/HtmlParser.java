@@ -645,7 +645,7 @@ public class HtmlParser {
 					continue;
 				}
 
-				if (((currentNode == root) || currentNode instanceof Body || currentNode instanceof Li)
+				if ((currentNode instanceof Body || currentNode instanceof Li)
 						&& (token.isWhitespace() == false)) {
 
 					P para = new P();

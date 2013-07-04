@@ -15,6 +15,11 @@ import org.w3c.dom.Node;
 
 public abstract class Inline2Element extends HtmlElement {
 
+	public Inline2Element() {
+		super();
+		setInlineElement(true);
+	}
+	
     @Override
 	protected boolean validate(HashMap<String, HashMap<String, String>> validParentMap) {
 

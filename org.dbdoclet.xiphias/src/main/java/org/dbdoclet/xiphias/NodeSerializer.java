@@ -236,7 +236,7 @@ public class NodeSerializer {
 			if (nodes != null) {
 				for (int i = 0; i < nodes.getLength(); i++) {
 					write(nodes.item(i), out, "");
-					out.write(Sfv.LSEP);
+					// out.write(Sfv.LSEP);
 				}
 			}
 
@@ -448,7 +448,7 @@ public class NodeSerializer {
 
 			out.write("/>");
 
-			if (inMixedContent == false) {
+			if (inMixedContent == false && elemImpl.isInlineElement() == false) {
 				out.write(Sfv.LSEP);
 			}
 		}

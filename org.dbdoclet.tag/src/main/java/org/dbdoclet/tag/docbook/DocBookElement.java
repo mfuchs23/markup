@@ -11,6 +11,8 @@ package org.dbdoclet.tag.docbook;
 import java.util.HashMap;
 
 import org.dbdoclet.xiphias.dom.ElementImpl;
+import org.w3c.dom.DocumentFragment;
+import org.w3c.dom.Node;
 
 public class DocBookElement extends ElementImpl {
 
@@ -42,7 +44,7 @@ public class DocBookElement extends ElementImpl {
 
 	public static boolean validate2(
 			HashMap<String, HashMap<String, Object>> validParentMap,
-			DocBookElement element, DocBookElement parent) {
+			DocBookElement element, Node node) {
 
 		if (validParentMap == null) {
 			throw new IllegalArgumentException(
@@ -54,20 +56,29 @@ public class DocBookElement extends ElementImpl {
 					"The argument element must not be null!");
 		}
 
-		if (parent == null) {
+		if (node == null) {
 			throw new IllegalArgumentException("Variable parent is null!");
 		}
 
-		if (element.isSection() == false && parent.isSection() == true) {
+		if (node instanceof DocumentFragment) {
+			return true;
+		}
+		
+		if (node instanceof DocBookElement) {
 
-			SectionElement sect = (SectionElement) parent;
+			DocBookElement dbParent = (DocBookElement) node;
 
-			if (sect.hasSectionChildren()) {
-				return false;
+			if (element.isSection() == false && dbParent.isSection() == true) {
+
+				SectionElement sect = (SectionElement) node;
+
+				if (sect.hasSectionChildren()) {
+					return false;
+				}
 			}
 		}
 
-		if (validParentMap.get(parent.getNodeName()) != null) {
+		if (validParentMap.get(node.getNodeName()) != null) {
 			return true;
 		}
 
@@ -311,7 +322,7 @@ public class DocBookElement extends ElementImpl {
 
 	public boolean validate2(
 			HashMap<String, HashMap<String, Object>> validParentMap) {
-		return validate2(validParentMap, this, (DocBookElement) getParentNode());
+		return validate2(validParentMap, this, getParentNode());
 	}
 
 	protected boolean isDocBook5() {

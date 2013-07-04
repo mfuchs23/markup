@@ -11,5 +11,9 @@ package org.dbdoclet.xiphias.dom;
 import org.w3c.dom.DocumentFragment;
 
 public class DocumentFragmentImpl extends ElementImpl implements DocumentFragment {
-    //
+ 
+	public DocumentFragmentImpl() {
+		setNodeName("#document-fragment");
+		setNodeType(NodeImpl.DOCUMENT_FRAGMENT_NODE);
+	}
 }

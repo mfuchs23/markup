@@ -9,3 +9,4 @@ Export-Package: org.dbdoclet.html.parser,
 Import-Package: org.dbdoclet.tag,
  org.dbdoclet.tag.html
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.junit

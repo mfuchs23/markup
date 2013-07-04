@@ -56,13 +56,12 @@ public class A extends InlineElement {
             return true;
         }
 
-        if (getParentNode() instanceof Body || getParentNode() instanceof DocumentFragmentImpl) {
+        if (getParentNode() instanceof Body) {
 
             Div div = new Div();
             div.appendChild(this);
 
             nodeStack.push(div);
-
             return true;
         }
 

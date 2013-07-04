@@ -1,9 +1,10 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: org.dbdoclet.svg
-Bundle-Version: 6.1.0
+Bundle-Version: 7.0.0
 Bundle-Name: org.dbdoclet.svg
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.dbdoclet,
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.apache.commons.logging;specification-version="1.0.4",
+ org.dbdoclet,
  org.dbdoclet.log,
  org.dbdoclet.option,
  org.dbdoclet.service,

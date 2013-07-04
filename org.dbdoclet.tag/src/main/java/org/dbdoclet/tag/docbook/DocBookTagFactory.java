@@ -11,6 +11,7 @@ package org.dbdoclet.tag.docbook;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.dbdoclet.service.FileServices;
@@ -1357,6 +1358,35 @@ public class DocBookTagFactory {
 
 		return false;
 	}
+	
+	public List<String> createImageDataFormatList(ArrayList<String> paramList, String src) {
+
+		ArrayList<String> formatList = new ArrayList<String>();
+
+		for (String param : paramList) {
+
+			if (param == null) {
+				continue;
+			}
+
+			if (formatList.contains(param.toUpperCase()) == false) {
+				formatList.add(param.toUpperCase());
+			}
+		}
+
+		if (src != null) {
+
+			String value = FileServices.getExtension(src);
+
+			if (value != null && value.trim().length() > 0
+					&& formatList.contains(value.toUpperCase()) == false) {
+				formatList.add(0, value.toUpperCase());
+			}
+		}
+
+		return formatList;
+	}
+
 	public void createFoImageData(DocBookElement parent,
 			DocBookTagFactory dbfactory, List<String> imageDataFormats,
 			Img img, File file) throws IOException {

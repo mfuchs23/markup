@@ -19,6 +19,7 @@ import org.dbdoclet.service.StringServices;
 import org.dbdoclet.xiphias.XmlServices;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
+import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
@@ -256,7 +257,19 @@ public class NodeImpl implements Node {
 		}
 
 		node.setParentNode(this);
-		childNodes.add(node);
+		
+		if (node instanceof DocumentFragment) {
+			
+			NodeList childList = node.getChildNodes();
+			
+			for (int i=0; i<childList.getLength(); i++) {
+				childNodes.add((NodeImpl) childList.item(i));
+			}
+			
+		} else {
+			
+			childNodes.add(node);
+		}
 
 		logger.debug("Appended child " + node + " to " + this + ".");
 
