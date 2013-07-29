@@ -313,7 +313,7 @@ public class DocBookElement extends ElementImpl {
 	public boolean validate(
 			HashMap<String, HashMap<String, Object>> invalidParentMap) {
 
-		if (invalidParentMap.get(getParentNode().getNodeName()) != null) {
+		if (getParentNode() == null || invalidParentMap.get(getParentNode().getNodeName()) != null) {
 			return false;
 		}
 

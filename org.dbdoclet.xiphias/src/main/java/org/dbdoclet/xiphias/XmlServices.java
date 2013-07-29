@@ -1544,11 +1544,15 @@ public class XmlServices {
 
 			Schema schema = SchemaFactory.newInstance(
 					XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(schemaUrl);
+			
 			factory = DocumentBuilderFactory.newInstance();
 			factory.setNamespaceAware(true);
 			factory.setSchema(schema);
 			factory.setXIncludeAware(true);
+
 			parser = factory.newDocumentBuilder();
+			parser.setEntityResolver(new CatalogResolver());
+			
 
 		} else {
 

@@ -448,7 +448,7 @@ public class NodeSerializer {
 
 			out.write("/>");
 
-			if (inMixedContent == false && elemImpl.isInlineElement() == false) {
+			if (inMixedContent == false && elemImpl != null && elemImpl.isInlineElement() == false) {
 				out.write(Sfv.LSEP);
 			}
 		}

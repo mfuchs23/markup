@@ -7,6 +7,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.dbdoclet.tag,
  org.dbdoclet.tag.dbd,
+ org.dbdoclet.tag.dita,
  org.dbdoclet.tag.docbook,
  org.dbdoclet.tag.html,
  org.dbdoclet.tag.javadoc,
