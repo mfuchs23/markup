@@ -266,8 +266,7 @@ public class HtmlTokenizer/*@bgen(jjtree)*/implements HtmlTokenizerTreeConstants
     }
   }
 
-  @SuppressWarnings("unused")
-final public Token ncname() throws ParseException {
+  final public Token ncname() throws ParseException {
  /*@bgen(jjtree) ncname */
   SimpleNode jjtn000 = new SimpleNode(JJTNCNAME);
   boolean jjtc000 = true;
@@ -299,8 +298,7 @@ final public Token ncname() throws ParseException {
     }
   }
 
-  @SuppressWarnings("unused")
-final public Token attrName() throws ParseException {
+  final public Token attrName() throws ParseException {
  /*@bgen(jjtree) attrName */
   SimpleNode jjtn000 = new SimpleNode(JJTATTRNAME);
   boolean jjtc000 = true;
@@ -325,8 +323,7 @@ final public Token attrName() throws ParseException {
     throw new Error("Missing return statement in function");
   }
 
-  @SuppressWarnings("unused")
-final public Token attrValue() throws ParseException {
+  final public Token attrValue() throws ParseException {
  /*@bgen(jjtree) attrValue */
   SimpleNode jjtn000 = new SimpleNode(JJTATTRVALUE);
   boolean jjtc000 = true;

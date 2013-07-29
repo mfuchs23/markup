@@ -34,4 +34,4 @@ public interface HtmlTokenizerTreeConstants
     "trace",
   };
 }
-/* JavaCC - OriginalChecksum=e07756ec0e61b98ddbcd44676fb4d021 (do not edit this line) */
+/* JavaCC - OriginalChecksum=0edda5fcc9575e799cc4b360865f41f4 (do not edit this line) */
