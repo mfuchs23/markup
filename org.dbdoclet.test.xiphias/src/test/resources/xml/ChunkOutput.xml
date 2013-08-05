@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+	<info>
+		<title>Büchtötel</title>
+	</info>
+	<chapter>
+		<title>Kapitel 1</title>
+		<section>
+			<title>Kapitel 1.1</title>
+			<para>Umlaute ÄÖÜßäöü</para>
+		</section>
+	</chapter>
+	<chapter>
+		<title>Kapitel 2</title>
+		<section>
+			<title>Kapitel 2.1</title>
+			<para></para>
+		</section>
+	</chapter>
+</book>
