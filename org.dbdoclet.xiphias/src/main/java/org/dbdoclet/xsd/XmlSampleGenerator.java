@@ -233,7 +233,7 @@ public class XmlSampleGenerator {
 		traverse(masterDoc.getDocumentElement(), documentElement, doc);
 		postProcess(documentElement.getTagName());
 
-		return NodeSerializer.toXML(doc);
+		return new NodeSerializer().toXML(doc);
 	}
 
 	public Element[] getRootElements() {
@@ -516,7 +516,6 @@ public class XmlSampleGenerator {
 					XsdMetaData xsdData = (XsdMetaData) child
 							.getUserData("xsd");
 
-					String type = xsdData.getType();
 					String suchfeld = child.getAttribute("suchfeld");
 					System.out.println("Suchfeld=" + suchfeld);
 
@@ -843,7 +842,6 @@ public class XmlSampleGenerator {
 	private void createProcessorChild(StringBuilder buffer, Element parent,
 			Element child) {
 
-		String tagName = parent.getTagName();
 		String varName = StringServices.lowerFirstLetter(parent.getTagName());
 
 		String childTagName = child.getTagName();

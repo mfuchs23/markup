@@ -71,11 +71,10 @@ public class ElementImpl extends NodeImpl implements Element {
 
 		return buffer;
 	}
+	
 	private int formatType = FORMAT_CONTENT;
 	private boolean isLiteral = false;
 	private Map<String, AttrImpl> attributes = new TreeMap<String, AttrImpl>();
-
-	private boolean inlineElement;
 
 	public ElementImpl() {
 		super();
@@ -317,10 +316,6 @@ public class ElementImpl extends NodeImpl implements Element {
 		return false;
 	}
 
-	public boolean isInlineElement() {
-		return inlineElement;
-	}
-
 	public boolean isLiteral() {
 		return isLiteral;
 	}
@@ -434,10 +429,6 @@ public class ElementImpl extends NodeImpl implements Element {
 			boolean isId) throws DOMException {
 		// TODO Auto-generated method stub
 
-	}
-
-	public void setInlineElement(boolean inlineElement) {
-		this.inlineElement = inlineElement;
 	}
 
 	public NodeImpl setTrafoAttributes(Map<String, AttrImpl> nattrs) {

@@ -80,7 +80,7 @@ public class XmlFormatter {
 			ParserConfigurationException {
 
 		Document doc = XmlServices.parse(file);
-		return NodeSerializer.toXML(doc);
+		return new NodeSerializer().toXML(doc);
 	}
 
 }

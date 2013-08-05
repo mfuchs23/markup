@@ -18,5 +18,5 @@ Import-Package: org.apache.commons.codec.binary,
 Export-Package: org.dbdoclet.format,
  org.dbdoclet.xiphias,
  org.dbdoclet.xiphias.dom
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ClassPath: .

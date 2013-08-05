@@ -18,6 +18,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -627,7 +628,17 @@ public class XmlServices {
 		return parse(source, validate, null);
 	}
 
-	public static Document parse(File source, boolean validate, URL schemaUrl)
+	public static Document parse(File file, boolean validate, URL schemaUrl)
+			throws IOException, SAXException, ParserConfigurationException {
+
+		String encoding = getEncoding(file);
+		InputStreamReader reader = new InputStreamReader(new FileInputStream(file), encoding);
+		InputSource inputSource = new InputSource(reader);
+		inputSource.setSystemId(file.getCanonicalPath());
+		return parse(inputSource, validate, null);
+	}
+	
+	public static Document parse(InputSource source, boolean validate, URL schemaUrl)
 			throws IOException, SAXException, ParserConfigurationException {
 
 		if (source == null) {
@@ -662,7 +673,7 @@ public class XmlServices {
 			parser.setEntityResolver(new CatalogResolver());
 		}
 
-		XmlValidationResult result = new XmlValidationResult(source,
+		XmlValidationResult result = new XmlValidationResult(new File(source.getSystemId()),
 				Locale.getDefault());
 		parser.setErrorHandler(result);
 

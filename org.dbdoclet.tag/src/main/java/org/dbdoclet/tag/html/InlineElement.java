@@ -18,7 +18,7 @@ abstract public class InlineElement extends HtmlElement {
 
 	public InlineElement() {
 		super();
-		setInlineElement(true);
+		setFormatType(FORMAT_INLINE);
 	}
 	
 	@Override

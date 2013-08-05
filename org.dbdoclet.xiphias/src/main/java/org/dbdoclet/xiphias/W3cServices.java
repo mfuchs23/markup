@@ -386,4 +386,12 @@ public class W3cServices {
 
         return buffer;
     }
+
+	public static void setAttribute(Node node, String attr, String namespace) {
+
+		if (node instanceof Element) {
+			Element elem = (Element) node;
+			elem.setAttribute(attr, namespace);
+		}
+	}
 }

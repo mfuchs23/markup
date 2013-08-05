@@ -8,6 +8,8 @@ import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +20,7 @@ import org.dbdoclet.xiphias.dom.DocumentImpl;
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
 import org.dbdoclet.xiphias.dom.TextImpl;
+import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
@@ -32,83 +35,97 @@ import org.w3c.dom.Text;
 
 public class NodeSerializer {
 
+	private static final String INDENT = "  ";
+
 	private static Log logger = LogFactory.getLog(NodeSerializer.class);
 
-	public static String toXML(Node node) {
+	private HashSet<String> chunkElementSet;
+	private HashMap<String, Integer> chunkCounterMap;
+	private ArrayList<ProgressListener> listeners;
+	private int literalContext = 0;
+	private File file;
+	private String encoding;
+	private String namespace;
 
-		try {
-
-			StringWriter buffer = new StringWriter();
-
-			NodeSerializer serializer = new NodeSerializer();
-			serializer.write(node, buffer);
-			return buffer.toString();
-
-		} catch (IOException oops) {
-
-			return oops.getMessage();
-		}
+	public NodeSerializer() {
+		chunkElementSet = new HashSet<String>();
+		chunkCounterMap = new HashMap<String, Integer>();
 	}
-	public static void writeDocumentType(DocumentType docType, Writer out)
+
+	private Writer addChunk(String indent, Node node, Writer out)
 			throws IOException {
 
-		out.write("<!DOCTYPE " + docType.getName());
-
-		if (docType.getPublicId() != null
-				&& docType.getPublicId().trim().length() > 0) {
-			out.write(" PUBLIC '" + docType.getPublicId() + "'");
-		} else {
-			out.write(" SYSTEM");
+		if (file == null) {
+			return out;
 		}
 
-		out.write(" '" + docType.getSystemId() + "'");
+		File baseDir = file.getParentFile();
 
-		NamedNodeMap entityMap = docType.getEntities();
+		String tagName = node.getNodeName();
+		Integer tagCounter = chunkCounterMap.get(tagName);
 
-		if (entityMap != null && entityMap.getLength() > 0) {
+		if (tagCounter == null) {
+			tagCounter = new Integer(1);
+			chunkCounterMap.put(tagName, tagCounter);
+		} else {
+			tagCounter++;
+		}
 
-			out.write("[\n");
+		String fileName = String.valueOf(tagCounter);
+		Node parentNode = node.getParentNode();
+		while (parentNode != null) {
 
-			for (int i = 0; i < entityMap.getLength(); i++) {
-				Entity entity = (Entity) entityMap.item(i);
-				out.write("<!ENTITY " + entity.getNodeName() + " SYSTEM \""
-						+ entity.getSystemId() + "\">\n");
+			tagCounter = chunkCounterMap.get(parentNode.getNodeName());
+			if (tagCounter != null) {
+				fileName = String.format("%d.%s", tagCounter, fileName);
 			}
 
-			out.write("]");
+			parentNode = parentNode.getParentNode();
 		}
 
-		out.write(">");
-		out.write(Sfv.LSEP);
+		fileName = String.format("%s-%s.xml", tagName, fileName);
+		File incFile = new File(baseDir, fileName);
+
+		out.write(indent + "<xi:include href=\""
+				+ XmlServices.textToXml(fileName) + "\"/>\n");
+
+		out = new OutputStreamWriter(new FileOutputStream(incFile), encoding);
+		writeXmlDeclaration(out);
+		
+		if (namespace != null) {
+			W3cServices.setAttribute(node, "xmlns", namespace);
+		}
+		
+		return out;
 	}
 
-	private ArrayList<ProgressListener> listeners;
-
-	private int literalContext = 0;
+	public void addChunkElement(String nodeName) {
+		chunkElementSet.add(nodeName);
+	}
 
 	public void addProgressListener(ProgressListener listener) {
-		
+
 		if (listener == null) {
 			return;
 		}
-		
+
 		if (listeners == null) {
 			listeners = new ArrayList<ProgressListener>();
 		}
-		
+
 		listeners.add(listener);
 	}
 
 	public void addProgressListeners(ArrayList<ProgressListener> newListeners) {
-		
+
 		if (newListeners == null) {
 			return;
 		}
-		
+
 		if (listeners == null) {
 			listeners = new ArrayList<ProgressListener>();
 		}
-		
+
 		listeners.addAll(newListeners);
 	}
 
@@ -162,6 +179,22 @@ public class NodeSerializer {
 		this.listeners = listeners;
 	}
 
+	public String toXML(Node node) {
+
+		try {
+
+			StringWriter buffer = new StringWriter();
+
+			NodeSerializer serializer = new NodeSerializer();
+			serializer.write(node, buffer);
+			return buffer.toString();
+
+		} catch (IOException oops) {
+
+			return oops.getMessage();
+		}
+	}
+
 	public void write(Node node, File file) throws IOException {
 		write(node, file, "UTF-8");
 	}
@@ -183,19 +216,22 @@ public class NodeSerializer {
 
 		try {
 
+			this.file = file;
+			this.encoding = encoding;
+
 			fos = new FileOutputStream(file);
 			out = new OutputStreamWriter(fos, encoding);
 			write(node, out, "");
 
 		} finally {
 
-			/*
-			 * if (fos != null) { fos.close(); }
-			 */
-
 			if (out != null) {
 				out.close();
 			}
+
+			this.file = null;
+			this.encoding = "UTF-8";
+			this.namespace = null;
 		}
 	}
 
@@ -220,149 +256,162 @@ public class NodeSerializer {
 					"The argument out must not be null!");
 		}
 
-		NodeList nodes;
-
 		ProgressEvent event = new ProgressEvent(node.toString());
 		fireProgressEvent(event);
+
+		if (chunkElementSet.contains(node.getNodeName())) {
+			logger.info(String.format("Chunking at node %s", node.getNodeName()));
+			out = addChunk(indent, node, out);
+			indent = "";
+		}
 
 		// logger.debug("node=" + node);
 
 		switch (node.getNodeType()) {
 
 		case Node.DOCUMENT_FRAGMENT_NODE:
-
-			nodes = node.getChildNodes();
-
-			if (nodes != null) {
-				for (int i = 0; i < nodes.getLength(); i++) {
-					write(nodes.item(i), out, "");
-					// out.write(Sfv.LSEP);
-				}
-			}
-
+			writeFragmentNode(node, out);
 			break;
 
 		case Node.DOCUMENT_NODE:
-
-			Document tdoc = (Document) node;
-			Element documentElement = tdoc.getDocumentElement();
-
-			if (documentElement != null) {
-
-				if (tdoc instanceof DocumentImpl) {
-					out.write(((DocumentImpl) tdoc).createXmlDeclaration());
-				} else {
-					out.write("<?xml version='1.0'?>" + Sfv.LSEP);
-				}
-
-				DocumentType docType = tdoc.getDoctype();
-
-				if (docType != null) {
-					writeDocumentType(docType, out);
-				}
-
-				write(documentElement, out, "");
-
-			} else {
-
-				NodeList children = tdoc.getChildNodes();
-
-				if (children != null && children.getLength() != 0) {
-					for (int i = 0; i < children.getLength(); i++) {
-						write(children.item(i), out, "");
-						out.write(Sfv.LSEP);
-					}
-				}
-			}
-
+			writeDocumentNode(node, out);
 			break;
 
 		case Node.DOCUMENT_TYPE_NODE:
-			writeDocumentType((DocumentType) node, out);
+			writeDocumentTypeNode((DocumentType) node, out);
 			break;
 
 		case Node.ENTITY_NODE:
-			Entity entity = (Entity) node;
-			out.write("&" + entity.getNodeName() + ";");
+			writeEntityNode(node, out);
 			break;
 
 		case Node.ENTITY_REFERENCE_NODE:
-			EntityReference entityReference = (EntityReference) node;
-			out.write("&"
-					+ resolveEntityReference(entityReference.getNodeName())
-					+ ";");
+			writeEntityReferenceNode(node, out);
 			break;
 
 		case Node.ELEMENT_NODE:
 
 			try {
-				writeElement(node, out, inMixedContent, indent);
+				writeElementNode(node, out, inMixedContent, indent);
 			} catch (StackOverflowError oops) {
-				logger.fatal("[NodeSerializer.write] StackOverflowError. Possibly recursive structure detected!!! Node: "
+				logger.fatal("[NodeSerializer.write] StackOverflowError. Self referencing recursive structure detected!!! Node: "
 						+ node.toString());
 			}
 
 			break;
 
 		case Node.TEXT_NODE:
-
-			Text text = (Text) node;
-			String data = text.getData();
-
-			// logger.info("text=[" + data + "]");
-
-			if (data != null) {
-
-				if (isInsideLiteralElement() == false) {
-					data = XmlServices.normalizeText(data);
-				}
-			}
-
-			if (text instanceof TextImpl) {
-
-				if (((TextImpl) text).isRawData() == true) {
-					out.write(data);
-				} else {
-					out.write(XmlServices.textToXml(data));
-				}
-
-			} else {
-				out.write(XmlServices.textToXml(data));
-			}
-
+			writeTextNode(node, out);
 			break;
 
-		/*
-		 * case Node.CDATA_SECTION_NODE:
-		 * 
-		 * CDATASection cdata = (CDATASection) node; out.write("<![CDATA[" +
-		 * cdata.getData() + "]]>"); break;
-		 */
+		case Node.CDATA_SECTION_NODE:
+			writeDataSectionNode(node, out);
+			break;
 
 		case Node.COMMENT_NODE:
-
-			Comment comment = (Comment) node;
-			out.write(indent + "<!--" + comment.getData() + "-->");
-			out.write(Sfv.LSEP);
+			writeCommentNode(node, out, indent);
 			break;
 
 		case Node.PROCESSING_INSTRUCTION_NODE:
-
-			ProcessingInstruction pi = (ProcessingInstruction) node;
-			out.write(indent + "<?" + pi.getTarget() + " " + pi.getData()
-					+ "?>");
-			out.write(Sfv.LSEP);
+			writeProcessingInstructionNode(node, out, indent);
 			break;
 		}
-	}
-	
-	public void write(Node node, Writer out, String indent) throws IOException {
 
+		if (chunkElementSet.contains(node.getNodeName()) && out != null) {
+			out.close();
+		}
+	}
+
+	public void write(Node node, Writer out, String indent) throws IOException {
 		write(node, out, false, indent);
 	}
-	
-	private void writeElement(Node node, Writer out, boolean inMixedContent,
-			String indent) throws IOException {
+
+	private void writeCommentNode(Node node, Writer out, String indent)
+			throws IOException {
+		Comment comment = (Comment) node;
+		out.write(indent + "<!--" + comment.getData() + "-->");
+		out.write(Sfv.LSEP);
+	}
+
+	private void writeDataSectionNode(Node node, Writer out) throws IOException {
+		CDATASection cdata = (CDATASection) node;
+		out.write("<![CDATA[" + cdata.getData() + "]]>");
+	}
+
+	private void writeDocumentNode(Node node, Writer out) throws IOException {
+		Document tdoc = (Document) node;
+		Element documentElement = tdoc.getDocumentElement();
+
+		if (documentElement != null) {
+
+			if (tdoc instanceof DocumentImpl) {
+				out.write(((DocumentImpl) tdoc).createXmlDeclaration());
+			} else {
+				writeXmlDeclaration(out);
+			}
+
+			DocumentType docType = tdoc.getDoctype();
+
+			if (docType != null) {
+				writeDocumentTypeNode(docType, out);
+			}
+
+			namespace = documentElement.getAttribute("xmlns");
+			documentElement.setAttribute("xmlns:xi","http://www.w3.org/2001/XInclude");
+			write(documentElement, out, "");
+
+		} else {
+
+			NodeList children = tdoc.getChildNodes();
+
+			if (children != null && children.getLength() != 0) {
+				for (int i = 0; i < children.getLength(); i++) {
+					write(children.item(i), out, "");
+					out.write(Sfv.LSEP);
+				}
+			}
+		}
+	}
+
+	private void writeXmlDeclaration(Writer out) throws IOException {
+		out.write("<?xml version='1.0' encoding='" + encoding + "'?>" + Sfv.LSEP);
+	}
+
+	public void writeDocumentTypeNode(DocumentType docType, Writer out)
+			throws IOException {
+
+		out.write("<!DOCTYPE " + docType.getName());
+
+		if (docType.getPublicId() != null
+				&& docType.getPublicId().trim().length() > 0) {
+			out.write(" PUBLIC '" + docType.getPublicId() + "'");
+		} else {
+			out.write(" SYSTEM");
+		}
+
+		out.write(" '" + docType.getSystemId() + "'");
+
+		NamedNodeMap entityMap = docType.getEntities();
+
+		if (entityMap != null && entityMap.getLength() > 0) {
+
+			out.write("[\n");
+
+			for (int i = 0; i < entityMap.getLength(); i++) {
+				Entity entity = (Entity) entityMap.item(i);
+				out.write("<!ENTITY " + entity.getNodeName() + " SYSTEM \""
+						+ entity.getSystemId() + "\">\n");
+			}
+
+			out.write("]");
+		}
+
+		out.write(">");
+		out.write(Sfv.LSEP);
+	}
+
+	private void writeElementNode(Node node, Writer out,
+			boolean inMixedContent, String indent) throws IOException {
 
 		Element elem = (Element) node;
 		String name = elem.getNodeName();
@@ -427,7 +476,7 @@ public class NodeSerializer {
 			}
 
 			for (int i = 0; i < children.getLength(); i++) {
-				write(children.item(i), out, hasMixedContent, indent + "  ");
+				write(children.item(i), out, hasMixedContent, indent + INDENT);
 			}
 
 			if (hasMixedContent == false) {
@@ -448,13 +497,70 @@ public class NodeSerializer {
 
 			out.write("/>");
 
-			if (inMixedContent == false && elemImpl != null && elemImpl.isInlineElement() == false) {
+			if (inMixedContent == false && (elemImpl == null
+					|| elemImpl.getFormatType() != NodeImpl.FORMAT_INLINE)) {
 				out.write(Sfv.LSEP);
 			}
 		}
 
 		if (elemImpl != null && elemImpl.isLiteral()) {
 			literalContext--;
+		}
+	}
+
+	private void writeEntityNode(Node node, Writer out) throws IOException {
+		Entity entity = (Entity) node;
+		out.write("&" + entity.getNodeName() + ";");
+	}
+
+	private void writeEntityReferenceNode(Node node, Writer out)
+			throws IOException {
+		EntityReference entityReference = (EntityReference) node;
+		out.write("&" + resolveEntityReference(entityReference.getNodeName())
+				+ ";");
+	}
+
+	private void writeFragmentNode(Node node, Writer out) throws IOException {
+		NodeList nodes;
+		nodes = node.getChildNodes();
+
+		if (nodes != null) {
+			for (int i = 0; i < nodes.getLength(); i++) {
+				write(nodes.item(i), out, "");
+			}
+		}
+	}
+
+	private void writeProcessingInstructionNode(Node node, Writer out,
+			String indent) throws IOException {
+		ProcessingInstruction pi = (ProcessingInstruction) node;
+		out.write(indent + "<?" + pi.getTarget() + " " + pi.getData() + "?>");
+		out.write(Sfv.LSEP);
+	}
+
+	private void writeTextNode(Node node, Writer out) throws IOException {
+		Text text = (Text) node;
+		String data = text.getData();
+
+		// logger.info("text=[" + data + "]");
+
+		if (data != null) {
+
+			if (isInsideLiteralElement() == false) {
+				data = XmlServices.normalizeText(data);
+			}
+		}
+
+		if (text instanceof TextImpl) {
+
+			if (((TextImpl) text).isRawData() == true) {
+				out.write(data);
+			} else {
+				out.write(XmlServices.textToXml(data));
+			}
+
+		} else {
+			out.write(XmlServices.textToXml(data));
 		}
 	}
 }

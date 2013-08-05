@@ -623,7 +623,7 @@ public class DocBookTagFactory {
 
 		Link link = new Link(label, ref);
 		link.setDocBookVersion(docBookVersion);
-		return NodeSerializer.toXML(link);
+		return new NodeSerializer().toXML(link);
 	}
 
 	public ListItem createListItem() {

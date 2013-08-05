@@ -18,7 +18,7 @@ public class NodeImplTests {
 		NodeImpl em = new ElementImpl("em");
 		root.replaceChild(em, span);
 		
-		String buffer = NodeSerializer.toXML(root);
+		String buffer = new NodeSerializer().toXML(root);
 		System.out.println(buffer);
 	}
 
