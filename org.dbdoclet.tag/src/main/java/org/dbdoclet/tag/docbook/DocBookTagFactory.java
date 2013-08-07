@@ -1359,11 +1359,11 @@ public class DocBookTagFactory {
 		return false;
 	}
 	
-	public List<String> createImageDataFormatList(ArrayList<String> paramList, String src) {
+	public List<String> createImageDataFormatList(List<String> list, String src) {
 
 		ArrayList<String> formatList = new ArrayList<String>();
 
-		for (String param : paramList) {
+		for (String param : list) {
 
 			if (param == null) {
 				continue;

@@ -8,6 +8,7 @@
  */
 package org.dbdoclet.tag.docbook;
 
+import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.DocumentImpl;
 
 public class DocBookDocument extends DocumentImpl {
@@ -22,8 +23,9 @@ public class DocBookDocument extends DocumentImpl {
         
         if (documentElement.isDocBook5()) {
 
-            documentElement.setAttribute("xmlns", DocBookElement.DOCBOOK_NAMESPACE);
-            documentElement.setAttribute("xmlns:xl", DocBookElement.XLINK_NAMESPACE);
+            documentElement.setAttribute("xmlns", XmlConstants.NAMESPACE_DOCBOOK);
+            documentElement.setAttribute("xmlns:xl", XmlConstants.NAMESPACE_XLINK);
+            documentElement.setAttribute("xmlns:xi", XmlConstants.NAMESPACE_XINCLUDE);
             documentElement.setAttribute("version", "5.0");
         }
     }

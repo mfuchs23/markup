@@ -15,7 +15,7 @@
   </category>
 
   <root>
-    <priority value ="warn"></priority>
+    <priority value ="error"></priority>
     <appender-ref ref="console"/>
   </root>
 </log4j:configuration>

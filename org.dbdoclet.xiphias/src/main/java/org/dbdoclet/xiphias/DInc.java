@@ -165,7 +165,8 @@ public class DInc {
 		}
 
 		NodeSerializer serializer = new NodeSerializer();
-		serializer.write(doc, xmlFile, "UTF-8");
+		serializer.setEncoding("UTF-8");
+		serializer.write(doc, xmlFile);
 	}
 
 	private void checkMids(Node node) {

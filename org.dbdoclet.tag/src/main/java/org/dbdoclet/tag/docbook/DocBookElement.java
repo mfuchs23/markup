@@ -16,9 +16,6 @@ import org.w3c.dom.Node;
 
 public class DocBookElement extends ElementImpl {
 
-	public static final String DOCBOOK_NAMESPACE = "http://docbook.org/ns/docbook";
-	public static final String XLINK_NAMESPACE = "http://www.w3.org/1999/xlink";
-
 	private DocBookVersion docBookVersion = DocBookVersion.V5_0;
 	private boolean isContentModel = false;
 

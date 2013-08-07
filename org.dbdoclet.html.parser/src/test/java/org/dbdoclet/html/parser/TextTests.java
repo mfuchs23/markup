@@ -12,7 +12,7 @@ public class TextTests extends AbstractTests {
     public void pureShortText() {
        
     	HtmlFragment fragment = parseFragment("String");
-    	String buffer = NodeSerializer.toXML(fragment);
+    	String buffer = new NodeSerializer().toXML(fragment);
     	assertEquals("String", buffer);
     }
 }

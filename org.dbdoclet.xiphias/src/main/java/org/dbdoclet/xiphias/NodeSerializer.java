@@ -9,7 +9,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Stack;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,68 +39,145 @@ public class NodeSerializer {
 
 	private static Log logger = LogFactory.getLog(NodeSerializer.class);
 
-	private HashSet<String> chunkElementSet;
-	private HashMap<String, Integer> chunkCounterMap;
+	private HashMap<String, Integer> chunkElementSet;
+	private HashMap<Node, Writer> chunkOutMap;
+	private Stack<Integer> chunkElementStack;
 	private ArrayList<ProgressListener> listeners;
 	private int literalContext = 0;
-	private File file;
-	private String encoding;
-	private String namespace;
+	private String encoding = "UTF-8";
+	private File systemId;
+
+	private Element documentElement;
 
 	public NodeSerializer() {
-		chunkElementSet = new HashSet<String>();
-		chunkCounterMap = new HashMap<String, Integer>();
+		chunkElementSet = new HashMap<String, Integer>();
+		chunkOutMap = new HashMap<Node, Writer>();
+		chunkElementStack = new Stack<Integer>();
 	}
 
 	private Writer addChunk(String indent, Node node, Writer out)
 			throws IOException {
 
-		if (file == null) {
+		if (systemId == null) {
 			return out;
 		}
 
-		File baseDir = file.getParentFile();
+		File baseDir = systemId.getParentFile();
 
 		String tagName = node.getNodeName();
-		Integer tagCounter = chunkCounterMap.get(tagName);
+		
+		int maxDepth = chunkElementSet.get(tagName);
+		int depth = getDepth(node);
 
-		if (tagCounter == null) {
-			tagCounter = new Integer(1);
-			chunkCounterMap.put(tagName, tagCounter);
-		} else {
-			tagCounter++;
+		/* Die Schachtelungstiefe ist tiefer als der eingestellte Wert für die maximale Tiefe. 
+		 * Es wird kein Chunk erstellt.
+		 */
+		if (depth > maxDepth) {
+			return out;
 		}
-
-		String fileName = String.valueOf(tagCounter);
-		Node parentNode = node.getParentNode();
-		while (parentNode != null) {
-
-			tagCounter = chunkCounterMap.get(parentNode.getNodeName());
-			if (tagCounter != null) {
-				fileName = String.format("%d.%s", tagCounter, fileName);
+		
+		int pos = getChunkIndex(node);
+		chunkElementStack.push(new Integer(pos));
+		
+		String fileName = "";
+		
+		for (Integer i : chunkElementStack) {
+			
+			if (fileName.equals("")) {
+				fileName = String.valueOf(i);
+			} else {
+				fileName = String.format("%s.%d", fileName, i);
 			}
-
-			parentNode = parentNode.getParentNode();
 		}
-
+		
 		fileName = String.format("%s-%s.xml", tagName, fileName);
+
 		File incFile = new File(baseDir, fileName);
+		logger.debug(String.format("Creating chunk file %s", fileName));
 
 		out.write(indent + "<xi:include href=\""
 				+ XmlServices.textToXml(fileName) + "\"/>\n");
 
 		out = new OutputStreamWriter(new FileOutputStream(incFile), encoding);
 		writeXmlDeclaration(out);
-		
-		if (namespace != null) {
-			W3cServices.setAttribute(node, "xmlns", namespace);
+
+		if (node instanceof Element) {
+
+			Element element = (Element) node;
+
+			if (documentElement != null) {
+				W3cServices.copyNamespaces(documentElement, element);
+			}
+			
+			String version = documentElement.getAttribute("version");			
+			if (version != null) {
+				element.setAttribute("version", version);
+			}
+			
+			if (W3cServices.hasNamespace(element, XmlConstants.NAMESPACE_XINCLUDE) == false) {
+				W3cServices.setAttribute(node, "xmlns:xi", XmlConstants.NAMESPACE_XINCLUDE);
+			}
 		}
-		
+
+		chunkOutMap.put(node, out);
 		return out;
 	}
 
+	private int getChunkIndex(Node node) {
+	
+		Node parentNode = node.getParentNode();
+		
+		if (parentNode == null) {
+			return 0;
+		}
+		
+		NodeList childList = parentNode.getChildNodes();
+		int pos = 0;
+
+		for (int i = 0; i < childList.getLength(); i++) {
+			
+			Node child = childList.item(i);
+			if (chunkElementSet.get(child.getNodeName()) != null) {
+				pos++;
+			}
+			
+			if (child == node) {
+				break;
+			}
+		}
+		
+		return pos;
+	}
+
+	private int getDepth(Node node) {
+
+		int depth = 0;
+		String tagName = node.getNodeName();
+
+		if (tagName == null) {
+			return depth;
+		}
+
+		Node parentNode = node;
+
+		while (parentNode != null) {
+
+			if (tagName.equals(parentNode.getNodeName())) {
+				depth++;
+			}
+
+			parentNode = parentNode.getParentNode();
+		}
+
+		return depth;
+	}
+
 	public void addChunkElement(String nodeName) {
-		chunkElementSet.add(nodeName);
+		addChunkElement(nodeName, 1);
+	}
+
+	public void addChunkElement(String nodeName, int depth) {
+		chunkElementSet.put(nodeName, depth);
 	}
 
 	public void addProgressListener(ProgressListener listener) {
@@ -196,10 +273,6 @@ public class NodeSerializer {
 	}
 
 	public void write(Node node, File file) throws IOException {
-		write(node, file, "UTF-8");
-	}
-
-	public void write(Node node, File file, String encoding) throws IOException {
 
 		if (node == null) {
 			throw new IllegalArgumentException(
@@ -216,9 +289,7 @@ public class NodeSerializer {
 
 		try {
 
-			this.file = file;
-			this.encoding = encoding;
-
+			this.systemId = file;
 			fos = new FileOutputStream(file);
 			out = new OutputStreamWriter(fos, encoding);
 			write(node, out, "");
@@ -229,9 +300,9 @@ public class NodeSerializer {
 				out.close();
 			}
 
-			this.file = null;
+			this.systemId = null;
 			this.encoding = "UTF-8";
-			this.namespace = null;
+			this.documentElement = null;
 		}
 	}
 
@@ -259,8 +330,7 @@ public class NodeSerializer {
 		ProgressEvent event = new ProgressEvent(node.toString());
 		fireProgressEvent(event);
 
-		if (chunkElementSet.contains(node.getNodeName())) {
-			logger.info(String.format("Chunking at node %s", node.getNodeName()));
+		if (chunkElementSet.get(node.getNodeName()) != null) {
 			out = addChunk(indent, node, out);
 			indent = "";
 		}
@@ -317,9 +387,24 @@ public class NodeSerializer {
 			break;
 		}
 
-		if (chunkElementSet.contains(node.getNodeName()) && out != null) {
+		closeChunk(node);
+	}
+
+	private void closeChunk(Node node) throws IOException {
+
+		Writer out = chunkOutMap.get(node);
+
+		if (out != null) {
+
+			logger.debug(String.format("Closing chunk for Node %s:%s",
+					node.getNodeName(), node.hashCode()));
+			
 			out.close();
-		}
+			
+			if (chunkElementStack.empty() == false) {
+				chunkElementStack.pop();
+			}
+		}		
 	}
 
 	public void write(Node node, Writer out, String indent) throws IOException {
@@ -339,10 +424,13 @@ public class NodeSerializer {
 	}
 
 	private void writeDocumentNode(Node node, Writer out) throws IOException {
+
 		Document tdoc = (Document) node;
 		Element documentElement = tdoc.getDocumentElement();
 
 		if (documentElement != null) {
+
+			this.documentElement = documentElement;
 
 			if (tdoc instanceof DocumentImpl) {
 				out.write(((DocumentImpl) tdoc).createXmlDeclaration());
@@ -355,11 +443,15 @@ public class NodeSerializer {
 			if (docType != null) {
 				writeDocumentTypeNode(docType, out);
 			}
-
-			namespace = documentElement.getAttribute("xmlns");
-			documentElement.setAttribute("xmlns:xi","http://www.w3.org/2001/XInclude");
+			
+			if (W3cServices.hasNamespace(documentElement, XmlConstants.NAMESPACE_XINCLUDE) == false) {
+				documentElement.setAttribute("xmlns:xi",
+						XmlConstants.NAMESPACE_XINCLUDE);
+			}
+			
 			write(documentElement, out, "");
 
+			
 		} else {
 
 			NodeList children = tdoc.getChildNodes();
@@ -374,7 +466,8 @@ public class NodeSerializer {
 	}
 
 	private void writeXmlDeclaration(Writer out) throws IOException {
-		out.write("<?xml version='1.0' encoding='" + encoding + "'?>" + Sfv.LSEP);
+		out.write("<?xml version='1.0' encoding='" + encoding + "'?>"
+				+ Sfv.LSEP);
 	}
 
 	public void writeDocumentTypeNode(DocumentType docType, Writer out)
@@ -497,8 +590,8 @@ public class NodeSerializer {
 
 			out.write("/>");
 
-			if (inMixedContent == false && (elemImpl == null
-					|| elemImpl.getFormatType() != NodeImpl.FORMAT_INLINE)) {
+			if (inMixedContent == false
+					&& (elemImpl == null || elemImpl.getFormatType() != NodeImpl.FORMAT_INLINE)) {
 				out.write(Sfv.LSEP);
 			}
 		}
@@ -562,5 +655,13 @@ public class NodeSerializer {
 		} else {
 			out.write(XmlServices.textToXml(data));
 		}
+	}
+
+	public void setSystemId(File systemId) {
+		this.systemId = systemId;
+	}
+
+	public void setEncoding(String encoding) {
+		this.encoding = encoding;
 	}
 }

@@ -750,7 +750,8 @@ public class XmlServices {
 
 		Document doc = parse(file, false, schemaUrl);
 		NodeSerializer serializer = new NodeSerializer();
-		serializer.write(doc, file, to);
+		serializer.setEncoding(to);
+		serializer.write(doc, file);
 	}
 
 	public static String replaceAmpersand(String text, boolean isHtml) {

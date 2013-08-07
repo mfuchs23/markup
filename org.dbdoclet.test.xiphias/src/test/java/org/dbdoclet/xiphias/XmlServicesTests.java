@@ -64,7 +64,7 @@ public class XmlServicesTests {
 			Document doc = XmlServices.loadDocument(new File(xmlUrl.getPath()));
 			NodeSerializer serializer = new NodeSerializer();
 			serializer.write(doc.getDocumentElement(), new File(
-					"build/TestWrite.xml"), "UTF-8");
+					"build/TestWrite.xml"));
 			assertNotNull(doc);
 
 		} catch (Exception oops) {
@@ -88,7 +88,7 @@ public class XmlServicesTests {
 			Document doc = parser.parse(file);
 			NodeSerializer serializer = new NodeSerializer();
 			serializer.write(doc.getDocumentElement(), new File(
-					"build/TestWrite.xml"), "UTF-8");
+					"build/TestWrite.xml"));
 			assertNotNull(doc);
 
 		} catch (Exception oops) {

@@ -394,4 +394,37 @@ public class W3cServices {
 			elem.setAttribute(attr, namespace);
 		}
 	}
+
+	public static boolean hasNamespace(Element element,
+			String namespace) {
+		
+		NamedNodeMap attrMap = element.getAttributes();
+		
+		for (int i = 0; i < attrMap.getLength(); i++) { 
+			
+			Node item = attrMap.item(i);
+			
+			if (item.getNodeName() != null && item.getNodeName().startsWith("xmlns")) {
+				if (namespace.equals(item.getNodeValue())) {
+					return true;
+				}
+			}	
+		}	
+		
+		return false;
+	}
+
+	public static void copyNamespaces(Element documentElement, Element element) {
+
+		NamedNodeMap attrMap = documentElement.getAttributes();
+		
+		for (int i = 0; i < attrMap.getLength(); i++) { 
+			
+			Node item = attrMap.item(i);
+			
+			if (item.getNodeName() != null && item.getNodeName().startsWith("xmlns")) {
+				element.setAttribute(item.getNodeName(), item.getNodeValue());
+			}	
+		}			
+	}
 }

@@ -16,7 +16,7 @@ public class QuoteTests extends AbstractTests {
     public void testQuote_2() {
        HtmlFragment frag = parseFragment("<p>Nach Hochkomma ' kann mit dem Zeichen</p>");
        System.out.println(frag.treeView());
-       System.out.println(NodeSerializer.toXML(frag));
+       System.out.println(new NodeSerializer().toXML(frag));
     }
 
     @Test

@@ -8,6 +8,7 @@
  */
 package org.dbdoclet.tag.docbook;
 
+import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
 
 public class DocBookFragment extends DocumentFragmentImpl {
@@ -22,7 +23,10 @@ public class DocBookFragment extends DocumentFragmentImpl {
 	public Section addSection() {
 		
 		Section section = new Section();
-		section.setAttribute("xmlns", DocBookElement.DOCBOOK_NAMESPACE);
+        section.setAttribute("xmlns", XmlConstants.NAMESPACE_DOCBOOK);
+        section.setAttribute("xmlns:xl", XmlConstants.NAMESPACE_XLINK);
+        section.setAttribute("xmlns:xi", XmlConstants.NAMESPACE_XINCLUDE);
+        section.setAttribute("version", "5.0");
 		appendChild(section);
 		return section;
 	}

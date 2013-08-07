@@ -11,21 +11,21 @@ public class ATests extends AbstractTests {
     @Test
     public void anchorWithDoubleQuotes() {
         HtmlFragment fragment = parseFragment("<a href=\"href\"/>");
-        String buffer = NodeSerializer.toXML(fragment);
+        String buffer = new NodeSerializer().toXML(fragment);
         assertEquals("<a href=\"href\"/>", buffer);
     }
 
     @Test
     public void anchorWithQuotes() {
         HtmlFragment fragment = parseFragment("<a href=\"href'\"/>");
-        String buffer = NodeSerializer.toXML(fragment);
+        String buffer = new NodeSerializer().toXML(fragment);
         assertEquals("<a href=\"href&apos;\"/>", buffer);
     }
 
     @Test
     public void embeddedAnchor() {
         HtmlFragment fragment = parseFragment("<p>Link <a href='href'/> nach...");
-        String buffer = NodeSerializer.toXML(fragment);
+        String buffer = new NodeSerializer().toXML(fragment);
         assertEquals("<p>Link <a href=\"href\"/> nach...</p>\n", buffer);
     }
 
