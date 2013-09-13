@@ -10,6 +10,8 @@ package org.dbdoclet.tag.docbook;
 
 import java.util.HashMap;
 
+import org.w3c.dom.Node;
+
 public class Para extends DocBookElement {
 
 	private static HashMap<String, HashMap<String, Object>> validParentMap;
@@ -109,7 +111,7 @@ public class Para extends DocBookElement {
 	}
 
 	@Override
-	public boolean isValidParent(DocBookElement parent) {
+	public boolean isValidParent(Node parent) {
 
 		if (parent == null) {
 			return true;

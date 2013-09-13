@@ -202,7 +202,7 @@ public class DocBookElement extends ElementImpl {
 		return false;
 	}
 
-	public boolean isValidParent(DocBookElement elem) {
+	public boolean isValidParent(Node parent) {
 		return true;
 	}
 

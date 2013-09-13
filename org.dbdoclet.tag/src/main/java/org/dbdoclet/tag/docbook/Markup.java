@@ -10,6 +10,8 @@ package org.dbdoclet.tag.docbook;
 
 import java.util.HashMap;
 
+import org.w3c.dom.Node;
+
 public class Markup extends DocBookElement {
 
     private static String tag = "markup";
@@ -73,7 +75,7 @@ public class Markup extends DocBookElement {
     }
 
     @Override
-    public boolean isValidParent(DocBookElement elem) {
+    public boolean isValidParent(Node elem) {
 
         if (elem == null) {
             throw new IllegalArgumentException("Parameter elem is null!");

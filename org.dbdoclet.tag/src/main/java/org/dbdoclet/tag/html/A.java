@@ -10,8 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 public class A extends InlineElement {
 
     private static final String tag = "a";
