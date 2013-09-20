@@ -11,8 +11,6 @@ package org.dbdoclet.tag.docbook;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.dbdoclet.service.FileServices;
 import org.dbdoclet.tag.html.Img;
@@ -1358,40 +1356,26 @@ public class DocBookTagFactory {
 
 		return false;
 	}
-	
-	public List<String> createImageDataFormatList(List<String> list, String src) {
 
-		ArrayList<String> formatList = new ArrayList<String>();
-
-		for (String param : list) {
-
-			if (param == null) {
-				continue;
-			}
-
-			if (formatList.contains(param.toUpperCase()) == false) {
-				formatList.add(param.toUpperCase());
-			}
-		}
+	public String getImageDataFormat(String src) {
 
 		if (src != null) {
 
 			String value = FileServices.getExtension(src);
 
-			if (value != null && value.trim().length() > 0
-					&& formatList.contains(value.toUpperCase()) == false) {
-				formatList.add(0, value.toUpperCase());
+			if (value != null && value.trim().length() > 0) {
+				return value.toUpperCase();
 			}
 		}
 
-		return formatList;
+		return null;
 	}
 
 	public void createFoImageData(DocBookElement parent,
-			DocBookTagFactory dbfactory, List<String> imageDataFormats,
-			Img img, File file) throws IOException {
+			DocBookTagFactory dbfactory, Img img, File file) throws IOException {
 
 		String fileRef = FileServices.normalizePath(file.getPath());
+		String format = getImageDataFormat(fileRef);
 		fileRef = FileServices.getFileBase(fileRef);
 
 		if (FileServices.isAbsolutePath(fileRef)) {
@@ -1405,42 +1389,30 @@ public class DocBookTagFactory {
 			}
 		}
 
-		int index = 0;
+		ImageObject image = dbfactory.createImageObject();
+		image.setRole("fo");
 
-		for (String format : imageDataFormats) {
+		String align = img.getAlign();
 
-			ImageObject image = dbfactory.createImageObject();
+		ImageData data = dbfactory.createImageData();
 
-			if (index == 0) {
-				image.setRole("fo");
-			} else {
-				image.setRole("fo-" + format.toLowerCase());
-			}
+		data.setScaleFit(true);
+		data.setWidth("100%");
+		data.setContentDepth("100%");
+		data.setFormat(format);
 
-			String align = img.getAlign();
-
-			ImageData data = dbfactory.createImageData();
-
-			data.setScaleFit(true);
-			data.setWidth("100%");
-			data.setContentDepth("100%");
-			data.setFormat(format);
-
-			if (align != null && align.length() > 0) {
-				data.setAlign(validateAlign(align));
-			}
-
-			data.setFileRef(fileRef + "." + format.toLowerCase());
-
-			image.appendChild(data);
-			parent.appendChild(image);
-			index++;
+		if (align != null && align.length() > 0) {
+			data.setAlign(validateAlign(align));
 		}
+
+		data.setFileRef(fileRef + "." + format.toLowerCase());
+
+		image.appendChild(data);
+		parent.appendChild(image);
 	}
 
 	public void createHtmlImageData(DocBookElement parent,
-			DocBookTagFactory dbfactory, List<String> imageDataFormats,
-			Img img, File file) throws IOException {
+			DocBookTagFactory dbfactory, Img img, File file) throws IOException {
 
 		String fileRef = FileServices.normalizePath(file.getPath());
 
@@ -1455,53 +1427,49 @@ public class DocBookTagFactory {
 			}
 		}
 
+		String format = getImageDataFormat(fileRef);
 		fileRef = FileServices.getFileBase(fileRef);
-		int index = 0;
 
-		for (String format : imageDataFormats) {
-
-			String width = img.getWidth();
-			String height = img.getHeight();
-			String align = img.getAlign();
-
-			ImageObject image = dbfactory.createImageObject();
-
-			if (index == 0) {
-				image.setRole("html");
-			} else {
-				image.setRole("html-" + format.toLowerCase());
-			}
-
-			ImageData data = dbfactory.createImageData();
-			data.setScaleFit(true);
-
-			if (width != null && width.length() > 0) {
-				data.setContentWidth(width);
-			}
-
-			if (height != null && height.length() > 0) {
-				data.setContentDepth(height);
-			}
-
-			if (file.exists() && format.equalsIgnoreCase("BASE64")) {
-
-				String fileName = FileServices.getFileBase(file) + ".base64";
-				FileServices.writeFromString(new File(fileName),
-						ImageServices.toXml(file));
-			}
-
-			data.setFormat(format);
-
-			if (align != null && align.length() > 0) {
-				data.setAlign(validateAlign(align));
-			}
-
-			String attr = fileRef + "." + format.toLowerCase();
-			data.setFileRef(attr);
-			image.appendChild(data);
-			parent.appendChild(image);
-			index++;
+		if (format == null) {
+			// log.warn("Can't compute image format of fileRef " + fileRef);
+			return;
 		}
+		
+		String width = img.getWidth();
+		String height = img.getHeight();
+		String align = img.getAlign();
+
+		ImageObject image = dbfactory.createImageObject();
+
+		image.setRole("html");
+		ImageData data = dbfactory.createImageData();
+		data.setScaleFit(true);
+
+		if (width != null && width.length() > 0) {
+			data.setContentWidth(width);
+		}
+
+		if (height != null && height.length() > 0) {
+			data.setContentDepth(height);
+		}
+
+		if (file.exists() && format.equalsIgnoreCase("BASE64")) {
+
+			String fileName = FileServices.getFileBase(file) + ".base64";
+			FileServices.writeFromString(new File(fileName),
+					ImageServices.toXml(file));
+		}
+
+		data.setFormat(format);
+
+		if (align != null && align.length() > 0) {
+			data.setAlign(validateAlign(align));
+		}
+
+		String attr = fileRef + "." + format.toLowerCase();
+		data.setFileRef(attr);
+		image.appendChild(data);
+		parent.appendChild(image);
 	}
 
 	public String validateAlign(String align) {

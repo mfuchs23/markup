@@ -22,6 +22,7 @@ import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
+import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -146,6 +147,33 @@ public abstract class SvgCanvas {
         serializer.write(doc, tempFile);
 
         PNGTranscoder transcoder = new PNGTranscoder();
+        TranscoderInput input = new TranscoderInput(tempFile.toURI().toURL()
+                .toString());
+
+        OutputStream ostream = new FileOutputStream(file);
+        TranscoderOutput output = new TranscoderOutput(ostream);
+
+        try {
+            transcoder.transcode(input, output);
+        } catch (TranscoderException oops) {
+            throw new SvgException(oops);
+        }
+
+        ostream.flush();
+        ostream.close();
+
+        tempFile.delete();
+    }
+
+    public void saveAsJpeg(File file) throws IOException, SvgException {
+
+        // drawImage();
+
+        File tempFile = File.createTempFile("svgImage", "svg");
+        NodeSerializer serializer = new NodeSerializer();
+        serializer.write(doc, tempFile);
+
+        JPEGTranscoder transcoder = new JPEGTranscoder();
         TranscoderInput input = new TranscoderInput(tempFile.toURI().toURL()
                 .toString());
 

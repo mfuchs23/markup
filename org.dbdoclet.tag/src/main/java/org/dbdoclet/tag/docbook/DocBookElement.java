@@ -290,9 +290,11 @@ public class DocBookElement extends ElementImpl {
 
 	public boolean validate() {
 
-		DocBookElement parent = (DocBookElement) getParentNode();
+		Node parentNode = getParentNode();
 
-		if (parent != null) {
+		if (parentNode != null && parentNode instanceof DocBookElement) {
+
+			DocBookElement parent = (DocBookElement) parentNode;
 
 			if (isSection() == false && parent.isSection() == true) {
 
