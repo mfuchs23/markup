@@ -595,9 +595,9 @@ public class DocBookTagFactory {
 		return link;
 	}
 
-	public Link createLink(String href) {
+	public Link createLink(String linkend) {
 
-		Link link = new Link(href);
+		Link link = new Link(linkend);
 		link.setDocBookVersion(docBookVersion);
 		return link;
 	}
@@ -1487,6 +1487,43 @@ public class DocBookTagFactory {
 		}
 
 		return align;
+	}
+
+	public DocBookElement createElementByName(String tagName)  {
+
+		String pkg = "org.dbdoclet.tag.docbook.";
+		String lowerCase = tagName.toLowerCase();
+		DocBookElement elem = null;
+		
+		Class<?> clazz = null;
+
+		for (int i= 0; i< lowerCase.length(); i++) {
+			
+			String name = upcase(lowerCase, 0, i);
+			
+			try {
+				clazz = Class.forName(pkg + name);
+				if (clazz != null) {
+					elem = (DocBookElement) clazz.newInstance();
+					if (elem != null) {
+						break;
+					}
+				}
+			} catch (Throwable e) {} 
+		}
+		
+		return elem;
+	}
+
+	private String upcase(String lowerCase, int...indices) {
+
+		char[] chars = lowerCase.toCharArray();
+		
+		for (int index: indices) {
+			chars[index] = Character.toUpperCase(chars[index]);
+		}
+		
+		return new String(chars);
 	}
 
 }

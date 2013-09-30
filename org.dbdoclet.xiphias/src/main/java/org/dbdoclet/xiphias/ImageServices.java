@@ -33,6 +33,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.xmlgraphics.java2d.GraphicContext;
 import org.apache.xmlgraphics.java2d.ps.EPSDocumentGraphics2D;
+import org.dbdoclet.Sfv;
 import org.dbdoclet.service.FileServices;
 
 public class ImageServices {
@@ -135,8 +136,10 @@ public class ImageServices {
 
 		String xml = toBase64(inFile);
 
-		xml = "<?xml version='1.0' encoding='UTF-8'?>\n" + "<image file=\""
-				+ inFile.getCanonicalPath() + "\">" + xml + "</image>\n";
+		xml = "<?xml version='1.0' encoding='UTF-8'?>" + Sfv.LSEP
+				+ "<image file=\"" + inFile.getCanonicalPath() + "\">"
+				+ xml 
+				+ "</image>" + Sfv.LSEP;
 
 		return xml;
 	}

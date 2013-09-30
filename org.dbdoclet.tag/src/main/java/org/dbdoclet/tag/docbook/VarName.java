@@ -8,9 +8,6 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
-
-
 public class VarName extends DocBookElement {
 
     VarName() {

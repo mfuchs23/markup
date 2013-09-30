@@ -8,6 +8,7 @@
  */
 package org.dbdoclet.xiphias.dom;
 
+import org.dbdoclet.Sfv;
 import org.dbdoclet.xiphias.W3cServices;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
@@ -108,7 +109,7 @@ public class DocumentImpl extends NodeImpl implements Document {
 
 	public String createXmlDeclaration() {
 		return "<?xml version=\"" + xmlVersion + "\" encoding=\"" + xmlEncoding
-				+ "\"?>\n";
+				+ "\"?>" + Sfv.LSEP;
 	}
 
 	@Override

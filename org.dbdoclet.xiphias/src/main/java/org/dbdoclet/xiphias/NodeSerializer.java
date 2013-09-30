@@ -96,7 +96,7 @@ public class NodeSerializer {
 		logger.debug(String.format("Creating chunk file %s", fileName));
 
 		out.write(indent + "<xi:include href=\""
-				+ XmlServices.textToXml(fileName) + "\"/>\n");
+				+ XmlServices.textToXml(fileName) + "\"/>" + Sfv.LSEP);
 
 		out = new OutputStreamWriter(new FileOutputStream(incFile), encoding);
 		writeXmlDeclaration(out);
@@ -488,12 +488,12 @@ public class NodeSerializer {
 
 		if (entityMap != null && entityMap.getLength() > 0) {
 
-			out.write("[\n");
+			out.write("[" + Sfv.LSEP);
 
 			for (int i = 0; i < entityMap.getLength(); i++) {
 				Entity entity = (Entity) entityMap.item(i);
 				out.write("<!ENTITY " + entity.getNodeName() + " SYSTEM \""
-						+ entity.getSystemId() + "\">\n");
+						+ entity.getSystemId() + "\">" + Sfv.LSEP);
 			}
 
 			out.write("]");

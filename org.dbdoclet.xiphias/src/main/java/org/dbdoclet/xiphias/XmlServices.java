@@ -1,14 +1,3 @@
-/* 
-+ * $Id$
- *
- * ### Copyright (C) 2003-2007 Michael Fuchs ###
- * ### All Rights
- Reserved.             ###
- *
- * Author: Michael Fuchs
- * E-Mail: michael.fuchs@unico-group.com
- * URL:    http://www.michael-a-fuchs.de
- */
 package org.dbdoclet.xiphias;
 
 import java.io.BufferedReader;
@@ -78,11 +67,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class XmlServices {
 
-	public enum HyphenationChar {
-		SOFT_HYPHEN, ZERO_WIDTH_SPACE
-	}
-
-	public static HyphenationChar hyphenationChar = HyphenationChar.ZERO_WIDTH_SPACE;
 	public static final String test = "&nbsp;";
 	private static final Pattern encPattern = Pattern
 			.compile("^(?i).*<\\?xml\\s*.*encoding=['\"](.*)['\"].*\\?>.*$");
@@ -547,64 +531,6 @@ public class XmlServices {
 		}
 
 		return true;
-	}
-
-	public static String makeWrapable(String buffer, String token) {
-		return makeWrapable(buffer, token, hyphenationChar);
-	}
-
-	public static String makeWrapable(String buffer, String token,
-			HyphenationChar hyphenChar) {
-
-		if (buffer == null || buffer.length() == 0) {
-			return buffer;
-		}
-
-		if (token == null || token.length() == 0) {
-			return buffer;
-		}
-
-		String[] tokens = { token };
-
-		return makeWrapable(buffer, tokens, hyphenChar);
-	}
-
-	public static String makeWrapable(String buffer, String[] tokens) {
-		return makeWrapable(buffer, tokens, hyphenationChar);
-	}
-
-	public static String makeWrapable(String buffer, String[] tokens,
-			HyphenationChar hyphenChar) {
-
-		if (buffer == null || buffer.length() == 0) {
-			return buffer;
-		}
-
-		if (tokens == null || tokens.length == 0) {
-			return buffer;
-		}
-
-		String wrapable = buffer;
-		String token;
-
-		for (int i = 0; i < tokens.length; i++) {
-
-			token = tokens[i];
-
-			if (token == null || token.length() == 0) {
-				continue;
-			}
-
-			if (hyphenChar == HyphenationChar.SOFT_HYPHEN) {
-				wrapable = StringServices.replace(wrapable, token, token
-						+ "&#x00ad;");
-			} else {
-				wrapable = StringServices.replace(wrapable, token, token
-						+ "&#x200b;");
-			}
-		}
-
-		return wrapable;
 	}
 
 	public static String normalizeText(String text) {
