@@ -11,6 +11,7 @@ package org.dbdoclet.svg;
 import java.awt.Graphics2D;
 
 import org.dbdoclet.svg.shape.Arrow;
+import org.dbdoclet.svg.shape.ClassBox;
 import org.dbdoclet.svg.shape.Shape;
 import org.dbdoclet.svg.shape.TextBox;
 import org.dbdoclet.svg.shape.TextCircle;
@@ -41,4 +42,9 @@ public class Shape2DFactory implements ShapeFactory {
     public TextCircle createTextCircle(String id, int row, int column) {
 	throw new IllegalStateException("TextCircle2D not yet implemented!");
     }
+
+	@Override
+	public ClassBox createClassBox(String id, int row, int column) {
+		throw new IllegalStateException("NYI");
+	}
 }

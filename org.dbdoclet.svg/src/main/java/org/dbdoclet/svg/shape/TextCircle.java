@@ -21,7 +21,7 @@ public abstract class TextCircle extends TextShape {
 
         super(id, row, column);
 
-        textHeight = topPadding + bottomPadding;
+        textHeight = getTopPadding() + getBottomPadding();
         textWidth = 0;
         lineList = new ArrayList<Text>();
     }

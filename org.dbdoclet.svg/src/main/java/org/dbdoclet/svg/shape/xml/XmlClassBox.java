@@ -9,22 +9,24 @@
 package org.dbdoclet.svg.shape.xml;
 
 import java.awt.Font;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.Area;
 import org.dbdoclet.svg.SvgFontMetrics;
+import org.dbdoclet.svg.shape.ClassBox;
 import org.dbdoclet.svg.shape.Text;
 import org.dbdoclet.svg.shape.TextBox;
 import org.dbdoclet.svg.shape.TextSeparator;
 import org.w3c.dom.Document;
 
-public class XmlTextBox extends TextBox {
+public class XmlClassBox extends ClassBox {
 
 	private static Log logger = LogFactory.getLog(TextBox.class);
 
-	public XmlTextBox(Document doc, String id, int x, int y) {
+	public XmlClassBox(Document doc, String id, int x, int y) {
 
 		super(id, x, y);
 
@@ -53,7 +55,12 @@ public class XmlTextBox extends TextBox {
 		area.setName(getName());
 		setArea(area);
 
-		XmlRectangle rect = new XmlRectangle(doc, x, y, width, height);
+		int classBoxWidth = getTextWidth() + getLeftPadding() + getRightPadding();
+		int classBoxHeight = height - getTemplateParameterBoxHeight();
+		int classBoxYpos = y + getTemplateParameterBoxHeight();
+		
+		XmlRectangle rect = new XmlRectangle(doc, x, classBoxYpos, classBoxWidth,
+				classBoxHeight);
 		rect.setFill(getBackgroundColor());
 		rect.setStroke(getStrokeColor());
 		rect.setShadowEnabled(isShadowEnabled());
@@ -65,7 +72,7 @@ public class XmlTextBox extends TextBox {
 
 		rect.draw();
 
-		int ypos = y + getTopPadding();
+		int ypos = classBoxYpos + getTopPadding();
 		int xpos;
 		int lineWidth;
 
@@ -92,7 +99,7 @@ public class XmlTextBox extends TextBox {
 
 				ypos += fm.stringHeight() / 2;
 				xpos = x;
-				XmlLine separator = new XmlLine(doc, xpos, ypos, xpos + width,
+				XmlLine separator = new XmlLine(doc, xpos, ypos, xpos + classBoxWidth,
 						ypos);
 				separator.setStrokeWidth(1);
 				separator.draw();
@@ -101,8 +108,14 @@ public class XmlTextBox extends TextBox {
 			} else {
 
 				ypos += fm.getAscent();
-				xpos = x + ((width - lineWidth) / 2);
-
+				
+				if (line.getFont().isBold() || line.getText().startsWith(STEREOTYPE_LEFT)) {
+					xpos = x + ((classBoxWidth - lineWidth) / 2);
+				} else {
+					xpos = x + getLeftPadding() + line.getIndent();
+					
+				}
+				
 				XmlText text = new XmlText(doc, xpos, ypos, line.getText());
 				text.setFont(line.getFont());
 				text.setFill(getTextColor());
@@ -110,5 +123,62 @@ public class XmlTextBox extends TextBox {
 				ypos += fm.getDescent() + fm.getLeading();
 			}
 		}
+
+		if (getTypeParameterList() != null) {
+			drawTypeParameterBox(doc, x, y, width, height, defaultFont);
+		}
+	}
+
+	private void drawTypeParameterBox(Document doc, int x, int y, int width,
+			int height, Font defaultFont) {
+
+		XmlRectangle rect;
+		int ypos;
+		int xpos;
+
+		ArrayList<Text> typeParameterList = getTypeParameterList();
+
+		if (typeParameterList == null || typeParameterList.size() == 0) {
+			return;
+		}
+
+		String maxLine = "";
+
+		for (Text typeParameter : typeParameterList) {
+			if (typeParameter.getText().length() > maxLine.length()) {
+				maxLine = typeParameter.getText();
+			}
+		}
+
+		int subboxWidth = getTemplateParameterBoxWidth();
+		int subboxHeight = getTemplateParameterBoxHeight();
+		int subboxXpos = x + width - getTemplateParameterBoxWidth();
+		int subboxYpos = y + getTopPadding();
+
+		if (getTopPadding() >= subboxHeight / 2) {
+			subboxYpos = y + subboxHeight / 2;
+		}
+		
+		rect = new XmlRectangle(doc, subboxXpos, subboxYpos, subboxWidth,
+				subboxHeight);
+		rect.setFill(getBackgroundColor());
+		rect.setStroke(getStrokeColor());
+		rect.setStrokeDashArray("5 3");
+		rect.setShadowEnabled(isShadowEnabled());
+		rect.draw();
+
+		ypos = subboxYpos;
+		xpos = subboxXpos + getLeftPadding();
+
+		for (Text line : typeParameterList) {
+
+			SvgFontMetrics fm = new SvgFontMetrics(line.getFont(), line.getText());
+			ypos += fm.getAscent();
+			XmlText text = new XmlText(doc, xpos, ypos, line.getText());
+			text.setFont(line.getFont());
+			text.setFill(getTextColor());
+			text.draw();
+		}
+
 	}
 }

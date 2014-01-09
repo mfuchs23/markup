@@ -65,6 +65,10 @@ public class XmlRectangle extends XmlElement {
     public void setStroke(Color strokeColor) {
         rect.setAttributeNS(null, "stroke", SvgServices.getColorAsHexString(strokeColor));
     }
+
+    public void setStrokeDashArray(String dashArray) {
+        rect.setAttributeNS(null, "stroke-dasharray", dashArray);
+    }
     
     public void setFilter(String filterId) {
         rect.setAttributeNS(null, "filter", filterId);

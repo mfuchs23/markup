@@ -10,10 +10,22 @@ package org.dbdoclet.svg.shape;
 
 import java.awt.Font;
 
-public interface Text {
+public class TextSeparator 
+    implements Text {
 
-    public String getText();
-    public Font getFont();
-    public int getIndent();
+	@Override
+	public String getText() {
+		return "---";
+	}
+
+	@Override
+	public Font getFont() {
+		return new Font("serif", Font.PLAIN, 12);
+	}
+
+	@Override
+	public int getIndent() {
+		return 0;
+	}
+
 }
-

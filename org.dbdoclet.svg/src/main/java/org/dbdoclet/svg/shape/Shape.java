@@ -16,127 +16,130 @@ import org.dbdoclet.svg.Cell;
 
 public abstract class Shape extends Element {
 
-    private static Font defaultFont = new Font("SansSerif", Font.PLAIN, 11);
+	private static Font defaultFont = new Font("SansSerif", Font.PLAIN, 11);
 
-    private Area area;
-    private String name;
+	private Area area;
+	private String name;
 
-    protected Cell cell;
-    protected Color textColor = Color.black;
-    protected Color strokeColor = Color.black;
-    protected Color backgroundColor = new Color(255, 255, 224);
-    protected Color foregroundColor = Color.black;
+	protected Cell cell;
+	protected Color textColor = Color.black;
+	protected Color strokeColor = Color.black;
+	protected Color backgroundColor = new Color(255, 255, 224);
+	protected Color foregroundColor = Color.black;
 
-    public abstract int getWidth();
-    public abstract int getHeight();
+	public abstract int getWidth();
 
-    public abstract void draw(int x, int y);
+	public abstract int getHeight();
 
-    public Shape(String id, int row, int column) {
+	public abstract void draw(int x, int y);
 
-	super(id);
+	public Shape(String id, int row, int column) {
 
-	if (row < 0) {
-	    throw new IllegalArgumentException("The argument row must not be < 0!");
+		super(id);
+
+		if (row < 0) {
+			throw new IllegalArgumentException(
+					"The argument row must not be < 0!");
+		}
+
+		if (column < 0) {
+			throw new IllegalArgumentException(
+					"The argument column must not be < 0!");
+		}
+
+		cell = new Cell(row, column);
+		name = "";
 	}
 
-	if (column < 0) {
-	    throw new IllegalArgumentException("The argument column must not be < 0!");
+	public String getName() {
+		return name;
 	}
 
-	cell = new Cell(row, column);
-	name = "";
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getName() {
-	return name;
-    }
+	public void setArea(Area area) {
+		this.area = area;
+	}
 
-    public void setName(String name) {
-	this.name = name;
-    }
+	public Area getArea() {
+		return area;
+	}
 
-    public void setArea(Area area) {
-	this.area = area;
-    }
+	public void setDefaultFont(Font defaultFont) {
+		Shape.defaultFont = defaultFont;
+	}
 
-    public Area getArea() {
-	return area;
-    }
+	public Font getDefaultFont() {
+		return defaultFont;
+	}
 
-    public void setDefaultFont(Font defaultFont) {
-	Shape.defaultFont = defaultFont;
-    }
+	public int getColumn() {
+		return cell.getColumn();
+	}
 
-    public Font getDefaultFont() {
-	return defaultFont;
-    }
+	public void setColumn(int column) {
+		cell.setColumn(column);
+	}
 
-    public int getColumn() {
-	return cell.getColumn();
-    }
+	public int getRow() {
+		return cell.getRow();
+	}
 
-    public void setColumn(int column) {
-	cell.setColumn(column);
-    }
+	public Cell getCell() {
+		return cell;
+	}
 
-    public int getRow() {
-	return cell.getRow();
-    }
+	public void setTextColor(Color textColor) {
+		this.textColor = textColor;
+	}
 
-    public Cell getCell() {
-	return cell;
-    }
+	public Color getTextColor() {
+		return textColor;
+	}
 
-    public void setTextColor(Color textColor) {
-	this.textColor = textColor;
-    }
+	public void setStrokeColor(Color strokeColor) {
+		this.strokeColor = strokeColor;
+	}
 
-    public Color getTextColor() {
-	return textColor;
-    }
+	public Color getStrokeColor() {
+		return strokeColor;
+	}
 
-    public void setStrokeColor(Color strokeColor) {
-	this.strokeColor = strokeColor;
-    }
+	public void setBackgroundColor(Color backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
 
-    public Color getStrokeColor() {
-	return strokeColor;
-    }
+	public Color getBackgroundColor() {
+		return backgroundColor;
+	}
 
-    public void setBackgroundColor(Color backgroundColor) {
-	this.backgroundColor = backgroundColor;
-    }
+	public Color getForegroundColor() {
+		return foregroundColor;
+	}
 
-    public Color getBackgroundColor() {
-	return backgroundColor;
-    }
+	public void setForegroundColor(Color foregroundColor) {
+		this.foregroundColor = foregroundColor;
+	}
 
-    public Color getForegroundColor() {
-	return foregroundColor;
-    }
+	public void setBorderColor(Color borderColor) {
+		this.strokeColor = borderColor;
+	}
 
-    public void setForegroundColor(Color foregroundColor) {
-	this.foregroundColor = foregroundColor;
-    }
+	public String toString() {
 
-    public void setBorderColor(Color borderColor) {
-	this.strokeColor = borderColor;
-    }
+		StringBuilder buffer = new StringBuilder();
 
-    public String toString() {
+		buffer.append("Shape:=[");
+		buffer.append("name=");
+		buffer.append(getName());
+		buffer.append("]");
 
-	StringBuilder buffer = new StringBuilder();
+		return buffer.toString();
+	}
 
-	buffer.append("Shape:=[");
-	buffer.append("name=");
-	buffer.append(getName());
-	buffer.append("]");
-
-	return buffer.toString();
-    }
-
-    public void moveRight() {
-        cell.moveRight();
-    }
+	public void moveRight() {
+		cell.moveRight();
+	}
 }

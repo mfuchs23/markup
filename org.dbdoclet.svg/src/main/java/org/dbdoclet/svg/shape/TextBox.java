@@ -10,36 +10,35 @@ package org.dbdoclet.svg.shape;
 
 import java.util.ArrayList;
 
-
 public abstract class TextBox extends TextShape {
 
     private int roundedCorner = 0;
     private boolean shadowEnabled = false;
 
-    public abstract void draw(int x, int y);
-    
     public TextBox(String id, int row, int column) {
 
         super(id, row, column);
 
-        textHeight = topPadding + bottomPadding;
+        textHeight = getTopPadding() + getBottomPadding();
         textWidth = 0;
         lineList = new ArrayList<Text>();
+    }
+
+    public abstract void draw(int x, int y);
+    
+    public int getRoundedCorner() {
+        return roundedCorner;
+    }
+    
+    public boolean isShadowEnabled() {
+        return shadowEnabled;
     }
     
     public void setRoundedCorner(int roundedCorner) {
         this.roundedCorner = roundedCorner;
     }
-    
-    public int getRoundedCorner() {
-        return roundedCorner;
-    }
 
-    public void setShadowEnabled(boolean shadowEnabled) {
+	public void setShadowEnabled(boolean shadowEnabled) {
         this.shadowEnabled = shadowEnabled;
-    }
-    
-    public boolean isShadowEnabled() {
-        return shadowEnabled;
     }
 }

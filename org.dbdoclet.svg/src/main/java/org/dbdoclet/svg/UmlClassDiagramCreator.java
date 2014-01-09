@@ -12,15 +12,18 @@ import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.dbdoclet.svg.shape.Arrow;
+import org.dbdoclet.svg.shape.ClassBox;
 import org.dbdoclet.svg.shape.Connector;
 import org.dbdoclet.svg.shape.Shape;
-import org.dbdoclet.svg.shape.TextBox;
+import org.dbdoclet.svg.shape.TextSeparator;
 import org.dbdoclet.svg.shape.TextUnit;
 
 public class UmlClassDiagramCreator {
 
+	private static final int MAX_PARAMETER_BEFORE_SPLIT = 3;
 	private SvgCanvas canvas;
 	private boolean directArrowMode = false;
 	private String fontFamily = "SansSerif";
@@ -31,25 +34,6 @@ public class UmlClassDiagramCreator {
 	private Font sansSerif;
 	private Font sansSerifBold;
 	private ShapeFactory shapeFactory;
-
-	/**
-	 * Die Klasse <code>UmlClassDiagramCreator</code> dient der Erstellung von
-	 * UML Klassendiagrammen.
-	 * 
-	 * Das Diagramm wird in Zeilen und Spalten aufgeteilt. Jeweils eine Klasse
-	 * oder Schnittstelle wird in einer Zelle plaziert. Pfeile (Connector)
-	 * werden dazu verwendet um Zellen zu verbinden.
-	 */
-	public UmlClassDiagramCreator() {
-
-		canvas = new SvgXmlCanvas();
-		canvas.setCellPadding(20);
-
-		shapeFactory = new ShapeXmlFactory(canvas.getDocument());
-
-		sansSerif = new Font(fontFamily, Font.PLAIN, getFontSize());
-		sansSerifBold = new Font(fontFamily, Font.BOLD, getFontSize());
-	}
 
 	/**
 	 * Die Methode <code>main</code> erstellt zu Testzwecken ein kleines
@@ -73,9 +57,10 @@ public class UmlClassDiagramCreator {
 			Shape i2 = ucdc.addClassBox(1, 0, "Serializable", "Interface");
 			Shape i3 = ucdc.addClassBox(1, 1, "Action", "Interface");
 			Shape i4 = ucdc.addClassBox(1, 2, "Drinkable", "Interface");
-			Shape c3 = ucdc.addClassBox(2, 3, "org.dbdoclet.svg.shape.TextBox");
+			Shape c3 = ucdc
+					.addClassBox(2, 3, "org.dbdoclet.svg.shape.ClassBox");
 			Shape c4 = ucdc.addClassBox(3, 3,
-					"org.dbdoclet.svg.shape.SecretTextBox");
+					"org.dbdoclet.svg.shape.SecretClassBox");
 			Shape i5 = ucdc.addClassBox(1, 4, "Singable", "Interface");
 			Shape i6 = ucdc.addClassBox(1, 5, "Sortable", "Interface");
 			Shape i7 = ucdc.addClassBox(1, 6, "ActionListener", "Interface");
@@ -111,6 +96,29 @@ public class UmlClassDiagramCreator {
 	}
 
 	/**
+	 * Die Klasse <code>UmlClassDiagramCreator</code> dient der Erstellung von
+	 * UML Klassendiagrammen.
+	 * 
+	 * Das Diagramm wird in Zeilen und Spalten aufgeteilt. Jeweils eine Klasse
+	 * oder Schnittstelle wird in einer Zelle plaziert. Pfeile (Connector)
+	 * werden dazu verwendet um Zellen zu verbinden.
+	 */
+	public UmlClassDiagramCreator() {
+
+		canvas = new SvgXmlCanvas();
+		canvas.setCellPadding(20);
+
+		shapeFactory = new ShapeXmlFactory(canvas.getDocument());
+
+		sansSerif = new Font(fontFamily, Font.PLAIN, getFontSize());
+		sansSerifBold = new Font(fontFamily, Font.BOLD, getFontSize());
+	}
+
+	public void addAttribute(ClassBox classBox, String string) {
+		classBox.addText(new TextUnit(string, sansSerif));
+	}
+
+	/**
 	 * Die Methode <code>addClassBox</code> fügt ein neue Klasse in das Diagramm
 	 * ein.
 	 * 
@@ -118,9 +126,9 @@ public class UmlClassDiagramCreator {
 	 * @param column
 	 * @param className
 	 */
-	public Shape addClassBox(int row, int column, String className) {
+	public ClassBox addClassBox(int row, int column, String className) {
 
-		TextBox tbox = shapeFactory.createTextBox("c", row, column);
+		ClassBox tbox = shapeFactory.createClassBox("c", row, column);
 		TextUnit lineClassName = new TextUnit(className, sansSerifBold);
 		tbox.addText(lineClassName);
 		tbox.setShadowEnabled(true);
@@ -129,10 +137,10 @@ public class UmlClassDiagramCreator {
 		return tbox;
 	}
 
-	public Shape addClassBox(int row, int column, String className,
+	public ClassBox addClassBox(int row, int column, String className,
 			String stereotype) {
 
-		TextBox tbox = shapeFactory.createTextBox("c", row, column);
+		ClassBox tbox = shapeFactory.createClassBox("c", row, column);
 
 		if (stereotype.equalsIgnoreCase("interface")) {
 			tbox.setTextColor(interfaceTextColor);
@@ -140,8 +148,8 @@ public class UmlClassDiagramCreator {
 			tbox.setBackgroundColor(interfaceBackgroundColor);
 		}
 
-		TextUnit lineStereotype = new TextUnit("«" + stereotype + "»",
-				sansSerif);
+		TextUnit lineStereotype = new TextUnit(ClassBox.STEREOTYPE_LEFT
+				+ stereotype + ClassBox.STEREOTYPE_RIGHT, sansSerif);
 		TextUnit lineClassName = new TextUnit(className, sansSerifBold);
 
 		tbox.addText(lineStereotype);
@@ -160,6 +168,75 @@ public class UmlClassDiagramCreator {
 		canvas.addArrow(arrow);
 	}
 
+	public void addLine(ClassBox classBox) {
+		classBox.addText(new TextSeparator());
+	}
+
+	public void addMethod(ClassBox classBox, String method) {
+		
+		String[] tokens = method.split(",");
+		
+		if (tokens.length < MAX_PARAMETER_BEFORE_SPLIT) {
+			classBox.addText(new TextUnit(method, sansSerif));
+		} else {
+			
+			int indentWidth = computeParameterIndentWidth(method);
+			
+			int index = method.indexOf(',');
+			if (index < 0) {
+				classBox.addText(new TextUnit(method, sansSerif));
+				return;
+			}
+			
+			String methodName = method.substring(0, index);
+			classBox.addText(new TextUnit(methodName, sansSerif));
+			
+			int indexStart = index;
+			int indexEnd = method.indexOf(',', indexStart + 1);
+			while (index != -1) {
+				
+				TextUnit textUnit = new TextUnit(method.substring(indexStart, indexEnd));
+				textUnit.setIndent(indentWidth);
+				classBox.addText(textUnit);
+				
+				indexStart = indexEnd;
+				indexEnd = method.indexOf(',', indexStart +1);
+			}
+		}
+	}
+
+	private int computeParameterIndentWidth(String method) {
+		
+		int indexWidth = 0;
+		int index = method.indexOf('(');
+		
+		if (index > 0) {
+			
+			String methodName = method.substring(0, index);
+			SvgFontMetrics fm = new SvgFontMetrics(sansSerif, methodName);
+			return fm.stringWidth();
+		}
+		
+		return indexWidth;
+	}
+
+	public ClassBox addParameterizedClassBox(int row, int column,
+			String className, ArrayList<String> templateParameters) {
+
+		ClassBox tbox = shapeFactory.createClassBox("c", row, column);
+		TextUnit lineClassName = new TextUnit(className, sansSerifBold);
+		tbox.addText(lineClassName);
+		tbox.setShadowEnabled(true);
+
+		for (String templateParameter : templateParameters) {
+			tbox.addTemplateParameter(new TextUnit(templateParameter, sansSerif));
+		}
+
+		canvas.addShape(tbox);
+
+		return tbox;
+	}
+
 	public void addRealization(Shape from, Shape to) {
 
 		Arrow arrow = shapeFactory.createArrow("i", from, to);
@@ -171,6 +248,10 @@ public class UmlClassDiagramCreator {
 
 	public void drawImage() {
 		canvas.drawImage();
+	}
+
+	public int getFontSize() {
+		return fontSize;
 	}
 
 	public Color getInterfaceBackgroundColor() {
@@ -195,16 +276,6 @@ public class UmlClassDiagramCreator {
 		canvas.save(file);
 	}
 
-	public void saveAsPng(File file) throws IOException, SvgException {
-
-		if (file == null) {
-			throw new IllegalArgumentException(
-					"The argument file must not be null!");
-		}
-
-		canvas.saveAsPng(file);
-	}
-
 	public void saveAsJpeg(File file) throws IOException, SvgException {
 
 		if (file == null) {
@@ -215,8 +286,26 @@ public class UmlClassDiagramCreator {
 		canvas.saveAsJpeg(file);
 	}
 
+	public void saveAsPng(File file) throws IOException, SvgException {
+
+		if (file == null) {
+			throw new IllegalArgumentException(
+					"The argument file must not be null!");
+		}
+
+		canvas.saveAsPng(file);
+	}
+
 	public void scaleToWidth(int width) {
 		canvas.scaleToWidth(width);
+	}
+
+	public void setFontSize(int fontSize) {
+
+		this.fontSize = fontSize;
+
+		sansSerif = new Font(fontFamily, Font.PLAIN, fontSize);
+		sansSerifBold = new Font(fontFamily, Font.BOLD, fontSize);
 	}
 
 	public void setInterfaceBackgroundColor(Color color) {
@@ -230,17 +319,4 @@ public class UmlClassDiagramCreator {
 	public void setInterfaceTextColor(Color interfaceTextColor) {
 		this.interfaceTextColor = interfaceTextColor;
 	}
-
-	public void setFontSize(int fontSize) {
-
-		this.fontSize = fontSize;
-
-		sansSerif = new Font(fontFamily, Font.PLAIN, fontSize);
-		sansSerifBold = new Font(fontFamily, Font.BOLD, fontSize);
-	}
-
-	public int getFontSize() {
-		return fontSize;
-	}
-
 }

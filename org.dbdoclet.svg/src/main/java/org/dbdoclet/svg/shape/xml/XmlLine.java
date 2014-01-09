@@ -40,6 +40,10 @@ public class XmlLine extends XmlElement {
         line.setAttributeNS(null, "stroke", SvgServices.getColorAsHexString(strokeColor));
     }
     
+    public void setStrokeWidth(int strokeWidth) {
+        line.setAttributeNS(null, "stroke-width", String.valueOf(strokeWidth));
+    }
+    
     public void draw() {
 
         if (parent == null) {

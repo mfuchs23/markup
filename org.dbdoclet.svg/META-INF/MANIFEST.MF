@@ -15,3 +15,4 @@ Provide-Package: org.dbdoclet.svg,
  org.dbdoclet.svg.shape.g2d,
  org.dbdoclet.svg.shape.xml
 Bundle-ClassPath: lib/org.apache.batik_1.7.jar
+Require-Bundle: org.junit

@@ -35,7 +35,7 @@ public class TextBox2D extends TextBox {
 
         setGraphics2D(g2d);
 
-        textHeight = topPadding + bottomPadding;
+        textHeight = getTopPadding() + getBottomPadding();
         textWidth = 0;
         lineList = new ArrayList<Text>();
     }
@@ -50,7 +50,7 @@ public class TextBox2D extends TextBox {
 
         setGraphics2D(g2d);
 
-        textHeight = topPadding + bottomPadding;
+        textHeight = getTopPadding() + getBottomPadding();
         textWidth = 0;
         
         lineList = new ArrayList<Text>();
@@ -63,7 +63,7 @@ public class TextBox2D extends TextBox {
     public void setText(Text text) {
 
         lineList.clear();
-        textHeight = topPadding + bottomPadding;
+        textHeight = getTopPadding() + getBottomPadding();
         textWidth = 0;
         
         addText(text);
@@ -93,7 +93,7 @@ public class TextBox2D extends TextBox {
         drawBox(x, y, width, height);
         g2d.setPaint(Color.black);
         
-        int ypos = y + topPadding;
+        int ypos = y + getTopPadding();
         int xpos;
         int lineWidth;
         
@@ -135,5 +135,4 @@ public class TextBox2D extends TextBox {
         g2d.setPaint(getStrokeColor());
         g2d.draw(new Rectangle(x, y, width, height));
     }
-    
 }

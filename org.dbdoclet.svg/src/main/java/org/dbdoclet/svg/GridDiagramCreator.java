@@ -57,7 +57,7 @@ public class GridDiagramCreator {
     public Shape addCell(int row, int column, String title, String type) {
 
 	TextBox tbox = shapeFactory.createTextBox("c", row, column);
-	tbox.setMinTextWidth(50);
+	tbox.setMinTextWidth(0);
 	
 	TextUnit lineType = new TextUnit("«" + type + "»", sansSerif);
 	
