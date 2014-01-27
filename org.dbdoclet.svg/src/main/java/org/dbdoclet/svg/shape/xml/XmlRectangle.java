@@ -49,35 +49,7 @@ public class XmlRectangle extends XmlElement {
         rect.setAttributeNS(null, "fill", "white");
         rect.setAttributeNS(null, "stroke", "black");
     }
-    
-    public void setRx(int rx) {
-        rect.setAttributeNS(null, "rx", String.valueOf(rx));
-    }
 
-    public void setRy(int ry) {
-        rect.setAttributeNS(null, "ry", String.valueOf(ry));
-    }
-
-    public void setFill(Color fillColor) {
-        rect.setAttributeNS(null, "fill", SvgServices.getColorAsHexString(fillColor));
-    }
-    
-    public void setStroke(Color strokeColor) {
-        rect.setAttributeNS(null, "stroke", SvgServices.getColorAsHexString(strokeColor));
-    }
-
-    public void setStrokeDashArray(String dashArray) {
-        rect.setAttributeNS(null, "stroke-dasharray", dashArray);
-    }
-    
-    public void setFilter(String filterId) {
-        rect.setAttributeNS(null, "filter", filterId);
-    }
-    
-    public void setShadowEnabled(boolean shadowEnabled) {
-        this.shadowEnabled = shadowEnabled;
-    }
-    
     public void draw() {
 
         if (parent == null) {
@@ -107,5 +79,61 @@ public class XmlRectangle extends XmlElement {
         }
 
         parent.appendChild(rect);
+    }
+
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getRx() {
+    	
+    	String rx = rect.getAttributeNS(null, "rx");
+    	
+    	if (rx == null) {
+    		return 0;
+    	}
+    	
+    	return Integer.valueOf(rx);
+    }
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getX() {
+		return x;
+	}
+    
+    public int getY() {
+		return y;
+	}
+
+    public void setFill(Color fillColor) {
+        rect.setAttributeNS(null, "fill", SvgServices.getColorAsHexString(fillColor));
+    }
+
+    public void setFilter(String filterId) {
+        rect.setAttributeNS(null, "filter", filterId);
+    }
+    
+    public void setRx(int rx) {
+        rect.setAttributeNS(null, "rx", String.valueOf(rx));
+    }
+
+    public void setRy(int ry) {
+        rect.setAttributeNS(null, "ry", String.valueOf(ry));
+    }
+    
+    public void setShadowEnabled(boolean shadowEnabled) {
+        this.shadowEnabled = shadowEnabled;
+    }
+    
+    public void setStroke(Color strokeColor) {
+        rect.setAttributeNS(null, "stroke", SvgServices.getColorAsHexString(strokeColor));
+    }
+    
+    public void setStrokeDashArray(String dashArray) {
+        rect.setAttributeNS(null, "stroke-dasharray", dashArray);
     }
 }

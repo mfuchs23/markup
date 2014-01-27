@@ -32,7 +32,7 @@ public abstract class TextShape extends Shape {
         }
     
         SvgFontMetrics fm = new SvgFontMetrics(text.getFont(), text.getText());
-        int width = fm.stringWidth();
+        int width = text.getIndent() + fm.stringWidth();
         
         if (width > textWidth) {
             textWidth = width;

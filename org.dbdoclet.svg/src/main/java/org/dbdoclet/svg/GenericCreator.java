@@ -30,7 +30,7 @@ public class GenericCreator {
     }
     
     public void scaleToWidth(int width) {
-        img.scaleToWidth(width);
+        img.setMaxWidth(width);
     }
     
     public void save(File file) 

@@ -25,7 +25,7 @@ public class TextSeparator
 
 	@Override
 	public int getIndent() {
-		return 0;
+ 		return 0;
 	}
 
 }

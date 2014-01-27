@@ -23,11 +23,12 @@ import org.dbdoclet.svg.shape.TextUnit;
 
 public class UmlClassDiagramCreator {
 
-	private static final int MAX_PARAMETER_BEFORE_SPLIT = 3;
+	private static final int MAX_PARAMETER_BEFORE_SPLIT = 4;
+	private static final int MAX_METHOD_LENGTH = 80;
 	private SvgCanvas canvas;
 	private boolean directArrowMode = false;
 	private String fontFamily = "SansSerif";
-	private int fontSize = 10;
+	private int fontSize = 8;
 	private Color interfaceBackgroundColor = Color.orange;
 	private Color interfaceTextColor = Color.black;
 	private Color interfaceBorderColor = Color.black;
@@ -174,34 +175,42 @@ public class UmlClassDiagramCreator {
 
 	public void addMethod(ClassBox classBox, String method) {
 		
-		String[] tokens = method.split(",");
+		String[] tokens = method.split("\n");
 		
-		if (tokens.length < MAX_PARAMETER_BEFORE_SPLIT) {
+		if (tokens.length < MAX_PARAMETER_BEFORE_SPLIT && method.length() < MAX_METHOD_LENGTH) {
+			
+			method = method.replace('\n', ' ');
 			classBox.addText(new TextUnit(method, sansSerif));
+			
 		} else {
 			
 			int indentWidth = computeParameterIndentWidth(method);
 			
-			int index = method.indexOf(',');
+			int index = method.indexOf('\n');
 			if (index < 0) {
 				classBox.addText(new TextUnit(method, sansSerif));
 				return;
 			}
 			
-			String methodName = method.substring(0, index);
-			classBox.addText(new TextUnit(methodName, sansSerif));
+			String methodName = method.substring(0, index + 1);
+			classBox.addText(new TextUnit(methodName.trim(), sansSerif));
 			
-			int indexStart = index;
-			int indexEnd = method.indexOf(',', indexStart + 1);
-			while (index != -1) {
+			int indexStart = index + 1;
+			int indexEnd = method.indexOf('\n', indexStart);
+			
+			while (indexEnd != -1) {
 				
-				TextUnit textUnit = new TextUnit(method.substring(indexStart, indexEnd));
+				TextUnit textUnit = new TextUnit(method.substring(indexStart, indexEnd + 1).trim(), sansSerif);
 				textUnit.setIndent(indentWidth);
 				classBox.addText(textUnit);
 				
-				indexStart = indexEnd;
-				indexEnd = method.indexOf(',', indexStart +1);
+				indexStart = indexEnd + 1;
+				indexEnd = method.indexOf('\n', indexStart);
 			}
+			
+			TextUnit textUnit = new TextUnit(method.substring(indexStart), sansSerif);
+			textUnit.setIndent(indentWidth);
+			classBox.addText(textUnit);
 		}
 	}
 
@@ -212,8 +221,8 @@ public class UmlClassDiagramCreator {
 		
 		if (index > 0) {
 			
-			String methodName = method.substring(0, index);
-			SvgFontMetrics fm = new SvgFontMetrics(sansSerif, methodName);
+			String methodName = method.substring(0, index + 1);
+			SvgFontMetrics fm = new SvgFontMetrics(sansSerif, methodName.trim());
 			return fm.stringWidth();
 		}
 		
@@ -296,8 +305,12 @@ public class UmlClassDiagramCreator {
 		canvas.saveAsPng(file);
 	}
 
-	public void scaleToWidth(int width) {
-		canvas.scaleToWidth(width);
+	public void setMaxWidth(int width) {
+		canvas.setMaxWidth(width);
+	}
+
+	public void setMaxHeight(int height) {
+		canvas.setMaxHeight(height);
 	}
 
 	public void setFontSize(int fontSize) {

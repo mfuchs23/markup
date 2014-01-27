@@ -25,6 +25,10 @@ import org.w3c.dom.Document;
 public class XmlClassBox extends ClassBox {
 
 	private static Log logger = LogFactory.getLog(TextBox.class);
+	private XmlRectangle paramRect;
+	private XmlRectangle classRect;
+	private int drawX;
+	private int drawY;
 
 	public XmlClassBox(Document doc, String id, int x, int y) {
 
@@ -40,6 +44,9 @@ public class XmlClassBox extends ClassBox {
 
 	public void draw(int x, int y) {
 
+		drawX = x;
+		drawY = y;
+		
 		Document doc = getDocument();
 
 		int width = getWidth();
@@ -59,18 +66,18 @@ public class XmlClassBox extends ClassBox {
 		int classBoxHeight = height - getTemplateParameterBoxHeight();
 		int classBoxYpos = y + getTemplateParameterBoxHeight();
 		
-		XmlRectangle rect = new XmlRectangle(doc, x, classBoxYpos, classBoxWidth,
+		classRect = new XmlRectangle(doc, x, classBoxYpos, classBoxWidth,
 				classBoxHeight);
-		rect.setFill(getBackgroundColor());
-		rect.setStroke(getStrokeColor());
-		rect.setShadowEnabled(isShadowEnabled());
+		classRect.setFill(getBackgroundColor());
+		classRect.setStroke(getStrokeColor());
+		classRect.setShadowEnabled(isShadowEnabled());
 
 		if (roundedCorner > 0) {
-			rect.setRx(roundedCorner);
-			rect.setRy(roundedCorner);
+			classRect.setRx(roundedCorner);
+			classRect.setRy(roundedCorner);
 		}
 
-		rect.draw();
+		classRect.draw();
 
 		int ypos = classBoxYpos + getTopPadding();
 		int xpos;
@@ -113,7 +120,6 @@ public class XmlClassBox extends ClassBox {
 					xpos = x + ((classBoxWidth - lineWidth) / 2);
 				} else {
 					xpos = x + getLeftPadding() + line.getIndent();
-					
 				}
 				
 				XmlText text = new XmlText(doc, xpos, ypos, line.getText());
@@ -132,7 +138,6 @@ public class XmlClassBox extends ClassBox {
 	private void drawTypeParameterBox(Document doc, int x, int y, int width,
 			int height, Font defaultFont) {
 
-		XmlRectangle rect;
 		int ypos;
 		int xpos;
 
@@ -159,13 +164,13 @@ public class XmlClassBox extends ClassBox {
 			subboxYpos = y + subboxHeight / 2;
 		}
 		
-		rect = new XmlRectangle(doc, subboxXpos, subboxYpos, subboxWidth,
+		paramRect = new XmlRectangle(doc, subboxXpos, subboxYpos, subboxWidth,
 				subboxHeight);
-		rect.setFill(getBackgroundColor());
-		rect.setStroke(getStrokeColor());
-		rect.setStrokeDashArray("5 3");
-		rect.setShadowEnabled(isShadowEnabled());
-		rect.draw();
+		paramRect.setFill(getBackgroundColor());
+		paramRect.setStroke(getStrokeColor());
+		paramRect.setStrokeDashArray("5 3");
+		paramRect.setShadowEnabled(isShadowEnabled());
+		paramRect.draw();
 
 		ypos = subboxYpos;
 		xpos = subboxXpos + getLeftPadding();
@@ -180,5 +185,21 @@ public class XmlClassBox extends ClassBox {
 			text.draw();
 		}
 
+	}
+
+	@Override
+	public int getTopDistance(int xpos) {
+		
+		if (paramRect == null || classRect == null) {
+			return super.getTopDistance(xpos);
+		}
+		
+		int x = paramRect.getX();
+	
+		if (xpos > x) {
+			return paramRect.getY() - drawY;
+		} 
+		
+		return classRect.getY() - drawY;
 	}
 }

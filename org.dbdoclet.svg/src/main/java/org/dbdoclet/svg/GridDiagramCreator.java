@@ -102,7 +102,7 @@ public class GridDiagramCreator {
     }
 
     public void scaleToWidth(int width) {
-	canvas.scaleToWidth(width);
+	canvas.setMaxWidth(width);
     }
 
 }
