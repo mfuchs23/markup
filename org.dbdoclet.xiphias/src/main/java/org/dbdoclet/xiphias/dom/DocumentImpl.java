@@ -8,8 +8,11 @@
  */
 package org.dbdoclet.xiphias.dom;
 
+import java.util.HashMap;
+
 import org.dbdoclet.Sfv;
 import org.dbdoclet.xiphias.W3cServices;
+import org.dbdoclet.xiphias.XmlConstants;
 import org.w3c.dom.Attr;
 import org.w3c.dom.CDATASection;
 import org.w3c.dom.Comment;
@@ -28,11 +31,12 @@ import org.w3c.dom.Text;
 
 public class DocumentImpl extends NodeImpl implements Document {
 
+	private DocumentType docType;
+	private ElementImpl documentElement;
+	private HashMap<String, String> namespacePrefixMap = new HashMap<>();
 	private String xmlEncoding = "UTF-8";
 	private String xmlVersion = "1.0";
-	private ElementImpl documentElement;
-	private DocumentType docType;
-
+	
 	public DocumentImpl() {
 
 		super("#document", null);
@@ -40,6 +44,8 @@ public class DocumentImpl extends NodeImpl implements Document {
 
 		setXmlEncoding("UTF-8");
 		setXmlVersion("1.0");
+		
+		namespacePrefixMap.put(XmlConstants.NAMESPACE_XML, "xml");
 	}
 
 	@Override
@@ -49,13 +55,24 @@ public class DocumentImpl extends NodeImpl implements Document {
 
 	@Override
 	public Attr createAttribute(String name) throws DOMException {
-		throw new IllegalStateException("Not yet implemented");
+		
+		AttrImpl attr = new AttrImpl();
+		attr.setNodeName(name);
+		return attr;
+		
 	}
 
 	@Override
-	public Attr createAttributeNS(String namespaceURI, String qualifiedName)
+	public Attr createAttributeNS(String namespaceUri, String qualifiedName)
 			throws DOMException {
-		throw new IllegalStateException("Not yet implemented");
+
+		String prefix = manageNamespace(namespaceUri, qualifiedName);
+		
+		AttrImpl attr = new AttrImpl();
+		attr.setPrefix(prefix);
+		attr.setNamespaceURI(namespaceUri);
+		attr.setNodeName(qualifiedName);
+		return attr;
 	}
 
 	@Override
@@ -83,9 +100,16 @@ public class DocumentImpl extends NodeImpl implements Document {
 	}
 
 	@Override
-	public Element createElementNS(String namespaceURI, String qualifiedName)
+	public Element createElementNS(String namespaceUri, String qualifiedName)
 			throws DOMException {
-		throw new IllegalStateException("Not yet implemented");
+
+		String prefix = manageNamespace(namespaceUri, qualifiedName);
+		
+		ElementImpl elem = new ElementImpl();
+		elem.setNamespaceURI(namespaceUri);
+		elem.setPrefix(prefix);
+		elem.setNodeName(qualifiedName);
+		return elem;
 	}
 
 	@Override
@@ -119,11 +143,11 @@ public class DocumentImpl extends NodeImpl implements Document {
 
 	@Override
 	public Element getDocumentElement() {
-		
+
 		if (documentElement == null) {
 			return (Element) getFirstElement();
 		}
-		
+
 		return documentElement;
 	}
 
@@ -209,13 +233,13 @@ public class DocumentImpl extends NodeImpl implements Document {
 		throw new IllegalStateException("Not yet implemented");
 	}
 
-	public void setDocumentElement(ElementImpl documentElement) {
-		this.documentElement = documentElement;
-		
-	}
-
 	public void setDoctype(DocumentType docType) {
 		this.docType = docType;
+	}
+
+	public void setDocumentElement(ElementImpl documentElement) {
+		this.documentElement = documentElement;
+
 	}
 
 	@Override
@@ -244,5 +268,31 @@ public class DocumentImpl extends NodeImpl implements Document {
 	public void setXmlVersion(String xmlVersion) throws DOMException {
 		this.xmlVersion = xmlVersion;
 
+	}
+
+	private String manageNamespace(String namespaceUri, String qualifiedName) {
+		
+		String prefix = null;
+
+		if (qualifiedName.contains(":")) {
+			String[] tokens = qualifiedName.split(":");
+			prefix = tokens[0];
+		}
+
+		if (namespaceUri == null && prefix != null) {
+			throw new DOMException(DOMException.NAMESPACE_ERR, String.format(
+					"No namespace for prefix %s defined", prefix));
+		}
+
+		if (namespaceUri != null && prefix != null) {
+			
+			String value = namespacePrefixMap.get(namespaceUri);
+			
+			if (value == null) {
+				namespacePrefixMap.put(namespaceUri, prefix);
+			}
+		}
+		
+		return prefix;
 	}
 }

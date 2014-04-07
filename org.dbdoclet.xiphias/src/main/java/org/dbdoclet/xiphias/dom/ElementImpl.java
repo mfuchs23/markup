@@ -12,6 +12,7 @@ package org.dbdoclet.xiphias.dom;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,12 +38,31 @@ public class ElementImpl extends NodeImpl implements Element {
 	public static final int FORMAT_CONTENT = 2;
 	public static final int FORMAT_INLINE = 1;
 
+	private static int idCounter = 1;
+	private static Log logger = LogFactory.getLog(ElementImpl.class);
+
 	private static final Pattern xmlIdPattern = Pattern.compile("[^\\w\\.-]+");
 	private static final Pattern xmlNameStartPattern = Pattern
 			.compile("^[a-zA-Z_].*$");
 
-	private static Log logger = LogFactory.getLog(ElementImpl.class);
-	private static int idCounter = 1;
+	private Map<String, Attr> attributes = new TreeMap<>();
+	
+	private int formatType = FORMAT_CONTENT;
+	private boolean isLiteral = false;
+	public ElementImpl() {
+		super();
+		setNodeType(Node.ELEMENT_NODE);
+	}
+
+	public ElementImpl(String name) {
+		super(name);
+		setNodeType(Node.ELEMENT_NODE);
+	}
+
+	public ElementImpl(String name, NodeImpl parent) {
+		super(name, parent);
+		setNodeType(Node.ELEMENT_NODE);
+	}
 
 	public static String hardenId(String id) {
 
@@ -71,28 +91,9 @@ public class ElementImpl extends NodeImpl implements Element {
 
 		return buffer;
 	}
-	
-	private int formatType = FORMAT_CONTENT;
-	private boolean isLiteral = false;
-	private Map<String, AttrImpl> attributes = new TreeMap<String, AttrImpl>();
-
-	public ElementImpl() {
-		super();
-		setNodeType(Node.ELEMENT_NODE);
-	}
-
-	public ElementImpl(String name) {
-		super(name);
-		setNodeType(Node.ELEMENT_NODE);
-	}
-
-	public ElementImpl(String name, NodeImpl parent) {
-		super(name, parent);
-		setNodeType(Node.ELEMENT_NODE);
-	}
 
 	public void clearAttributes() {
-		attributes = new TreeMap<String, AttrImpl>();
+		attributes = new TreeMap<String, Attr>();
 	}
 
 	public void closed() {
@@ -127,7 +128,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 
 		name = name.toLowerCase();
-		AttrImpl attr = attributes.get(name);
+		Attr attr = attributes.get(name);
 
 		if (attr == null) {
 			return null;
@@ -144,20 +145,27 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 
 		name = name.toLowerCase();
-		return attributes.get(name);
+		return attributes.get(createAttributeKey(null, name));
 	}
 
 	@Override
 	public Attr getAttributeNodeNS(String namespaceURI, String localName)
 			throws DOMException {
-		// TODO Auto-generated method stub
-		return null;
+
+		String key = createAttributeKey(namespaceURI, localName);
+		return attributes.get(key);
 	}
 
 	@Override
 	public String getAttributeNS(String namespaceURI, String localName)
 			throws DOMException {
-		// TODO Auto-generated method stub
+		
+		Attr attr = getAttributeNodeNS(namespaceURI, localName);
+		
+		if (attr != null) {
+			return attr.getNodeValue();
+		}
+		
 		return null;
 	}
 
@@ -166,11 +174,21 @@ public class ElementImpl extends NodeImpl implements Element {
 
 		NamedNodeMapImpl map = new NamedNodeMapImpl();
 
-		for (AttrImpl attr : attributes.values()) {
+		for (Attr attr : attributes.values()) {
 			map.setNamedItem(attr);
 		}
 
 		return map;
+	}
+
+	@Override
+	public Map<String, Attr> getAttributesAsMap() {
+
+		if (attributes == null) {
+			attributes = new TreeMap<String, Attr>();
+		}
+
+		return attributes;
 	}
 
 	public String getAttributesAsText() {
@@ -202,12 +220,12 @@ public class ElementImpl extends NodeImpl implements Element {
 			return false;
 		}
 
-		AttrImpl attr = attributes.get(name);
+		Attr attr = attributes.get(name);
 
 		String bval = "false";
 
-		if (attr != null) {
-
+		if (attr != null) {	
+			
 			String value = attr.getValue();
 			if (value != null && value.trim().equals("1")) {
 				bval = "true";
@@ -254,7 +272,7 @@ public class ElementImpl extends NodeImpl implements Element {
 			return null;
 		}
 
-		AttrImpl attr = attributes.get(name);
+		Attr attr = attributes.get(name);
 
 		if (attr == null) {
 			return null;
@@ -291,16 +309,6 @@ public class ElementImpl extends NodeImpl implements Element {
 	@Override
 	public String getTagName() {
 		return getNodeName();
-	}
-
-	@Override
-	public Map<String, AttrImpl> getTrafoAttributes() {
-
-		if (attributes == null) {
-			attributes = new TreeMap<String, AttrImpl>();
-		}
-
-		return attributes;
 	}
 
 	@Override
@@ -372,20 +380,29 @@ public class ElementImpl extends NodeImpl implements Element {
 				name = name.toLowerCase();
 			}
 
-			AttrImpl attr = new AttrImpl(null, name, value);
-			attributes.put(name, attr);
+			AttrImpl attr = (AttrImpl) getDocument().createAttribute(name);
+			attr.setNodeValue(value);
+			attr.setOwnerElement(this);
+			addAttribute(attr);
 		}
 	}
 
 	@Override
 	public Attr setAttributeNode(Attr newAttr) throws DOMException {
-		// TODO Auto-generated method stub
-		return null;
+
+		if (newAttr == null) {
+			return null;
+		}
+		
+		String name = newAttr.getName();
+		Attr oldAttr = attributes.get(name);
+		addAttribute(newAttr);
+		
+		return oldAttr;
 	}
 
 	@Override
 	public Attr setAttributeNodeNS(Attr newAttr) throws DOMException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -393,8 +410,10 @@ public class ElementImpl extends NodeImpl implements Element {
 	public void setAttributeNS(String namespaceUri, String qualifiedName,
 			String value) throws DOMException {
 
-		AttrImpl attr = new AttrImpl(namespaceUri, qualifiedName, value);
-		attributes.put(qualifiedName, attr);
+		AttrImpl attr = (AttrImpl) getDocument().createAttributeNS(namespaceUri, qualifiedName);
+		attr.setNodeValue(value);
+		attr.setOwnerElement(this);
+		addAttribute(attr);
 	}
 
 	public NodeImpl setFormatType(int formatType) {
@@ -456,12 +475,35 @@ public class ElementImpl extends NodeImpl implements Element {
 				attrName = attrName.toLowerCase();
 			}
 
-			attributes
-					.put(attrName,
-							new AttrImpl(null, attrName, tokenAttrs
-									.get(tokenAttrName)));
+			AttrImpl attr = (AttrImpl) getDocument().createAttribute(attrName);
+			attr.setNodeValue(tokenAttrs.get(tokenAttrName));
+			addAttribute(attr);
 		}
 
 		return this;
+	}
+
+	private void addAttribute(Attr newAttr) {
+
+		String key = createAttributeKey(newAttr.getNamespaceURI(), newAttr.getNodeName());
+		attributes.put(key, newAttr);
+	}
+
+	private String createAttributeKey(String namespaceUri, String name) {
+		
+		if (name == null) {
+			throw new IllegalArgumentException("The argument name must not be null!");
+		}
+		
+		if (namespaceUri == null) {
+			namespaceUri = "";
+		}
+		
+		if (name.contains(":")) {
+			name = name.split(":")[1];
+		}
+		
+		String key = String.format("{%s %s}", namespaceUri, null);
+		return key;
 	}
 }

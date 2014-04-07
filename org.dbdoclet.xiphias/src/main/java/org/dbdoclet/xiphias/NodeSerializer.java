@@ -114,6 +114,11 @@ public class NodeSerializer {
 				element.setAttribute("version", version);
 			}
 			
+			String lang = documentElement.getAttributeNS(XmlConstants.NAMESPACE_XML, "lang");			
+			if (lang != null) {
+				element.setAttributeNS(XmlConstants.NAMESPACE_XML, "xml:lang", lang);
+			}
+
 			if (W3cServices.hasNamespace(element, XmlConstants.NAMESPACE_XINCLUDE) == false) {
 				W3cServices.setAttribute(node, "xmlns:xi", XmlConstants.NAMESPACE_XINCLUDE);
 			}

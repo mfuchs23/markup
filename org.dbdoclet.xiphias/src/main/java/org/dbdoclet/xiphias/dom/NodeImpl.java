@@ -17,6 +17,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.service.StringServices;
 import org.dbdoclet.xiphias.XmlServices;
+import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
@@ -47,6 +48,45 @@ public class NodeImpl implements Node {
 
 	private static Log logger = LogFactory.getLog(NodeImpl.class);
 	private static final String LSEP = System.getProperty("line.separator");
+
+	private NodeListImpl childNodes = new NodeListImpl();
+	private int column;
+	private DocumentImpl document;
+	private boolean isEmpty = false;
+	private boolean isMute = false;
+	private boolean isRawData = false;
+	private int line;
+	private String namespaceUri;
+	private boolean needsPadding = false;
+	private String nodeName = "node";
+	private short nodeType = ELEMENT_NODE;
+	private String nodeValue;
+	private NodeImpl parent = null;
+	private String prefix;
+	private TransformInstruction transformInstruction;
+	private HashMap<String, Object> userDataMap;
+	protected boolean isCaseInsensitive = false;
+
+	public NodeImpl() {
+		super();
+	}
+
+	public NodeImpl(String name) {
+		this(name, null);
+	}
+
+	public NodeImpl(String name, NodeImpl parent) {
+
+		if (name != null) {
+			nodeName = name;
+		}
+
+		if (isCaseInsensitive) {
+			nodeName = nodeName.toLowerCase();
+		}
+
+		this.parent = parent;
+	}
 
 	/**
 	 * The method <code>findParent</code> tries to find the nearest parent,
@@ -182,50 +222,6 @@ public class NodeImpl implements Node {
 		}
 	}
 
-	private NodeListImpl childNodes = new NodeListImpl();
-	private DocumentImpl document;
-	private boolean isEmpty = false;
-	private boolean isMute = false;
-	private boolean isRawData = false;
-	private String namespaceUri;
-	private boolean needsPadding = false;
-	private String nodeName = "node";
-	private short nodeType = ELEMENT_NODE;
-	private String nodeValue;
-
-	private NodeImpl parent = null;
-
-	private TransformInstruction transformInstruction;
-
-	private HashMap<String, Object> userDataMap;
-
-	private int column;
-
-	private int line;
-
-	protected boolean isCaseInsensitive = false;
-
-	public NodeImpl() {
-		super();
-	}
-
-	public NodeImpl(String name) {
-		this(name, null);
-	}
-
-	public NodeImpl(String name, NodeImpl parent) {
-
-		if (name != null) {
-			nodeName = name;
-		}
-
-		if (isCaseInsensitive) {
-			nodeName = nodeName.toLowerCase();
-		}
-
-		this.parent = parent;
-	}
-
 	@Override
 	public Node appendChild(Node newChild) throws DOMException {
 
@@ -313,23 +309,6 @@ public class NodeImpl implements Node {
 		return 0;
 	}
 
-	public Text findFirstText() {
-
-		Text firstText = getFirstText();
-		if (firstText != null) {
-			return firstText;
-		}
-
-		for (Element element : getChildElementList()) {
-			firstText = ((ElementImpl) element).findFirstText();
-			if (firstText != null) {
-				return firstText;
-			}
-		}
-
-		return null;
-	}
-
 	public NodeImpl findChildElement(String tagName) {
 
 		if (tagName == null) {
@@ -354,6 +333,23 @@ public class NodeImpl implements Node {
 				if (nodeName != null && nodeName.equals(tagName)) {
 					return element;
 				}
+			}
+		}
+
+		return null;
+	}
+
+	public Text findFirstText() {
+
+		Text firstText = getFirstText();
+		if (firstText != null) {
+			return firstText;
+		}
+
+		for (Element element : getChildElementList()) {
+			firstText = ((ElementImpl) element).findFirstText();
+			if (firstText != null) {
+				return firstText;
 			}
 		}
 
@@ -648,6 +644,10 @@ public class NodeImpl implements Node {
 	@Override
 	public String getPrefix() {
 
+		if (prefix != null) {
+			return prefix;
+			
+		}
 		if (this instanceof ElementImpl || this instanceof AttrImpl) {
 
 			String qualifiedName = getNodeName();
@@ -717,10 +717,10 @@ public class NodeImpl implements Node {
 		return NodeImpl.getTextContent(this);
 	}
 
-	public Map<String, AttrImpl> getTrafoAttributes() {
+	public Map<String, Attr> getAttributesAsMap() {
 
 		if (this instanceof ElementImpl) {
-			return this.getTrafoAttributes();
+			return this.getAttributesAsMap();
 		}
 
 		return null;
@@ -1158,6 +1158,7 @@ public class NodeImpl implements Node {
 	}
 
 	public void setNodeName(String nodeName) {
+		
 		this.nodeName = nodeName;
 	}
 
@@ -1181,7 +1182,8 @@ public class NodeImpl implements Node {
 
 	@Override
 	public void setPrefix(String prefix) throws DOMException {
-		System.err.println("Not yet implemented");
+		this.prefix = prefix;
+		
 	}
 
 	@Override
@@ -1346,12 +1348,6 @@ public class NodeImpl implements Node {
 		return toTree("", levels, 0);
 	}
 
-	protected boolean validateAttributes() {
-
-		// To be overwritten
-		return true;
-	}
-
 	public boolean validateParentPath(
 			HashMap<String, HashMap<String, String>> validParentMap) {
 
@@ -1406,6 +1402,12 @@ public class NodeImpl implements Node {
 			NodeListImpl children = parent.getTrafoChildNodes();
 			children.remove(this);
 		}
+	}
+
+	protected boolean validateAttributes() {
+
+		// To be overwritten
+		return true;
 	}
 
 }
