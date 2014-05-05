@@ -21,6 +21,7 @@ public class Div extends Inline2Element {
 
         validParentMap = new HashMap<String, HashMap<String, String>>();
         validParentMap.put(Applet.getTag(), Applet.getAttributeMap());
+        validParentMap.put(Article.getTag(), Applet.getAttributeMap());
         validParentMap.put(Blockquote.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Body.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Button.getTag(), Button.getAttributeMap());
@@ -37,6 +38,7 @@ public class Div extends Inline2Element {
         validParentMap.put(Noframes.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Noscript.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(HtmlObject.getTag(), HtmlObject.getAttributeMap());
+        validParentMap.put(Section.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Td.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Th.getTag(), HtmlElement.getAttributeMap());
     }

@@ -12,13 +12,13 @@ package org.dbdoclet.xiphias.dom;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -193,25 +193,17 @@ public class ElementImpl extends NodeImpl implements Element {
 
 	public String getAttributesAsText() {
 
-		String buffer = "";
-		String key;
-
 		if ((attributes != null) && (attributes.size() > 0)) {
 
 			validateAttributes();
 
-			Iterator<String> iterator = attributes.keySet().iterator();
-
-			while (iterator.hasNext()) {
-
-				key = iterator.next();
-				buffer += " " + key + "=\""
-						+ XmlServices.textToXml(attributes.get(key).getValue())
-						+ "\"";
-			}
+			return attributes.values().stream().map(a -> {
+				return a.getNodeName() + "=\"" + a.getNodeValue() + "\"";
+			})
+			.collect(Collectors.joining(" "));			
 		}
 
-		return buffer;
+		return "";
 	}
 
 	public boolean getBooleanAttribute(String name) {
@@ -450,7 +442,7 @@ public class ElementImpl extends NodeImpl implements Element {
 
 	}
 
-	public NodeImpl setTrafoAttributes(Map<String, AttrImpl> nattrs) {
+	public NodeImpl setTrafoAttributes(Map<String, Attr> nattrs) {
 
 		if (nattrs == null) {
 			throw new IllegalArgumentException("Parameter attributes is null!");
@@ -494,16 +486,17 @@ public class ElementImpl extends NodeImpl implements Element {
 		if (name == null) {
 			throw new IllegalArgumentException("The argument name must not be null!");
 		}
-		
-		if (namespaceUri == null) {
-			namespaceUri = "";
-		}
-		
+				
 		if (name.contains(":")) {
 			name = name.split(":")[1];
 		}
 		
-		String key = String.format("{%s %s}", namespaceUri, null);
+		String key = name;
+		
+		if (namespaceUri != null && namespaceUri.trim().length() > 0) {
+			key = String.format("{%s %s}", namespaceUri, name);
+		}
+		
 		return key;
 	}
 }

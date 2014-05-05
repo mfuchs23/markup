@@ -12,18 +12,17 @@ import java.util.HashMap;
 
 import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
 
-public class B extends InlineElement {
+public class Article extends Inline2Element {
 
-	private static final String tag = "b";
+	private static final String tag = "article";
 
-	public B() {
+	public Article() {
 
 		setNodeName(tag);
-		setFormatType(FORMAT_INLINE);
+		setFormatType(FORMAT_BLOCK);
 	}
 
 	public static String getTag() {
-
 		return tag;
 	}
 
@@ -31,33 +30,11 @@ public class B extends InlineElement {
 	public void init() {
 
 		if (validParentMap == null) {
-
+			
 			validParentMap = new HashMap<String, HashMap<String, String>>();
 			validParentMap.putAll(blockElementMap);
 			validParentMap.putAll(inlineElementMap);
-			validParentMap.put(Caption.getTag(), HtmlElement.getAttributeMap());
-			validParentMap.remove("var");
+			validParentMap.remove(Address.getTag());
 		}
-	}
-
-	@Override
-	public boolean validate() {
-
-		if (validate(validParentMap)) {
-			return true;
-		}
-
-		if (getParentNode() instanceof Body
-				|| getParentNode() instanceof DocumentFragmentImpl) {
-
-			Div div = new Div();
-			div.appendChild(this);
-
-			nodeStack.push(div);
-
-			return true;
-		}
-
-		return false;
 	}
 }

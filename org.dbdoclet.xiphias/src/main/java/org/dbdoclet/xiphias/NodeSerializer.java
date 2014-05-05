@@ -520,14 +520,23 @@ public class NodeSerializer {
 		}
 
 		if (inMixedContent == false) {
-			out.write(indent + "<" + name);
+			out.write(indent);
+			out.write('<');
+			out.write(name);
 		} else {
-			out.write("<" + name);
+			out.write('<');
+			out.write(name);
 		}
 
 		if (elemImpl != null) {
 
-			out.write(elemImpl.getAttributesAsText());
+			
+			String attributesAsText = elemImpl.getAttributesAsText();
+			
+			if (attributesAsText != null && attributesAsText.length() > 0) {
+				out.write(' ');
+				out.write(attributesAsText);
+			}
 
 			if (elemImpl.isLiteral()) {
 				literalContext++;

@@ -10,6 +10,7 @@ package org.dbdoclet.tag.docbook;
 
 import java.util.HashMap;
 
+import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
@@ -251,7 +252,7 @@ public class DocBookElement extends ElementImpl {
 		}
 
 		if (docBookVersion == DocBookVersion.V5_0) {
-			setAttribute("xml:lang", lang);
+			setAttributeNS(XmlConstants.NAMESPACE_XML,"xml:lang", lang);
 		} else {
 			setAttribute("lang", lang);
 		}

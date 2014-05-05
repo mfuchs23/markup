@@ -21,7 +21,8 @@ public class Address extends Inline2Element {
 
         validParentMap = new HashMap<String, HashMap<String, String>>();
         validParentMap.put(Applet.getTag(), Applet.getAttributeMap());
-        validParentMap.put(Blockquote.getTag(), HtmlElement.getAttributeMap());
+		validParentMap.put(Article.getTag(), Applet.getAttributeMap());
+		validParentMap.put(Blockquote.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Body.getTag(), HtmlElement.getAttributeMap());
         validParentMap.put(Button.getTag(), Button.getAttributeMap());
         validParentMap.put(Center.getTag(), HtmlElement.getAttributeMap());

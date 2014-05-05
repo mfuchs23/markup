@@ -415,6 +415,21 @@ public class NodeImpl implements Node {
 	}
 
 	public DocumentImpl getDocument() {
+		
+		if (document == null) {
+		
+			Node parent = getParentNode();
+			
+			while (parent != null && document == null) {
+				document = (DocumentImpl) parent.getOwnerDocument();
+				parent = parent.getParentNode();
+			}
+		}
+		
+		if (document == null) {
+			document = new DocumentImpl();
+		}
+		
 		return document;
 	}
 
@@ -632,8 +647,7 @@ public class NodeImpl implements Node {
 
 	@Override
 	public Document getOwnerDocument() {
-		System.err.println("Not yet implemented");
-		return null;
+		return getDocument();
 	}
 
 	@Override

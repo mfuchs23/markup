@@ -14,7 +14,8 @@ Import-Package: org.apache.commons.codec.binary,
  org.dbdoclet.option,
  org.dbdoclet.progress,
  org.dbdoclet.service,
- org.dbdoclet.unit
+ org.dbdoclet.unit,
+ org.dbdoclet.xiphias.dom
 Export-Package: org.dbdoclet.format,
  org.dbdoclet.xiphias,
  org.dbdoclet.xiphias.dom

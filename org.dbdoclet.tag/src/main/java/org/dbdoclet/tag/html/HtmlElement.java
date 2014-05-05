@@ -12,17 +12,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.dbdoclet.xiphias.dom.AttrImpl;
+import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
 import org.dbdoclet.xiphias.dom.NodeStack;
+import org.w3c.dom.Attr;
 
 public abstract class HtmlElement extends ElementImpl {
 
 	protected static HashMap<String, HashMap<String, String>> blockElementMap = new HashMap<String, HashMap<String, String>>();
 	protected static HashMap<String, HashMap<String, String>> inlineElementMap = new HashMap<String, HashMap<String, String>>();
-	static {
+	protected static HashMap<String, HashMap<String, String>> validParentMap;
 
+	static {
 		initBlockElementMap();
 		initInlineElementMap();
 	}
@@ -37,186 +39,39 @@ public abstract class HtmlElement extends ElementImpl {
 
 	private static void initBlockElementMap() {
 
-		HashMap<String, String> attributes;
+		String[] blockElements = { Address.getTag(), Article.getTag(),
+				Aside.getTag(), Blockquote.getTag(), Body.getTag(),
+				Center.getTag(), Dd.getTag(), Del.getTag(), Div.getTag(),
+				Dt.getTag(), Form.getTag(), H1.getTag(), H2.getTag(),
+				H3.getTag(), H4.getTag(), H5.getTag(), H6.getTag(),
+				Ins.getTag(), Isindex.getTag(), Li.getTag(), Noframes.getTag(),
+				Noscript.getTag(), P.getTag(), Pre.getTag(), Section.getTag(),
+				Td.getTag(), Th.getTag() };
 
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("address", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("blockquote", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("center", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("dd", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("del", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("div", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("dt", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("form", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h1", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h2", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h3", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h4", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h5", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("h6", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("ins", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("isindex", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("li", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("noframes", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("noscript", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("p", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("pre", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("td", attributes);
-
-		attributes = new HashMap<String, String>();
-		blockElementMap.put("th", attributes);
+		for (String blockElement : blockElements) {
+			blockElementMap.put(blockElement, new HashMap<String, String>());
+		}
 	}
 
 	private static void initInlineElementMap() {
 
-		HashMap<String, String> attributes;
+		String[] inlineElements = { A.getTag(), Abbr.getTag(),
+				Acronym.getTag(), Applet.getTag(), Area.getTag(), B.getTag(),
+				Base.getTag(), Basefont.getTag(), Bdi.getTag(), Bdo.getTag(),
+				Big.getTag(), Br.getTag(), Button.getTag(), Caption.getTag(),
+				Cite.getTag(), Code.getTag(), Col.getTag(), Colgroup.getTag(),
+				Command.getTag(), Datalist.getTag(), Details.getTag(),
+				Dfn.getTag(), Em.getTag(), Embed.getTag(), Font.getTag(),
+				I.getTag(), Img.getTag(), Input.getTag(), Iframe.getTag(),
+				Kbd.getTag(), Label.getTag(), Legend.getTag(),
+				HtmlObject.getTag(), Q.getTag(), S.getTag(), Samp.getTag(),
+				Small.getTag(), Span.getTag(), Strike.getTag(),
+				Strong.getTag(), Sub.getTag(), Sup.getTag(), Tt.getTag(),
+				U.getTag(), Var.getTag() };
 
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("a", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("abbr", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("acronym", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("applet", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("b", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("basefont", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("bdo", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("big", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("br", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("button", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("cite", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("code", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("dfn", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("em", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("font", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("i", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("img", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("input", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("iframe", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("kbd", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("label", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("legend", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("object", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("q", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("s", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("samp", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("small", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("span", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("strike", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("strong", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("sub", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("sup", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("tt", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("u", attributes);
-
-		attributes = new HashMap<String, String>();
-		inlineElementMap.put("var", attributes);
+		for (String inlineElement : inlineElements) {
+			inlineElementMap.put(inlineElement, new HashMap<String, String>());
+		}
 	}
 
 	protected NodeStack nodeStack = new NodeStack();
@@ -224,11 +79,13 @@ public abstract class HtmlElement extends ElementImpl {
 	public HtmlElement() {
 		super();
 		isCaseInsensitive(true);
+		init();
 	}
 
 	public HtmlElement(String name, NodeImpl parent) {
 		super(name, parent);
 		isCaseInsensitive(true);
+		init();
 	}
 
 	public void closed() {
@@ -261,7 +118,18 @@ public abstract class HtmlElement extends ElementImpl {
 		// initialize
 	}
 
-	abstract public boolean validate();
+	public boolean validate() {
+
+		if (validate(validParentMap)) {
+			return true;
+		}
+
+		if (getParentNode() instanceof DocumentFragmentImpl) {
+			return true;
+		}
+
+		return false;
+	}
 
 	protected boolean validate(
 			HashMap<String, HashMap<String, String>> validParentMap) {
@@ -297,7 +165,7 @@ public abstract class HtmlElement extends ElementImpl {
 					"Parameter attributeMap is null!");
 		}
 
-		Map<String, AttrImpl> attributes = getTrafoAttributes();
+		Map<String, Attr> attributes = getAttributesAsMap();
 
 		if ((attributes != null) && (attributes.size() > 0)) {
 
@@ -319,7 +187,7 @@ public abstract class HtmlElement extends ElementImpl {
 						continue;
 					}
 
-					AttrImpl attr = attributes.get(name);
+					Attr attr = attributes.get(name);
 
 					if (attr == null) {
 						continue;

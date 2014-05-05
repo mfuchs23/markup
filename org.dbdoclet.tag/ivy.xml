@@ -3,6 +3,6 @@
   <info organisation="org.dbdoclet" module="org.dbdoclet.tag" revision="7.0.1" status="integration" publication="20131022120437">
   </info>
   <dependencies>
-    <dependency org="org.dbdoclet" name="org.dbdoclet.xiphias" rev="6.1.1" revConstraint="latest.integration"/>
+    <dependency org="org.dbdoclet" name="org.dbdoclet.xiphias" rev="8.0.0" revConstraint="latest.integration"/>
   </dependencies>
 </ivy-module>

@@ -18,7 +18,7 @@ specific language governing permissions and limitations
 under the License.    
 -->
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
-  <info organisation="org.dbdoclet" module="org.dbdoclet.xiphias" revision="6.1.1" status="integration" publication="20131022120450">
+  <info organisation="org.dbdoclet" module="org.dbdoclet.xiphias" revision="8.0.0" status="integration" publication="20131022120450">
   </info>
   <dependencies>
     <dependency org="com.elharo" name="com.elharo.xml.xinclude" rev="1.0.0" revConstraint="latest.release"/>
