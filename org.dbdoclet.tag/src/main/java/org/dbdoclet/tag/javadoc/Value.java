@@ -26,12 +26,4 @@ public class Value extends JavaDocElement {
     public String getRef() {
 	return getAttribute("ref");
     }
-
-    @Override
-    public boolean validate() {
-
-	nodeStack.removeAllElements();
-	nodeStack.push(this);
-	return true;
-    }
 }

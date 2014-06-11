@@ -32,31 +32,4 @@ public class Body extends ReplaceElement {
         setFormatType(FORMAT_BLOCK);
     }
 
-    @Override
-	public void init() {
-
-    }
-
-    public static String getTag() {
-
-        return tag;
-    }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    @Override
-	public boolean validateAttributes() {
-
-        validateAttributes(attributeMap);
-        return true;
-    }
 }

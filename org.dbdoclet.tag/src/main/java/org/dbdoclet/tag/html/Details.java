@@ -8,7 +8,6 @@
  */
 package org.dbdoclet.tag.html;
 
-import java.util.HashMap;
 
 public class Details extends InlineElement {
 
@@ -18,20 +17,5 @@ public class Details extends InlineElement {
 
 		setNodeName(tag);
 		setFormatType(FORMAT_INLINE);
-	}
-
-	public static String getTag() {
-		return tag;
-	}
-
-	@Override
-	public void init() {
-
-		if (validParentMap == null) {
-
-			validParentMap = new HashMap<String, HashMap<String, String>>();
-    		validParentMap.putAll(blockElementMap);
-    		validParentMap.putAll(inlineElementMap);
-		}
 	}
 }

@@ -733,15 +733,7 @@ public class HtmlParser {
 					continue;
 				}
 
-				if ((candidate == null) || !candidate.validate()) {
-
-					logger.debug("Candidate is invalid '" + candidate + "'!");
-					continue;
-
-				} else {
-
-					logger.debug("Candidate is valid: " + candidate);
-				}
+				logger.debug("Candidate is valid: " + candidate);
 
 				// Commit changes
 				if (skip == false) {
@@ -760,35 +752,20 @@ public class HtmlParser {
 						}
 					}
 
-					NodeStack nodeStack = candidate.getValidateStack();
-
-					index = 0;
-
-					while ((currentNode != null) && !nodeStack.empty()) {
-
-						node = (HtmlElement) nodeStack.pop();
-
-						if (index == 0) {
-							if (currentNode instanceof HtmlDocument) {
-								((HtmlDocument) currentNode)
-										.setDocumentElement((ElementImpl) node);
-								currentNode.appendChild(node);								
-							} else {
-								currentNode.appendChild(node);
-								treeSize++;
-							}
-						}
-
-						if (node.isEmpty() == false) {
-
-							addOpenTag(node);
-							currentNode = node;
-						}
-
-						logger.debug("Inserted tag <" + node.getNodeName()
-								+ ">.");
-						index++;
+					if (currentNode instanceof HtmlDocument) {
+						((HtmlDocument) currentNode)
+						.setDocumentElement((ElementImpl) candidate);
 					}
+					
+					currentNode.appendChild(candidate);								
+					treeSize++;
+
+					if (candidate.isEmpty() == false) {
+
+						addOpenTag(candidate);
+						currentNode = candidate;
+					}
+
 				} else {
 
 					logger.debug("Skipped candidate.");
@@ -839,7 +816,7 @@ public class HtmlParser {
 		return rc;
 	}
 
-	private HtmlElement removeOpenTag() {
+	private ElementImpl removeOpenTag() {
 
 		openTags.pop();
 

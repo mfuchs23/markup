@@ -10,8 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 
 public class Blockquote extends Inline2Element {
 
@@ -52,24 +50,4 @@ public class Blockquote extends Inline2Element {
         return tag;
     }
 
-    @Override
-	public void init() {
-
-    }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        if (getParentNode() instanceof DocumentFragmentImpl) {
-
-            return true;
-        }
-
-        return false;
-    }
 }

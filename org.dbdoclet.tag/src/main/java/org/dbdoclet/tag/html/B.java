@@ -8,10 +8,6 @@
  */
 package org.dbdoclet.tag.html;
 
-import java.util.HashMap;
-
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 public class B extends InlineElement {
 
 	private static final String tag = "b";
@@ -20,44 +16,5 @@ public class B extends InlineElement {
 
 		setNodeName(tag);
 		setFormatType(FORMAT_INLINE);
-	}
-
-	public static String getTag() {
-
-		return tag;
-	}
-
-	@Override
-	public void init() {
-
-		if (validParentMap == null) {
-
-			validParentMap = new HashMap<String, HashMap<String, String>>();
-			validParentMap.putAll(blockElementMap);
-			validParentMap.putAll(inlineElementMap);
-			validParentMap.put(Caption.getTag(), HtmlElement.getAttributeMap());
-			validParentMap.remove("var");
-		}
-	}
-
-	@Override
-	public boolean validate() {
-
-		if (validate(validParentMap)) {
-			return true;
-		}
-
-		if (getParentNode() instanceof Body
-				|| getParentNode() instanceof DocumentFragmentImpl) {
-
-			Div div = new Div();
-			div.appendChild(this);
-
-			nodeStack.push(div);
-
-			return true;
-		}
-
-		return false;
 	}
 }

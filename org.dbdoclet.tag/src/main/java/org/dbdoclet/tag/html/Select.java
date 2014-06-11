@@ -10,7 +10,7 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
+import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
 
 public class Select extends InlineElement {
@@ -23,11 +23,6 @@ public class Select extends InlineElement {
 	validParentMap.putAll(blockElementMap);
 	validParentMap.putAll(inlineElementMap);
 	validParentMap.remove(Button.getTag());
-    }
-
-    public static String getTag() {
-
-	return tag;
     }
 
     public Select() {
@@ -47,7 +42,7 @@ public class Select extends InlineElement {
 
 		if (node instanceof HtmlElement) {
 
-		    HtmlElement elem = (HtmlElement) node;
+		    ElementImpl elem = (ElementImpl) node;
 
 		    if (elem instanceof Option) {
 			hasOptions = true;
@@ -59,31 +54,5 @@ public class Select extends InlineElement {
 	if (hasOptions == false) {
 	    appendChild(new Option());
 	}
-    }
-
-    @Override
-	public void init() {
-
-    }
-
-    @Override
-	public boolean validate() {
-
-	if (validate(validParentMap)) {
-
-	    return true;
-	}
-
-	if (getParentNode() instanceof DocumentFragmentImpl) {
-
-	    Div div = new Div();
-	    div.appendChild(this);
-
-	    nodeStack.push(div);
-
-	    return true;
-	}
-
-	return false;
     }
 }

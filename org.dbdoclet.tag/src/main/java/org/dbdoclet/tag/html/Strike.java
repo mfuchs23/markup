@@ -10,48 +10,25 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 public class Strike extends InlineElement {
 
-    private static String tag = "strike";
-    private static HashMap<String, HashMap<String, String>> validParentMap;
-    static {
+	private static String tag = "strike";
+	private static HashMap<String, HashMap<String, String>> validParentMap;
+	static {
 
-	validParentMap = new HashMap<String, HashMap<String, String>>();
-	validParentMap.putAll(blockElementMap);
-	validParentMap.putAll(inlineElementMap);
-    }
-
-    public static String getTag() {
-
-	return tag;
-    }
-
-    public Strike() {
-
-	setNodeName(tag);
-	setFormatType(FORMAT_INLINE);
-    }
-
-    @Override
-    public boolean validate() {
-
-	if (validate(validParentMap)) {
-
-	    return true;
+		validParentMap = new HashMap<String, HashMap<String, String>>();
+		validParentMap.putAll(blockElementMap);
+		validParentMap.putAll(inlineElementMap);
 	}
 
-	if (getParentNode() instanceof DocumentFragmentImpl) {
+	public static String getTag() {
 
-	    Div div = new Div();
-	    div.appendChild(this);
-
-	    nodeStack.push(div);
-
-	    return true;
+		return tag;
 	}
 
-	return false;
-    }
+	public Strike() {
+
+		setNodeName(tag);
+		setFormatType(FORMAT_INLINE);
+	}
 }

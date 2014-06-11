@@ -12,21 +12,6 @@ import org.w3c.dom.Node;
 
 public class Html extends StrictElement {
 
-    @Override
-    public boolean validate() {
-
-	Node parent = getParentNode();
-	
-	if (parent instanceof HtmlDocument) {
-	    
-	    nodeStack.removeAllElements();
-	    nodeStack.push(this);
-	    return true;
-	}
-	
-	return false;
-    }
-
     private static final String tag = "html";
 
     public static String getTag() {

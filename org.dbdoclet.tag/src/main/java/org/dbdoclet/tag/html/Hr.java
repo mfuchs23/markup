@@ -10,9 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-import org.w3c.dom.Node;
-
 public class Hr extends Inline2Element {
 
     private static final String tag = "hr";
@@ -56,46 +53,5 @@ public class Hr extends Inline2Element {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public boolean validate() {
-
-        Node parent = getParentNode();
-
-        if (parent instanceof Dir || parent instanceof Menu) {
-
-            return false;
-        }
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        if (parent instanceof DocumentFragmentImpl) {
-
-            Div div = new Div();
-            div.appendChild(this);
-
-            nodeStack.push(div);
-
-            return true;
-        }
-
-        if (parent instanceof Li) {
-
-            Node node = parent.getParentNode();
-
-            if (node == null) {
-                return false;
-            }
-
-            if (node instanceof Dir || node instanceof Menu) {
-                return false;
-            }
-        }
-
-        return false;
     }
 }

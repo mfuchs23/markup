@@ -10,6 +10,7 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
+import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
 
 public class Optgroup extends StrictElement {
@@ -54,7 +55,7 @@ public class Optgroup extends StrictElement {
 
                 if (node instanceof HtmlElement) {
                 
-                    HtmlElement elem = (HtmlElement) node;
+                    ElementImpl elem = (ElementImpl) node;
                     if (elem instanceof Option) {
                         hasOptions = true;
                     }
@@ -70,16 +71,5 @@ public class Optgroup extends StrictElement {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        return false;
     }
 }

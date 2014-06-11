@@ -40,15 +40,4 @@ public class Li extends StrictElement {
 
         return tag;
     }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        return false;
-    }
 }

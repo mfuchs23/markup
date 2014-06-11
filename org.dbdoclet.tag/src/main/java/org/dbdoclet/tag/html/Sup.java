@@ -10,8 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 public class Sup extends InlineElement {
 
     private static String tag = "sup";
@@ -39,26 +37,5 @@ public class Sup extends InlineElement {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public boolean validate() {
-
-	if (validate(validParentMap)) {
-
-	    return true;
-	}
-
-	if (getParentNode() instanceof DocumentFragmentImpl) {
-
-	    Div div = new Div();
-	    div.appendChild(this);
-
-	    nodeStack.push(div);
-
-	    return true;
-	}
-
-	return false;
     }
 }

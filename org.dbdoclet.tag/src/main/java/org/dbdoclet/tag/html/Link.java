@@ -38,15 +38,4 @@ public class Link extends ReplaceElement {
 
         return tag;
     }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        return false;
-    }
 }

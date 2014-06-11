@@ -145,7 +145,7 @@ public class DocumentImpl extends NodeImpl implements Document {
 	public Element getDocumentElement() {
 
 		if (documentElement == null) {
-			return (Element) getFirstElement();
+			return (Element) getFirstChildElement();
 		}
 
 		return documentElement;

@@ -23,12 +23,4 @@ public class Code extends JavaDocElement {
 	setNodeName("javadoc:code");
 	setFormatType(FORMAT_INLINE);
     }
-
-    @Override
-    public boolean validate() {
-
-	nodeStack.removeAllElements();
-	nodeStack.push(this);
-	return true;
-    }
 }

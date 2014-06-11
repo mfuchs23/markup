@@ -10,8 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 
 public class H4 extends HeaderElement {
 
@@ -62,21 +60,5 @@ public class H4 extends HeaderElement {
 	public int getLevel() {
 
         return level;
-    }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        if (getParentNode() instanceof DocumentFragmentImpl) {
-
-            return true;
-        }
-
-        return super.validate();
     }
 }

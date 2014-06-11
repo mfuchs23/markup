@@ -45,15 +45,4 @@ public class Option extends StrictElement {
 	public void init() {
 
     }
-
-    @Override
-	public boolean validate() {
-
-        if (validate(validParentMap)) {
-
-            return true;
-        }
-
-        return false;
-    }
 }

@@ -11,7 +11,7 @@ package org.dbdoclet.tag.html;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
+import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
 import org.dbdoclet.xiphias.dom.NodeListImpl;
 
@@ -71,7 +71,7 @@ public class Table extends Inline2Element {
 
 				if (child instanceof HtmlElement) {
 
-					HtmlElement elem = (HtmlElement) child;
+					ElementImpl elem = (ElementImpl) child;
 
 					if (elem instanceof Tr || elem instanceof Tbody) {
 						hasRows = true;
@@ -278,20 +278,6 @@ public class Table extends Inline2Element {
 	public boolean hasHead() {
 
 		return hasHead;
-	}
-
-	@Override
-	public boolean validate() {
-
-		if (validate(validParentMap)) {
-			return true;
-		}
-
-		if (getParentNode() instanceof DocumentFragmentImpl) {
-			return true;
-		}
-
-		return false;
 	}
 
 	private int widthToNumber(String width) {

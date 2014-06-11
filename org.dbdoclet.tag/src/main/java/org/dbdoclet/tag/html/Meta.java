@@ -32,16 +32,6 @@ public class Meta extends ReplaceElement {
 		return tag;
 	}
 
-	@Override
-	public boolean validate() {
-
-		if (validate(validParentMap)) {
-			return true;
-		}
-
-		return false;
-	}
-
 	public String getName() {
 		return getAttribute("name");
 	}

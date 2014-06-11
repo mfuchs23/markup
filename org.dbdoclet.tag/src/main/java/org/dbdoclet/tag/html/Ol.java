@@ -10,8 +10,6 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-import org.dbdoclet.xiphias.dom.DocumentFragmentImpl;
-
 public class Ol extends Inline2Element {
 
     private static String tag = "ol";
@@ -64,21 +62,5 @@ public class Ol extends Inline2Element {
     @Override
     public void init() {
 
-    }
-
-    @Override
-    public boolean validate() {
-
-	if (validate(validParentMap)) {
-
-	    return true;
-	}
-
-	if (getParentNode() instanceof DocumentFragmentImpl) {
-
-	    return true;
-	}
-
-	return false;
     }
 }

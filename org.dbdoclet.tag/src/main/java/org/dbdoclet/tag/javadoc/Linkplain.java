@@ -59,12 +59,4 @@ public class Linkplain extends JavaDocElement {
     @Override
     public void init() {
     }
-
-    @Override
-    public boolean validate() {
-
-	nodeStack.removeAllElements();
-	nodeStack.push(this);
-	return true;
-    }
 }

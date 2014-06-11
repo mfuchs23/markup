@@ -22,13 +22,4 @@ public class Literal extends JavaDocElement {
 	setNodeName("javadoc:literal");
 	setFormatType(FORMAT_INLINE);
     }
-
-    @Override
-    public boolean validate() {
-
-	nodeStack.removeAllElements();
-	nodeStack.push(this);
-
-	return true;
-    }
 }

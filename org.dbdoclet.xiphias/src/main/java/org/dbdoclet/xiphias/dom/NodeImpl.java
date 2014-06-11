@@ -486,7 +486,7 @@ public class NodeImpl implements Node {
 	 * 
 	 * @return The element or null, if element child can be found.
 	 */
-	public Element getFirstElement() {
+	public Element getFirstChildElement() {
 
 		if ((childNodes == null) || (childNodes.size() < 1)) {
 			return null;

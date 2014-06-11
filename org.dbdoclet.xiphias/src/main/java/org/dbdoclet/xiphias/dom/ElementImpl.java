@@ -49,21 +49,6 @@ public class ElementImpl extends NodeImpl implements Element {
 	
 	private int formatType = FORMAT_CONTENT;
 	private boolean isLiteral = false;
-	public ElementImpl() {
-		super();
-		setNodeType(Node.ELEMENT_NODE);
-	}
-
-	public ElementImpl(String name) {
-		super(name);
-		setNodeType(Node.ELEMENT_NODE);
-	}
-
-	public ElementImpl(String name, NodeImpl parent) {
-		super(name, parent);
-		setNodeType(Node.ELEMENT_NODE);
-	}
-
 	public static String hardenId(String id) {
 
 		if (id == null || id.length() == 0) {
@@ -92,11 +77,51 @@ public class ElementImpl extends NodeImpl implements Element {
 		return buffer;
 	}
 
+	public ElementImpl() {
+		super();
+		setNodeType(Node.ELEMENT_NODE);
+	}
+
+	public ElementImpl(String name) {
+		super(name);
+		setNodeType(Node.ELEMENT_NODE);
+	}
+
+	public ElementImpl(String name, NodeImpl parent) {
+		super(name, parent);
+		setNodeType(Node.ELEMENT_NODE);
+	}
+
+	private void addAttribute(Attr newAttr) {
+
+		String key = createAttributeKey(newAttr.getNamespaceURI(), newAttr.getNodeName());
+		attributes.put(key, newAttr);
+	}
+
 	public void clearAttributes() {
 		attributes = new TreeMap<String, Attr>();
 	}
 
 	public void closed() {
+	}
+	
+	private String createAttributeKey(String namespaceUri, String name) {
+		
+		if (name == null) {
+			throw new IllegalArgumentException("The argument name must not be null!");
+		}
+				
+		if (name.contains(":")) {
+			name = name.split(":")[1];
+		}
+		
+		String key = name;
+		
+		if (namespaceUri != null && namespaceUri.trim().length() > 0) {
+			key = String.format("{%s %s}", namespaceUri, name);
+		}
+		
+		return key;
 	}
 
 	/**
@@ -118,6 +143,17 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 
 		return list;
+	}
+
+	public Element findFirstElement() {
+	
+		ArrayList<Element> childList = getChildElementList();
+		
+		if (childList != null && childList.size() > 0) {
+			return childList.get(0);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -316,6 +352,18 @@ public class ElementImpl extends NodeImpl implements Element {
 		return false;
 	}
 
+	public boolean isFirstChildElement() {
+
+		ElementImpl parent = (ElementImpl) getParentNode();
+		Element first = parent.getFirstChildElement();
+		
+		if (first != null && this == first) {
+			return true;
+		}
+		
+		return false;
+	}
+
 	public boolean isLiteral() {
 		return isLiteral;
 	}
@@ -473,30 +521,5 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 
 		return this;
-	}
-
-	private void addAttribute(Attr newAttr) {
-
-		String key = createAttributeKey(newAttr.getNamespaceURI(), newAttr.getNodeName());
-		attributes.put(key, newAttr);
-	}
-
-	private String createAttributeKey(String namespaceUri, String name) {
-		
-		if (name == null) {
-			throw new IllegalArgumentException("The argument name must not be null!");
-		}
-				
-		if (name.contains(":")) {
-			name = name.split(":")[1];
-		}
-		
-		String key = name;
-		
-		if (namespaceUri != null && namespaceUri.trim().length() > 0) {
-			key = String.format("{%s %s}", namespaceUri, name);
-		}
-		
-		return key;
 	}
 }
