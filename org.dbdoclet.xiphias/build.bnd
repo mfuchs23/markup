@@ -1,4 +1,4 @@
-version=6.1.1
+version=8.0.0
 Bundle-Name=org.dbdoclet.xiphias
 Bundle-SymbolicName=org.dbdoclet.xiphias
 Bundle-Version=${version}

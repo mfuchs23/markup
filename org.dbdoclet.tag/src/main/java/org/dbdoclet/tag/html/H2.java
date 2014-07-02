@@ -10,7 +10,7 @@ package org.dbdoclet.tag.html;
 
 
 
-public class H2 extends HeaderElement {
+public class H2 extends HeadingElement {
 
     protected static final int level = 2;
     private static final String tag = "h2";

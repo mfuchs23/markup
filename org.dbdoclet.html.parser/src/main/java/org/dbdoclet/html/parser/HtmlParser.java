@@ -28,7 +28,7 @@ import org.dbdoclet.tag.html.A;
 import org.dbdoclet.tag.html.Body;
 import org.dbdoclet.tag.html.Frameset;
 import org.dbdoclet.tag.html.Head;
-import org.dbdoclet.tag.html.HeaderElement;
+import org.dbdoclet.tag.html.HeadingElement;
 import org.dbdoclet.tag.html.Html;
 import org.dbdoclet.tag.html.HtmlDocument;
 import org.dbdoclet.tag.html.HtmlElement;
@@ -164,7 +164,7 @@ public class HtmlParser {
 
 			if (parent != null) {
 
-				if (child instanceof HeaderElement && parent instanceof A) {
+				if (child instanceof HeadingElement && parent instanceof A) {
 
 					/*
 					 * Falls ein Header Tag in einem A Tag enthalten ist, stellt

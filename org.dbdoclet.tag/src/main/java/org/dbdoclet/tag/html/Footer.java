@@ -10,7 +10,7 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-public class Footer extends Inline2Element {
+public class Footer extends BlockElement {
 
     private static final String tag = "Footer";
 

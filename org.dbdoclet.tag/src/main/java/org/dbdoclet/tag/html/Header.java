@@ -10,7 +10,7 @@ package org.dbdoclet.tag.html;
 
 import java.util.HashMap;
 
-public class Header extends Inline2Element {
+public class Header extends BlockElement {
 
     private static final String tag = "header";
 

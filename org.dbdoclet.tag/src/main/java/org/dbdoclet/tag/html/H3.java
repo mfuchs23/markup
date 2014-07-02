@@ -11,7 +11,7 @@ package org.dbdoclet.tag.html;
 import java.util.HashMap;
 
 
-public class H3 extends HeaderElement {
+public class H3 extends HeadingElement {
 
     protected static final int level = 3;
     private static final String tag = "h3";

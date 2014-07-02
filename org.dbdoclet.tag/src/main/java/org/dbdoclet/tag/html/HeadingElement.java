@@ -9,7 +9,7 @@
 package org.dbdoclet.tag.html;
 
 
-abstract public class HeaderElement extends StrictElement {
+abstract public class HeadingElement extends StrictElement {
 
 	abstract public int getLevel();
 }
