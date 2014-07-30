@@ -11,17 +11,16 @@ package org.dbdoclet.tag.html;
 
 public class H1 extends HeadingElement {
 
-	protected static final int level = 1;
 	private static final String tag = "h1";
+	protected static final int level = 1;
+	
 	public H1() {
-
 		setNodeName(tag);
         setFormatType(FORMAT_BLOCK);
 	}
 
 	@Override
 	public int getLevel() {
-
 		return level;
 	}
 }

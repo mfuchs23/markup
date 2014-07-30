@@ -22,6 +22,7 @@
   </macrodef>
 
   <target name="build">
+    <ant dir="org.dbdoclet.tag" target="build"/>
     <iterate target="build"/>
   </target>
 
