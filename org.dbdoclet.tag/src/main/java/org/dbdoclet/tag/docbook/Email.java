@@ -18,7 +18,6 @@ public class Email extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Email(String text) {

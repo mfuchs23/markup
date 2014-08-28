@@ -8,33 +8,22 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
 
 public class Member extends DocBookElement {
 
-    private static HashMap<String, HashMap<String, Object>> invalidParentMap;
-    private static String tag = "member";
+	private static String tag = "member";
 
-    static {
-	invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-    }
+	public static String getTag() {
+		return tag;
+	}
 
-    public static String getTag() {
-	return tag;
-    }
+	Member() {
+		super(tag);
+		setFormatType(FORMAT_CONTENT);
+	}
 
-    Member() {
-	super(tag);
-	setFormatType(FORMAT_CONTENT);
-    }
-
-    Member(String text) {
-	this();
-	appendChild(text);
-    }
-
-    @Override
-    public boolean validate() {
-	return validate(invalidParentMap);
-    }
+	Member(String text) {
+		this();
+		appendChild(text);
+	}
 }

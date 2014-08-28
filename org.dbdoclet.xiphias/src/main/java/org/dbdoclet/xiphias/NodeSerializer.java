@@ -48,6 +48,8 @@ public class NodeSerializer {
 	private File systemId;
 
 	private Element documentElement;
+	private boolean validation = false;
+	private boolean indentation = true;
 
 	public NodeSerializer() {
 		chunkElementSet = new HashMap<String, Integer>();
@@ -335,6 +337,26 @@ public class NodeSerializer {
 		ProgressEvent event = new ProgressEvent(node.toString());
 		fireProgressEvent(event);
 
+		if (isValidationEnabled()) {
+			
+			Node parent = node.getParentNode();
+			
+			StringBuilder buffer = new StringBuilder();
+			buffer.append(node.getNodeName());
+			
+			while (parent != null) {
+
+				buffer.insert(0, parent.getNodeName() + " -> ");
+				
+				if (parent == node) {
+					logger.fatal(String.format("Endless self referncing loop ! %s", buffer.toString()));
+					return;
+				}
+				
+				parent = parent.getParentNode();
+			}
+		}
+		
 		if (chunkElementSet.get(node.getNodeName()) != null) {
 			out = addChunk(indent, node, out);
 			indent = "";
@@ -583,7 +605,11 @@ public class NodeSerializer {
 			}
 
 			for (int i = 0; i < children.getLength(); i++) {
-				write(children.item(i), out, hasMixedContent, indent + INDENT);
+				if (isIndentationEnabled()) {
+					write(children.item(i), out, hasMixedContent, indent + INDENT);
+				} else {
+					write(children.item(i), out, hasMixedContent, "");					
+				}
 			}
 
 			if (hasMixedContent == false) {
@@ -677,5 +703,21 @@ public class NodeSerializer {
 
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
+	}
+
+	public void setValidationEnabled(boolean validation) {
+		this.validation = validation;
+	}
+	
+	public boolean isValidationEnabled() {
+		return validation;
+	}
+
+	public void setIndentationEnabled(boolean indentation) {
+		this.indentation = indentation;
+	}
+	
+	public boolean isIndentationEnabled() {
+		return indentation;
 	}
 }

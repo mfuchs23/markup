@@ -15,10 +15,8 @@ public class Surname extends DocBookElement {
     private static String tagName = "surname";
 
     Surname() {
-
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Surname(String text) {

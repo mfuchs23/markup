@@ -18,7 +18,6 @@ public class Date extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Date(String text) {

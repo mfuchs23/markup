@@ -14,19 +14,12 @@ public class Example extends DocBookElement {
 
     private static String tag = "example";
 
-    Example(String strTitle) {
-
-	super("example");
-
-        Title title = new Title(strTitle);
-        title.setParentNode(this);
-
-        appendChild(title);
+    Example() {
+    	super(tag);
         setFormatType(FORMAT_BLOCK);
     }
 
     public static String getTag() {
-
         return tag;
     }
 

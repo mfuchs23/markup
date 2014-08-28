@@ -18,7 +18,6 @@ public class ReleaseInfo extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     ReleaseInfo(String text) {

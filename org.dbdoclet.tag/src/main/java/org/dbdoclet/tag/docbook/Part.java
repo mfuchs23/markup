@@ -17,7 +17,6 @@ public class Part extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
     }
 
     public static String getTag() {

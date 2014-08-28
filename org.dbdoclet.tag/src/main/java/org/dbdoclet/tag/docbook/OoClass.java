@@ -8,16 +8,13 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class OoClass extends DocBookElement {
 
-    private static String tagName = "ooclass";
+	private static String tagName = "ooclass";
 
-    OoClass() {
+	OoClass() {
 
-	super(tagName);
-
-	setFormatType(FORMAT_BLOCK);
-	isContentModel(true);
-    }
+		super(tagName);
+		setFormatType(FORMAT_BLOCK);
+	}
 }

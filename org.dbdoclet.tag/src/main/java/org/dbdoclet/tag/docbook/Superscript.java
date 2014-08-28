@@ -8,40 +8,24 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
 
 public class Superscript extends DocBookElement {
 
-    private static HashMap<String, HashMap<String, Object>> invalidParentMap;
-    private static String tag = "superscript";
+	private static String tag = "superscript";
 
-    static {
+	Superscript() {
+		super(tag);
+		setFormatType(FORMAT_INLINE);
+	}
 
-        invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-        invalidParentMap.put(Abbrev.getTag(), Abbrev.getAttributeMap());
-        invalidParentMap.put(Address.getTag(), Address.getAttributeMap());
-    }
+	Superscript(String text) {
+		super(tag);
+		appendChild(text);
+		setFormatType(FORMAT_INLINE);
+	}
 
-    Superscript() {
-        super(tag);
-        setFormatType(FORMAT_INLINE);
-    }
+	public static String getTag() {
 
-    Superscript(String text) {
-        super(tag);
-        appendChild(text);
-        setFormatType(FORMAT_INLINE);
-    }
-
-    public static String getTag() {
-
-        return tag;
-    }
-
-    @Override
-    public boolean validate() {
-
-        return validate(invalidParentMap);
-    }
+		return tag;
+	}
 }

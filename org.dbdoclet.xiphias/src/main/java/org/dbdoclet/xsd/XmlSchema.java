@@ -1,7 +1,9 @@
 package org.dbdoclet.xsd;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -9,6 +11,7 @@ import java.util.Stack;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.dbdoclet.service.FileServices;
+import org.dbdoclet.service.ResourceServices;
 import org.dbdoclet.xiphias.XPathServices;
 import org.dbdoclet.xiphias.XmlServices;
 import org.dbdoclet.xiphias.dom.DocumentImpl;
@@ -18,6 +21,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XmlSchema {
@@ -34,7 +38,7 @@ public class XmlSchema {
 	private HashMap<String, AttributeGroup> attributeGroupMap;
 	private HashMap<String, String> namespaceMap;
 	private HashMap<String, Element> elementMap;
-	private final File xsdFile;
+	private InputSource xsdSource;
 
 	/**
 	 * Speichert den Pfad der traversierten Elemente des Typs complexType.
@@ -47,8 +51,21 @@ public class XmlSchema {
 	public XmlSchema(File xsdFile) throws IOException, SAXException,
 			ParserConfigurationException {
 
-		this.xsdFile = xsdFile;
-		Document xsdDocument = XmlServices.parse(xsdFile);
+		InputSource xsdSource = new InputSource(new FileInputStream(xsdFile));
+		xsdSource.setSystemId(xsdFile.getCanonicalPath());
+		construct(xsdSource);
+	}
+
+	public XmlSchema(InputSource xsdSource) throws IOException, SAXException,
+			ParserConfigurationException {
+		construct(xsdSource);
+	}
+
+	private void construct(InputSource xsdSource) throws IOException, SAXException,
+			ParserConfigurationException {
+
+		this.xsdSource = xsdSource;
+		Document xsdDocument = XmlServices.parse(xsdSource, false, null);
 
 		namespaceMap = new HashMap<String, String>();
 
@@ -104,18 +121,18 @@ public class XmlSchema {
 	}
 
 	public ContentModel getContentModelForElement(String elementName) {
-		
+
 		Element element = elementMap.get(elementName);
 
 		if (element != null) {
 
 			XsdMetaData xsdData = (XsdMetaData) element.getUserData(XSD);
-			
+
 			if (xsdData != null) {
 				return xsdData.getContentModel();
 			}
-		} 
-		
+		}
+
 		return ContentModel.PCDATA;
 	}
 
@@ -123,6 +140,10 @@ public class XmlSchema {
 		return masterDocumentMap.get(rootElement);
 	}
 
+	public Element getElementByName(String tagName) {
+		return elementMap.get(tagName);
+	}
+	
 	public Element[] getRootElements() {
 		return rootElements;
 	}
@@ -153,12 +174,12 @@ public class XmlSchema {
 						continue;
 
 					} else if (tagName.equals("complexType")) {
-						
+
 						XsdMetaData xsdData = new XsdMetaData();
 						element.setUserData(XSD, xsdData, null);
-						
+
 						parseComplexType(doc, element, xsdElement, xsdData);
-						
+
 					} else if (tagName.equals("extension")) {
 
 						String base = xsdElement.getAttribute("base");
@@ -250,8 +271,7 @@ public class XmlSchema {
 
 				Element xsdElement = (Element) node;
 
-				String name = xsdElement
-						.getAttribute("name");
+				String name = xsdElement.getAttribute("name");
 				ElementImpl rootElem = doc.createElement(name);
 				elementMap.put(name, rootElem);
 
@@ -272,7 +292,7 @@ public class XmlSchema {
 				SimpleType simpleType = simpleTypeMap.get(type);
 
 				if (simpleType != null) {
-					
+
 					xsdData.setContentModel(ContentModel.PCDATA);
 					parseSimpleType(doc, rootElem, simpleType.getElement(),
 							xsdData);
@@ -288,7 +308,7 @@ public class XmlSchema {
 						parseSimpleType(doc, rootElem,
 								complexType.getElement(), xsdData);
 					} else {
-						
+
 						if (complexType.isMixed()) {
 							xsdData.setContentModel(ContentModel.MIXED);
 						} else {
@@ -299,7 +319,7 @@ public class XmlSchema {
 					}
 				}
 
-				processElement(doc, rootElem, xsdElement);
+				traverse(doc, rootElem, xsdElement);
 			}
 		}
 	}
@@ -452,15 +472,40 @@ public class XmlSchema {
 				Element elem = (Element) node;
 
 				String namespace = elem.getAttribute("namespace");
+				String schemaLocation = elem.getAttribute("schemaLocation");
 				String path = FileServices.appendFileName(
-						xsdFile.getParentFile(),
-						elem.getAttribute("schemaLocation"));
-				Document doc = XmlServices.parse(new File(path));
+						FileServices.getDirName(xsdSource.getSystemId()),
+						schemaLocation);
+				File includeFile = new File(path);
 
-				XsdMetaData xsdData = new XsdMetaData();
-				xsdData.setImportNamespace(namespace);
-				doc.setUserData(XSD, xsdData, null);
-				xsdDocumentList.add(doc);
+				Document doc = null;
+
+				if (includeFile.exists()) {
+
+					doc = XmlServices.parse(includeFile);
+
+				} else {
+
+					InputStream instream = ResourceServices
+							.getResourceAsStream(path);
+
+					if (instream != null) {
+						InputSource source = new InputSource(instream);
+						source.setSystemId(path);
+						doc = XmlServices.parse(source, false, null);
+					}
+				}
+
+				if (doc != null) {
+					
+					XsdMetaData xsdData = new XsdMetaData();
+					xsdData.setImportNamespace(namespace);
+					doc.setUserData(XSD, xsdData, null);
+					xsdDocumentList.add(doc);
+				
+				} else {
+					throw new IOException(String.format("Included resource %s does not exist", schemaLocation));
+				}
 			}
 		}
 	}
@@ -529,21 +574,20 @@ public class XmlSchema {
 				}
 			}
 		}
-		
-		ArrayList<Node> attrList = XPathServices.getNodes(
-							xsdElement, "xs", XML_SCHEMA_URI,
-							"xs:attribute");
+
+		ArrayList<Node> attrList = XPathServices.getNodes(xsdElement, "xs",
+				XML_SCHEMA_URI, "xs:attribute");
 
 		for (Node attrNode : attrList) {
 
 			Element attr = (Element) attrNode;
-			
+
 			String value = "";
-			
+
 			if (attr.getAttribute("fixed") != null) {
 				value = attr.getAttribute("fixed");
 			}
-			
+
 			element.setAttribute(attr.getAttribute("name"), value);
 		}
 	}
@@ -579,12 +623,13 @@ public class XmlSchema {
 		} else {
 			xsdData.setContentModel(ContentModel.BLOCK);
 		}
-		
+
 		parseExtension(doc, element, xsdElement, xsdData);
 		parseRestriction(doc, element, xsdElement, xsdData);
 
 		ArrayList<Node> nodeList = XPathServices.getNodes(xsdElement, "xs",
-				XML_SCHEMA_URI, ".//xs:sequence/xs:element|.//xs:choice/xs:element");
+				XML_SCHEMA_URI,
+				".//xs:sequence/xs:element|.//xs:choice/xs:element");
 
 		for (Node childNode : nodeList) {
 
@@ -641,23 +686,22 @@ public class XmlSchema {
 
 	private void parseSimpleType(Document doc, Element element,
 			Element xsdElement, XsdMetaData xsdData) {
-		
+
 		xsdData.setContentModel(ContentModel.PCDATA);
-		
+
 		Element union = (Element) XPathServices.getNode(xsdElement, "xs",
-				XML_SCHEMA_URI,
-				"/*/*/xs:union | /*/xs:union | xs:union");
+				XML_SCHEMA_URI, "/*/*/xs:union | /*/xs:union | xs:union");
 
 		if (union != null) {
-		
+
 			String memberTypes = union.getAttribute("memberTypes");
 			SimpleType memberType = simpleTypeMap.get(memberTypes);
-			
+
 			if (memberType != null) {
 				parseSimpleType(doc, element, memberType.getElement(), xsdData);
 			}
 		}
-		
+
 		parseRestriction(doc, element, xsdElement, xsdData);
 		parseExtension(doc, element, xsdElement, xsdData);
 	}
@@ -703,9 +747,24 @@ public class XmlSchema {
 	private void processElement(Document doc, Element elem, Element xsdElement) {
 
 		String name = xsdElement.getAttribute("name");
+		boolean isRef = false;
+		
+		if (name == null || name.length() == 0) {
+			name = xsdElement.getAttribute("ref");
+			isRef = true;
+		} 
+		
+		int idx = name.indexOf(':');
+		if (idx != -1) {
+			name = name.substring(idx + 1);
+		}
+				
 		Element child = doc.createElement(name);
 		elem.appendChild(child);
-		elementMap.put(name, child);
+		
+		if (isRef == false) {
+			elementMap.put(name, child);
+		}
 		
 		String type = xsdElement.getAttribute("type");
 
@@ -723,7 +782,7 @@ public class XmlSchema {
 		}
 
 		child.setUserData(XSD, xsdData, null);
-		
+
 		if (type == null || type.length() == 0) {
 
 			if (isSimpleType(xsdElement)) {
@@ -778,6 +837,30 @@ public class XmlSchema {
 		} else {
 			return true;
 		}
+	}
+
+	public boolean isValidParent(String tagChild, String tagParent) {
+
+		if (tagChild == null || tagParent == null) {
+			return false;
+		}
+		
+		Element parentElement = getElementByName(tagParent);
+		
+		if (parentElement == null) {
+			return false;
+		}
+		
+		NodeList childList = parentElement.getChildNodes();
+		
+		for (int i = 0; i < childList.getLength(); i++) {
+			Node child = childList.item(i);
+			if (child != null && child.getNodeName() != null && child.getNodeName().equals(tagChild)) {
+				return true;
+			}	
+		}
+		
+		return false;
 	}
 
 }

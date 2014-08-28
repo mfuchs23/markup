@@ -11,23 +11,11 @@ package org.dbdoclet.tag.docbook;
 
 public class Sect1 extends SectionElement {
 
-    private final static String tagName = "sect1";
+    public final static String tagName = "sect1";
 
     Sect1() {
 
         super(tagName);
-
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    Sect1(String title) {
-
-        this();
-        appendChild(new Title(title));
-    }
-
-    public static String getTag() {
-        return tagName;
     }
 }

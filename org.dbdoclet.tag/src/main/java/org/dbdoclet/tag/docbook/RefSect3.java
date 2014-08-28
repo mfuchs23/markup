@@ -8,24 +8,11 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
-
 public class RefSect3 extends DocBookElement {
 
-    private static String tag = "refsect3";
+	public static final String tagName = "refsect3";
 
-    RefSect3() {
-        super(tag);
-    }
-
-    public static String getTag() {
-
-        return tag;
-    }
-
-    public static HashMap<String, Object> getAttributeMap() {
-
-        return new HashMap<String, Object>();
-    }
+	RefSect3() {
+		super(tagName);
+	}
 }

@@ -18,7 +18,8 @@ public class SampleDataParser/*@bgen(jjtree)*/implements SampleDataParserTreeCon
     return root;
   }
 
-  final public NodeRoot parse() throws ParseException {
+  @SuppressWarnings("unused")
+final public NodeRoot parse() throws ParseException {
  /*@bgen(jjtree) Root */
   NodeRoot jjtn000 = new NodeRoot(JJTROOT);
   boolean jjtc000 = true;

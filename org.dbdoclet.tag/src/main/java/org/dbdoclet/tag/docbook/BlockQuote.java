@@ -8,30 +8,16 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
 public class BlockQuote extends DocBookElement {
 
     private static String tag = "blockquote";
 
     BlockQuote() {
-        super("blockquote");
+        super(tag);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    BlockQuote(String text) {
-        this();
-        appendChild(text);
     }
 
     public static String getTag() {
-
         return tag;
-    }
-
-    public static HashMap<String, Object> getAttributeMap() {
-
-        return new HashMap<String, Object>();
     }
 }

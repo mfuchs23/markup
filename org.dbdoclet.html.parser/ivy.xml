@@ -3,6 +3,6 @@
   <info organisation="org.dbdoclet" module="org.dbdoclet.html.parser" revision="8.0.0" status="integration" publication="20131022120402">
   </info>
   <dependencies>
-    <dependency org="org.dbdoclet" name="org.dbdoclet.tag" rev="8.0.0" revConstraint="latest.integration"/>
+    <dependency org="org.dbdoclet" name="org.dbdoclet.tag" rev="8.0.1" revConstraint="latest.integration"/>
   </dependencies>
 </ivy-module>

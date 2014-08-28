@@ -9,60 +9,22 @@
 
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
-import org.w3c.dom.Node;
-
 public class Literal extends DocBookElement {
 
-    private static String tag = "literal";
-    private static HashMap<String, HashMap<String, Object>> invalidParentMap;
+	private static String tag = "literal";
 
-    static {
+	public static String getTag() {
 
-	invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-	invalidParentMap.put(Abbrev.getTag(), Abbrev.getAttributeMap());
-	invalidParentMap.put(Acronym.getTag(), Acronym.getAttributeMap());
-	invalidParentMap.put(Address.getTag(), Address.getAttributeMap());
-	invalidParentMap.put(ExceptionName.getTag(), ExceptionName.getAttributeMap());
-	invalidParentMap.put(Literal.getTag(), Literal.getAttributeMap());
-	invalidParentMap.put(Section.getTag(), Section.getAttributeMap());
-	invalidParentMap.put(Subscript.getTag(), Subscript.getAttributeMap());
-	invalidParentMap.put(Superscript.getTag(), Superscript.getAttributeMap());
-    }
+		return tag;
+	}
 
-    public static String getTag() {
+	Literal() {
+		super(tag);
+		setFormatType(FORMAT_INLINE);
+	}
 
-	return tag;
-    }
-
-    Literal() {
-	super(tag);
-	setFormatType(FORMAT_INLINE);
-    }
-
-    Literal(String text) {
-	super(tag);
-	appendChild(text);
-	setFormatType(FORMAT_INLINE);
-    }
-
-    @Override
-    public boolean validate() {
-	return validate(invalidParentMap);
-    }
-
-    @Override
-    public boolean isValidParent(Node elem) {
-
-        if (elem == null) {
-            throw new IllegalArgumentException("Parameter elem is null!");
-        }
-
-        if (invalidParentMap.get(elem.getNodeName()) != null) {
-            return false;
-        }
-
-        return true;
-    }
+	Literal(String text) {
+		this();
+		appendChild(text);
+	}
 }

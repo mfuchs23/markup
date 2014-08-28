@@ -513,9 +513,6 @@ public class XmlSampleGenerator {
 
 				if (child.getChildNodes().getLength() == 0) {
 
-					XsdMetaData xsdData = (XsdMetaData) child
-							.getUserData("xsd");
-
 					String suchfeld = child.getAttribute("suchfeld");
 					System.out.println("Suchfeld=" + suchfeld);
 

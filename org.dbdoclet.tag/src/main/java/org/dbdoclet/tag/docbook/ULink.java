@@ -8,50 +8,35 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
 
 public class ULink extends DocBookElement {
 
-    private static final String tag = "ulink";
+	private static final String tag = "ulink";
 
-    private static final HashMap<String, HashMap<String, Object>> invalidParentMap;
+	ULink() {
+		super(tag);
+		setFormatType(FORMAT_INLINE);
+	}
 
-    static {
+	ULink(String text) {
+		this();
+		appendChild(text);
+	}
 
-        invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-        invalidParentMap.put(Address.getTag(), Address.getAttributeMap());
-    }
+	public void setUrl(String url) {
 
-    ULink() {
-        super(tag);
-        setFormatType(FORMAT_INLINE);
-    }
+		if ((url == null) || (url.length() == 0)) {
+			url = "#";
+		}
 
-    ULink(String text) {
-        this();
-        appendChild(text);
-    }
+		setAttribute("url", url);
+	}
 
-    public void setUrl(String url) {
+	public String getUrl() {
+		return getAttribute("url");
+	}
 
-        if ((url == null) || (url.length() == 0)) {
-            url = "#";
-        }
-
-        setAttribute("url", url);
-    }
-
-    public String getUrl() {
-        return getAttribute("url");
-    }
-    
-    public static String getTag() {
-
-        return tag;
-    }
-
-    @Override
-    public boolean validate() {
-        return validate(invalidParentMap);
-    }
+	public static String getTag() {
+		return tag;
+	}
 }

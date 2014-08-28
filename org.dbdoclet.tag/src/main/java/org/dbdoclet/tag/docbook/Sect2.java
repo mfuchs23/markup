@@ -8,8 +8,6 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
-
 public class Sect2 extends SectionElement {
 
     private final static String tag = "sect2";
@@ -18,15 +16,6 @@ public class Sect2 extends SectionElement {
 
         super(tag);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    Sect2(String title) {
-
-        super(tag);
-        appendChild(new Title(title));
-        setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
     }
 
     public static String getTag() {

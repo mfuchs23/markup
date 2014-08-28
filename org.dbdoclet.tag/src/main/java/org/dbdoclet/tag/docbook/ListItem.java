@@ -26,7 +26,6 @@ public class ListItem extends DocBookElement {
 
 		super("listitem");
 		setFormatType(FORMAT_BLOCK);
-		isContentModel(true);
 	}
 
 	ListItem(String text) {

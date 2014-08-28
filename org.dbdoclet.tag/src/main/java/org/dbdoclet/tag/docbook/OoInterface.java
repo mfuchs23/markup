@@ -8,18 +8,13 @@
  */
 package org.dbdoclet.tag.docbook;
 
- 
-
 public class OoInterface extends DocBookElement {
 
-    private static String tagName = "oointerface";
+	private static String tagName = "oointerface";
 
-    OoInterface() {
+	OoInterface() {
 
-        super(tagName);
-
-        setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
+		super(tagName);
+		setFormatType(FORMAT_BLOCK);
+	}
 }
-

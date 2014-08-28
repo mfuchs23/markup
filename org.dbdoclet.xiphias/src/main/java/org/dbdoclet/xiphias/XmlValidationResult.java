@@ -43,7 +43,6 @@ public class XmlValidationResult implements ErrorHandler, LSResourceResolver {
 	private boolean canNotRead = false;
 
 	private int errorCounter = 0;
-	private int warningCounter = 0;
 	private final ArrayList<String> errorList;
 	private final ArrayList<String> warningList;
 	private final ArrayList<Throwable> exceptionList;
@@ -219,8 +218,6 @@ public class XmlValidationResult implements ErrorHandler, LSResourceResolver {
 	 */
 	@Override
 	public void warning(SAXParseException oops) {
-
-		warningCounter++;
 
 		String msg = MessageFormat.format(
 				ResourceServices.getString(res, "C_XML_VALIDATION_WARNING"),

@@ -8,41 +8,23 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
 
 public class Abbrev extends DocBookElement {
 
-    private static final String tag = "abbrev";
-    private static final HashMap<String, HashMap<String, Object>> invalidParentMap;
+	private static final String tag = "abbrev";
 
-    static {
+	Abbrev() {
+		super(tag);
+		setFormatType(FORMAT_INLINE);
+	}
 
-        invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-        invalidParentMap.put(Acronym.getTag(), Acronym.getAttributeMap());
-        invalidParentMap.put(Address.getTag(), Address.getAttributeMap());
-        invalidParentMap.put(Subscript.getTag(), Subscript.getAttributeMap());
-        invalidParentMap.put(Superscript.getTag(),
-			     Superscript.getAttributeMap());
-    }
+	Abbrev(String text) {
+		super(tag);
+		appendChild(text);
+		setFormatType(FORMAT_INLINE);
+	}
 
-    Abbrev() {
-        super(tag);
-        setFormatType(FORMAT_INLINE);
-    }
-
-    Abbrev(String text) {
-        super(tag);
-        appendChild(text);
-        setFormatType(FORMAT_INLINE);
-    }
-
-    public static String getTag() {
-        return tag;
-    }
-
-    @Override
-    public boolean validate() {
-        return validate(invalidParentMap);
-    }
+	public static String getTag() {
+		return tag;
+	}
 }

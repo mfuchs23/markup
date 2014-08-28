@@ -12,23 +12,18 @@ import java.util.HashMap;
 
 public class FormalPara extends DocBookElement {
 
-    private static String tag = "formalpara";
+	private static String tag = "formalpara";
 
-    FormalPara() {
-        super("formalpara");
-        setFormatType(FORMAT_BLOCK);
-    }
+	FormalPara() {
+		super("formalpara");
+		setFormatType(FORMAT_BLOCK);
+	}
 
-    FormalPara(String text) {
-        this();
-        appendChild(text);
-    }
+	public static String getTag() {
+		return tag;
+	}
 
-    public static String getTag() {
-        return tag;
-    }
-
-    public static HashMap<String, Object> getAttributeMap() {
-        return new HashMap<String, Object>();
-    }
+	public static HashMap<String, Object> getAttributeMap() {
+		return new HashMap<String, Object>();
+	}
 }

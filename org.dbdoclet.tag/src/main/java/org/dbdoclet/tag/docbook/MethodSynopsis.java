@@ -8,22 +8,19 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class MethodSynopsis extends DocBookElement {
 
-    private static final String tagName = "methodsynopsis";
+	private static final String tagName = "methodsynopsis";
 
-    MethodSynopsis() {
+	MethodSynopsis() {
 
-	super(tagName);
+		super(tagName);
 
-	setFormatType(FORMAT_BLOCK);
-	isContentModel(true);
+		setFormatType(FORMAT_BLOCK);
+		setAttribute("language", "java");
+	}
 
-	setAttribute("language", "java");
-    }
-
-    public void setLanguage(String language) {
-	setAttribute("language", language);
-    }
+	public void setLanguage(String language) {
+		setAttribute("language", language);
+	}
 }

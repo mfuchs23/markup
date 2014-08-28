@@ -15,10 +15,8 @@ public class Year extends DocBookElement {
     private static String tagName = "year";
 
     Year() {
-
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Year(String text) {

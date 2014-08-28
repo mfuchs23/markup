@@ -8,23 +8,18 @@
  */
 package org.dbdoclet.tag.docbook;
 
- 
 public class ConstructorSynopsis extends DocBookElement {
 
-    private static final String tagName = "constructorsynopsis";
+	private static final String tagName = "constructorsynopsis";
 
-    ConstructorSynopsis() {
+	ConstructorSynopsis() {
 
-        super(tagName);
+		super(tagName);
+		setFormatType(FORMAT_BLOCK);
+		setAttribute("language", "java");
+	}
 
-        setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-
-        setAttribute("language", "java");
-    }
-
-    public void setLanguage(String language) {
-        setAttribute("language", language);
-    }
+	public void setLanguage(String language) {
+		setAttribute("language", language);
+	}
 }
-

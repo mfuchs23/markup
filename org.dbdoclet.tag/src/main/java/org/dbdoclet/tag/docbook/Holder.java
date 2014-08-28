@@ -18,7 +18,6 @@ public class Holder extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Holder(String text) {

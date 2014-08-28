@@ -1,6 +1,9 @@
-version=8.0.0
+version=8.0.1
 Bundle-Name=org.dbdoclet.tag
 Bundle-SymbolicName=org.dbdoclet.tag
 Bundle-Version=${version}
+
+Include-Resource: \
+  xsd=src/main/resources/xsd
 
 Export-Package: org.dbdoclet.tag.* ;version=${version}

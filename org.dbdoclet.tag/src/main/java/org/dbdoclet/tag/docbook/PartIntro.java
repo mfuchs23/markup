@@ -17,9 +17,7 @@ public class PartIntro extends SectionElement {
     PartIntro() {
 
         super(tagName);
-
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
     }
 
     PartIntro(String title) {

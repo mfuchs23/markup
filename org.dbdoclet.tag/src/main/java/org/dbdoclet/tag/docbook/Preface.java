@@ -16,16 +16,5 @@ public class Preface extends SectionElement {
     Preface() {
         super(tag);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    Preface(String title) {
-
-        this();
-        appendChild(new Title(title));
-    }
-
-    public static String getTag() {
-        return tag;
     }
 }

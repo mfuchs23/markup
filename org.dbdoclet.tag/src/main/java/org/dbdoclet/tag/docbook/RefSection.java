@@ -8,8 +8,6 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
 public class RefSection extends DocBookElement {
 
 	private static String tagName = "refsection";
@@ -17,22 +15,6 @@ public class RefSection extends DocBookElement {
 	RefSection() {
 
 		super(tagName);
-
 		setFormatType(FORMAT_BLOCK);
-		isContentModel(true);
-	}
-
-	RefSection(String title) {
-
-		this();
-		appendChild(new Title(title));
-	}
-
-	public static String getTag() {
-		return tagName;
-	}
-
-	public static HashMap<String, Object> getAttributeMap() {
-		return new HashMap<String, Object>();
 	}
 }

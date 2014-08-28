@@ -14,20 +14,7 @@ public class Section extends SectionElement {
     private final static String tagName = "section";
 
     Section() {
-
         super(tagName);
-        
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    Section(String title) {
-
-        this();
-        appendChild(new Title(title));
-    }
-
-    public static String getTag() {
-        return tagName;
     }
 }

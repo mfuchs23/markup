@@ -14,16 +14,8 @@ public class Chapter extends SectionElement {
     private static final String tag = "chapter";
 
     Chapter() {
-
         super(tag);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
-
-    Chapter(String title) {
-
-        this();
-        appendChild(new Title(title));
     }
 
     public static String getTag() {

@@ -11,11 +11,15 @@ package org.dbdoclet.tag.docbook;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 
 import org.dbdoclet.service.FileServices;
 import org.dbdoclet.tag.html.Img;
 import org.dbdoclet.xiphias.ImageServices;
 import org.dbdoclet.xiphias.NodeSerializer;
+import org.dbdoclet.xiphias.XmlConstants;
 
 public class DocBookTagFactory {
 
@@ -33,131 +37,136 @@ public class DocBookTagFactory {
 	public Abbrev createAbbrev() {
 
 		Abbrev abbrev = new Abbrev();
-		abbrev.setDocBookVersion(docBookVersion);
+		initialize(abbrev);
 		return abbrev;
+	}
+
+	private void initialize(DocBookElement elem) {
+		elem.setDocBookVersion(docBookVersion);
+		elem.setNamespaceURI(XmlConstants.NAMESPACE_DOCBOOK);
 	}
 
 	public Abstract createAbstract() {
 
 		Abstract _abstract = new Abstract();
-		_abstract.setDocBookVersion(docBookVersion);
+		initialize(_abstract);
 		return _abstract;
 	}
 
 	public Acronym createAcronym() {
 
 		Acronym acronym = new Acronym();
-		acronym.setDocBookVersion(docBookVersion);
+		initialize(acronym);
 		return acronym;
 	}
 
 	public Address createAddress() {
 
 		Address address = new Address();
-		address.setDocBookVersion(docBookVersion);
+		initialize(address);
 		return address;
 	}
 
 	public Affiliation createAffiliation() {
 
 		Affiliation affiliation = new Affiliation();
-		affiliation.setDocBookVersion(docBookVersion);
+		initialize(affiliation);
 		return affiliation;
 	}
 
 	public Anchor createAnchor() {
 
 		Anchor anchor = new Anchor();
-		anchor.setDocBookVersion(docBookVersion);
+		initialize(anchor);
 		return anchor;
 	}
 
 	public Appendix createAppendix() {
 
 		Appendix appendix = new Appendix();
-		appendix.setDocBookVersion(docBookVersion);
+		initialize(appendix);
 		return appendix;
 	}
 
 	public Article createArticle() {
 
 		Article article = new Article();
-		article.setDocBookVersion(docBookVersion);
+		initialize(article);
 		return article;
 	}
 
 	public ArticleInfo createArticleInfo() {
 
 		ArticleInfo articleInfo = new ArticleInfo();
-		articleInfo.setDocBookVersion(docBookVersion);
+		initialize(articleInfo);
 		return articleInfo;
 	}
 
 	public Author createAuthor() {
 
 		Author author = new Author();
-		author.setDocBookVersion(docBookVersion);
+		initialize(author);
 		return author;
 	}
 
 	public BlockQuote createBlockQuote() {
 
 		BlockQuote blockQuote = new BlockQuote();
-		blockQuote.setDocBookVersion(docBookVersion);
+		initialize(blockQuote);
 		return blockQuote;
 	}
 
 	public Book createBook() {
 
 		Book book = new Book();
-		book.setDocBookVersion(docBookVersion);
+		initialize(book);
 		return book;
 	}
 
 	public BookInfo createBookInfo() {
 
 		BookInfo bookInfo = new BookInfo();
-		bookInfo.setDocBookVersion(docBookVersion);
+		initialize(bookInfo);
 		return bookInfo;
 	}
 
 	public BridgeHead createBridgeHead() {
 
 		BridgeHead bridgeHead = new BridgeHead();
-		bridgeHead.setDocBookVersion(docBookVersion);
+		initialize(bridgeHead);
 		return bridgeHead;
 	}
 
 	public Caption createCaption() {
 
 		Caption caption = new Caption();
-		caption.setDocBookVersion(docBookVersion);
+		initialize(caption);
 		return caption;
 	}
 
 	public Caution createCaution() {
 
 		Caution caution = new Caution();
-		caution.setDocBookVersion(docBookVersion);
+		initialize(caution);
 		return caution;
 	}
 
 	public Chapter createChapter() {
 
 		Chapter chapter = new Chapter();
-		chapter.setDocBookVersion(docBookVersion);
+		initialize(chapter);
 		return chapter;
 	}
 
 	public Chapter createChapter(String titleText) {
 
 		Chapter chapter = new Chapter();
-		chapter.setDocBookVersion(docBookVersion);
+		initialize(chapter);
 
-		Info info = new Info();
+		Info info = createInfo();
 		chapter.appendChild(info);
 
-		Title title = new Title(titleText);
+		Title title = createTitle(titleText);
 		info.appendChild(title);
 
 		return chapter;
@@ -166,84 +175,84 @@ public class DocBookTagFactory {
 	public ClassName createClassName() {
 
 		ClassName className = new ClassName();
-		className.setDocBookVersion(docBookVersion);
+		initialize(className);
 		return className;
 	}
 
 	public ClassName createClassName(String name) {
 
 		ClassName className = new ClassName(name);
-		className.setDocBookVersion(docBookVersion);
+		initialize(className);
 		return className;
 	}
 
 	public ClassSynopsis createClassSynopsis() {
 
 		ClassSynopsis classSynopsis = new ClassSynopsis();
-		classSynopsis.setDocBookVersion(docBookVersion);
+		initialize(classSynopsis);
 		return classSynopsis;
 	}
 
 	public ClassSynopsisInfo createClassSynopsisInfo() {
 
 		ClassSynopsisInfo classSynopsisInfo = new ClassSynopsisInfo();
-		classSynopsisInfo.setDocBookVersion(docBookVersion);
+		initialize(classSynopsisInfo);
 		return classSynopsisInfo;
 	}
 
 	public ClassSynopsisInfo createClassSynopsisInfo(String text) {
 
 		ClassSynopsisInfo classSynopsisInfo = new ClassSynopsisInfo(text);
-		classSynopsisInfo.setDocBookVersion(docBookVersion);
+		initialize(classSynopsisInfo);
 		return classSynopsisInfo;
 	}
 
 	public Code createCode() {
 
 		Code code = new Code();
-		code.setDocBookVersion(docBookVersion);
+		initialize(code);
 		return code;
 	}
 
 	public Colspec createColspec() {
 
 		Colspec colspec = new Colspec();
-		colspec.setDocBookVersion(docBookVersion);
+		initialize(colspec);
 		return colspec;
 	}
 
 	public Colspec createColspec(String string, String width) {
 
 		Colspec colspec = new Colspec(string, width);
-		colspec.setDocBookVersion(docBookVersion);
+		initialize(colspec);
 		return colspec;
 	}
 
 	public ComputerOutput createComputerOutput() {
 
 		ComputerOutput computerOutput = new ComputerOutput();
-		computerOutput.setDocBookVersion(docBookVersion);
+		initialize(computerOutput);
 		return computerOutput;
 	}
 
 	public ComputerOutput createComputerOutput(String text) {
 
 		ComputerOutput computerOutput = new ComputerOutput(text);
-		computerOutput.setDocBookVersion(docBookVersion);
+		initialize(computerOutput);
 		return computerOutput;
 	}
 
 	public ConstructorSynopsis createConstructorSynopsis() {
 
 		ConstructorSynopsis constructorSynopsis = new ConstructorSynopsis();
-		constructorSynopsis.setDocBookVersion(docBookVersion);
+		initialize(constructorSynopsis);
 		return constructorSynopsis;
 	}
 
 	public Copyright createCopyright() {
 
 		Copyright copyright = new Copyright();
-		copyright.setDocBookVersion(docBookVersion);
+		initialize(copyright);
 		return copyright;
 	}
 
@@ -253,43 +262,42 @@ public class DocBookTagFactory {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 		Date date = new Date(sdf.format(today));
-		date.setDocBookVersion(docBookVersion);
+		initialize(date);
 		return date;
 	}
 
 	public Date createDate(String text) {
 
 		Date date = new Date(text);
-		date.setDocBookVersion(docBookVersion);
+		initialize(date);
 		return date;
 	}
 
 	public Email createEmail() {
 
 		Email email = new Email();
-		email.setDocBookVersion(docBookVersion);
+		initialize(email);
 		return email;
 	}
 
 	public Email createEmail(String address) {
 
-		Email email = new Email();
+		Email email = createEmail();
 		email.appendChild(address);
-		email.setDocBookVersion(docBookVersion);
 		return email;
 	}
 
 	public Emphasis createEmphasis() {
 
 		Emphasis emphasis = new Emphasis();
-		emphasis.setDocBookVersion(docBookVersion);
+		initialize(emphasis);
 		return emphasis;
 	}
 
 	public Emphasis createEmphasis(String str) {
 
 		Emphasis emphasis = new Emphasis(str);
-		emphasis.setDocBookVersion(docBookVersion);
+		initialize(emphasis);
 		return emphasis;
 	}
 
@@ -303,120 +311,121 @@ public class DocBookTagFactory {
 	public Entry createEntry() {
 
 		Entry entry = new Entry();
-		entry.setDocBookVersion(docBookVersion);
+		initialize(entry);
 		return entry;
 	}
 
 	public Entry createEntry(String text) {
 
 		Entry entry = new Entry(text);
-		entry.setDocBookVersion(docBookVersion);
+		initialize(entry);
 		return entry;
 	}
 
 	public EntryTbl createEntryTbl() {
 
 		EntryTbl entryTbl = new EntryTbl();
-		entryTbl.setDocBookVersion(docBookVersion);
+		initialize(entryTbl);
 		return entryTbl;
 	}
 
 	public Example createExample(String title) {
 
-		Example example = new Example(title);
-		example.setDocBookVersion(docBookVersion);
+		Example example = new Example();
+		initialize(example);
+		example.appendChild(createTitle(title));
 		return example;
 	}
 
 	public ExceptionName createExceptionName() {
 
 		ExceptionName exceptionName = new ExceptionName();
-		exceptionName.setDocBookVersion(docBookVersion);
+		initialize(exceptionName);
 		return exceptionName;
 	}
 
 	public ExceptionName createExceptionName(String text) {
 
 		ExceptionName exceptionName = new ExceptionName(text);
-		exceptionName.setDocBookVersion(docBookVersion);
+		initialize(exceptionName);
 		return exceptionName;
 	}
 
 	public FieldSynopsis createFieldSynopsis() {
 
 		FieldSynopsis fieldSynopsis = new FieldSynopsis();
-		fieldSynopsis.setDocBookVersion(docBookVersion);
+		initialize(fieldSynopsis);
 		return fieldSynopsis;
 	}
 
 	public Figure createFigure(String title) {
 
-		Figure figure = new Figure(title);
-		figure.setDocBookVersion(docBookVersion);
+		Figure figure = new Figure();
+		initialize(figure);
+		figure.appendChild(createTitle(title));
 		return figure;
 	}
 
 	public FirstName createFirstName() {
 
 		FirstName firstName = new FirstName();
-		firstName.setDocBookVersion(docBookVersion);
+		initialize(firstName);
 		return firstName;
 	}
 
 	public FirstName createFirstName(String name) {
 
-		FirstName firstName = new FirstName();
+		FirstName firstName = createFirstName();
 		firstName.appendChild(name);
-		firstName.setDocBookVersion(docBookVersion);
 		return firstName;
 	}
 
 	public FormalPara createFormalPara() {
 
 		FormalPara formalPara = new FormalPara();
-		formalPara.setDocBookVersion(docBookVersion);
+		initialize(formalPara);
 		return formalPara;
 	}
 
-	public DocBookElement createFormalPara(String title) {
+	public DocBookElement createFormalPara(String text) {
 
-		FormalPara formalPara = new FormalPara(title);
-		formalPara.setDocBookVersion(docBookVersion);
+		FormalPara formalPara = createFormalPara();
+		formalPara.appendChild(text);
 		return formalPara;
 	}
 
 	public FuncDef createFuncDef() {
 
 		FuncDef funcDef = new FuncDef();
-		funcDef.setDocBookVersion(docBookVersion);
+		initialize(funcDef);
 		return funcDef;
 	}
 
 	public FuncPrototype createFuncPrototype() {
 
 		FuncPrototype funcPrototype = new FuncPrototype();
-		funcPrototype.setDocBookVersion(docBookVersion);
+		initialize(funcPrototype);
 		return funcPrototype;
 	}
 
 	public FuncSynopsis createFuncSynopsis() {
 
 		FuncSynopsis funcSynopsis = new FuncSynopsis();
-		funcSynopsis.setDocBookVersion(docBookVersion);
+		initialize(funcSynopsis);
 		return funcSynopsis;
 	}
 
 	public Function createFunction(String func) {
 
 		Function function = new Function(func);
-		function.setDocBookVersion(docBookVersion);
+		initialize(function);
 		return function;
 	}
 
 	public Holder createHolder() {
 
 		Holder holder = new Holder();
-		holder.setDocBookVersion(docBookVersion);
+		initialize(holder);
 		return holder;
 	}
 
@@ -424,7 +433,7 @@ public class DocBookTagFactory {
 
 		Holder holder = new Holder();
 		holder.appendChild(text);
-		holder.setDocBookVersion(docBookVersion);
+		initialize(holder);
 		return holder;
 	}
 
@@ -434,15 +443,12 @@ public class DocBookTagFactory {
 
 	public MediaObject createImage(String image, String width, String height) {
 
-		MediaObject mediaObject = new MediaObject();
-		mediaObject.setDocBookVersion(docBookVersion);
+		MediaObject mediaObject = createMediaObject();
 
-		ImageObject imageObject = new ImageObject();
-		imageObject.setDocBookVersion(docBookVersion);
+		ImageObject imageObject = createImageObject();
 		mediaObject.appendChild(imageObject);
 
-		ImageData imageData = new ImageData();
-		imageData.setDocBookVersion(docBookVersion);
+		ImageData imageData = createImageData();
 		imageObject.appendChild(imageData);
 
 		imageData.setFileRef(image);
@@ -461,158 +467,158 @@ public class DocBookTagFactory {
 	public ImageData createImageData() {
 
 		ImageData imageData = new ImageData();
-		imageData.setDocBookVersion(docBookVersion);
+		initialize(imageData);
 		return imageData;
 	}
 
 	public ImageObject createImageObject() {
 
 		ImageObject imageObject = new ImageObject();
-		imageObject.setDocBookVersion(docBookVersion);
+		initialize(imageObject);
 		return imageObject;
 	}
 
 	public Important createImportant() {
 
 		Important important = new Important();
-		important.setDocBookVersion(docBookVersion);
+		initialize(important);
 		return important;
 	}
 
 	public Index createIndex() {
 
 		Index index = new Index();
-		index.setDocBookVersion(docBookVersion);
+		initialize(index);
 		return index;
 	}
 
 	public IndexTerm createIndexTerm() {
 
 		IndexTerm indexTerm = new IndexTerm();
-		indexTerm.setDocBookVersion(docBookVersion);
+		initialize(indexTerm);
 		return indexTerm;
 	}
 
 	public Info createInfo() {
 
 		Info info = new Info();
-		info.setDocBookVersion(docBookVersion);
+		initialize(info);
 		return info;
 	}
 
 	public InformalExample createInformalExample() {
 
 		InformalExample informalExample = new InformalExample();
-		informalExample.setDocBookVersion(docBookVersion);
+		initialize(informalExample);
 		return informalExample;
 	}
 
 	public InformalFigure createInformalFigure() {
 
 		InformalFigure informalFigure = new InformalFigure();
-		informalFigure.setDocBookVersion(docBookVersion);
+		initialize(informalFigure);
 		return informalFigure;
 	}
 
 	public InformalTable createInformalTable() {
 
 		InformalTable informalTable = new InformalTable();
-		informalTable.setDocBookVersion(docBookVersion);
+		initialize(informalTable);
 		return informalTable;
 	}
 
 	public Initializer createInitializer() {
 
 		Initializer initializer = new Initializer();
-		initializer.setDocBookVersion(docBookVersion);
+		initialize(initializer);
 		return initializer;
 	}
 
 	public Initializer createInitializer(String text) {
 
 		Initializer initializer = new Initializer(text);
-		initializer.setDocBookVersion(docBookVersion);
+		initialize(initializer);
 		return initializer;
 	}
 
 	public InlineMediaObject createInlineMediaObject() {
 		InlineMediaObject inlineMediaObject = new InlineMediaObject();
-		inlineMediaObject.setDocBookVersion(docBookVersion);
+		initialize(inlineMediaObject);
 		return inlineMediaObject;
 	}
 
 	public InterfaceName createInterfaceName() {
 
 		InterfaceName interfaceName = new InterfaceName();
-		interfaceName.setDocBookVersion(docBookVersion);
+		initialize(interfaceName);
 		return interfaceName;
 	}
 
 	public InterfaceName createInterfaceName(String name) {
 
 		InterfaceName interfaceName = new InterfaceName(name);
-		interfaceName.setDocBookVersion(docBookVersion);
+		initialize(interfaceName);
 		return interfaceName;
 	}
 
 	public ItemizedList createItemizedList() {
 
 		ItemizedList itemizedList = new ItemizedList();
-		itemizedList.setDocBookVersion(docBookVersion);
+		initialize(itemizedList);
 		return itemizedList;
 	}
 
 	public Keyword createKeyword() {
 		Keyword keyword = new Keyword();
-		keyword.setDocBookVersion(docBookVersion);
+		initialize(keyword);
 		return keyword;
 	}
 
 	public Keywordset createKeywordset() {
 		Keywordset keywordset = new Keywordset();
-		keywordset.setDocBookVersion(docBookVersion);
+		initialize(keywordset);
 		return keywordset;
 	}
 
 	public LegalNotice createLegalNotice() {
 
 		LegalNotice legalNotice = new LegalNotice();
-		legalNotice.setDocBookVersion(docBookVersion);
+		initialize(legalNotice);
 		return legalNotice;
 	}
 
 	public Link createLink() {
 
 		Link link = new Link();
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return link;
 	}
 
 	public Link createLink(Literal literal, String ref) {
 
 		Link link = new Link(literal, ref);
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return link;
 	}
 
 	public Link createLink(String linkend) {
 
 		Link link = new Link(linkend);
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return link;
 	}
 
 	public Link createLink(String label, String ref) {
 
 		Link link = new Link(label, ref);
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return link;
 	}
 
 	public Link createLink(VarName varName, String ref) {
 
 		Link link = new Link(varName, ref);
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return link;
 	}
 
@@ -620,84 +626,84 @@ public class DocBookTagFactory {
 			throws IOException {
 
 		Link link = new Link(label, ref);
-		link.setDocBookVersion(docBookVersion);
+		initialize(link);
 		return new NodeSerializer().toXML(link);
 	}
 
 	public ListItem createListItem() {
 
 		ListItem listItem = new ListItem();
-		listItem.setDocBookVersion(docBookVersion);
+		initialize(listItem);
 		return listItem;
 	}
 
 	public Literal createLiteral() {
 
 		Literal literal = new Literal();
-		literal.setDocBookVersion(docBookVersion);
+		initialize(literal);
 		return literal;
 	}
 
 	public Literal createLiteral(String text) {
 
 		Literal literal = new Literal(text);
-		literal.setDocBookVersion(docBookVersion);
+		initialize(literal);
 		return literal;
 	}
 
 	public ManVolNum createManVolNum(String num) {
 
 		ManVolNum manVolNum = new ManVolNum(num);
-		manVolNum.setDocBookVersion(docBookVersion);
+		initialize(manVolNum);
 		return manVolNum;
 	}
 
 	public MediaObject createMediaObject() {
 
 		MediaObject mediaObject = new MediaObject();
-		mediaObject.setDocBookVersion(docBookVersion);
+		initialize(mediaObject);
 		return mediaObject;
 	}
 
 	public Member createMember() {
 
 		Member member = new Member();
-		member.setDocBookVersion(docBookVersion);
+		initialize(member);
 		return member;
 	}
 
 	public MethodName createMethodName() {
 
 		MethodName methodName = new MethodName();
-		methodName.setDocBookVersion(docBookVersion);
+		initialize(methodName);
 		return methodName;
 	}
 
 	public MethodName createMethodName(String text) {
 
 		MethodName methodName = new MethodName(text);
-		methodName.setDocBookVersion(docBookVersion);
+		initialize(methodName);
 		return methodName;
 	}
 
 	public MethodParam createMethodParam() {
 
 		MethodParam methodParam = new MethodParam();
-		methodParam.setDocBookVersion(docBookVersion);
+		initialize(methodParam);
 		return methodParam;
 	}
 
 	public MethodSynopsis createMethodSynopsis() {
 
 		MethodSynopsis methodSynopsis = new MethodSynopsis();
-		methodSynopsis.setDocBookVersion(docBookVersion);
+		initialize(methodSynopsis);
 		return methodSynopsis;
 	}
 
 	public Modifier createModifier() {
 
 		Modifier modifier = new Modifier();
-		modifier.setDocBookVersion(docBookVersion);
+		initialize(modifier);
 		return modifier;
 	}
 
@@ -705,273 +711,274 @@ public class DocBookTagFactory {
 
 		Modifier modifier = new Modifier();
 		modifier.appendChild(text);
-		modifier.setDocBookVersion(docBookVersion);
+		initialize(modifier);
 		return modifier;
 	}
 
 	public Note createNote() {
 
 		Note note = new Note();
-		note.setDocBookVersion(docBookVersion);
+		initialize(note);
 		return note;
 	}
 
 	public Olink createOlink(String label, String targetdoc, String targetptr) {
 
 		Olink olink = new Olink(label, targetdoc, targetptr);
-		olink.setDocBookVersion(docBookVersion);
+		initialize(olink);
 		return olink;
 	}
 
 	public OoClass createOoClass() {
 
 		OoClass ooClass = new OoClass();
-		ooClass.setDocBookVersion(docBookVersion);
+		initialize(ooClass);
 		return ooClass;
 	}
 
 	public OoException createOoException() {
 
 		OoException ooException = new OoException();
-		ooException.setDocBookVersion(docBookVersion);
+		initialize(ooException);
 		return ooException;
 	}
 
 	public OoInterface createOoInterface() {
 
 		OoInterface ooInterface = new OoInterface();
-		ooInterface.setDocBookVersion(docBookVersion);
+		initialize(ooInterface);
 		return ooInterface;
 	}
 
 	public OrderedList createOrderedList() {
 
 		OrderedList orderedList = new OrderedList();
-		orderedList.setDocBookVersion(docBookVersion);
+		initialize(orderedList);
 		return orderedList;
 	}
 
 	public Para createPara() {
 
 		Para para = new Para();
-		para.setDocBookVersion(docBookVersion);
+		initialize(para);
 		return para;
 	}
 
 	public Para createPara(String text) {
 
 		Para para = new Para(text);
-		para.setDocBookVersion(docBookVersion);
+		initialize(para);
 		return para;
 	}
 
 	public ParamDef createParamDef() {
 
 		ParamDef paramDef = new ParamDef();
-		paramDef.setDocBookVersion(docBookVersion);
+		initialize(paramDef);
 		return paramDef;
 	}
 
 	public Parameter createParameter(String name) {
 
 		Parameter parameter = new Parameter(name);
-		parameter.setDocBookVersion(docBookVersion);
+		initialize(parameter);
 		return parameter;
 	}
 
 	public Part createPart() {
 
 		Part part = new Part();
-		part.setDocBookVersion(docBookVersion);
+		initialize(part);
 		return part;
 	}
 
 	public PartInfo createPartInfo() {
 
 		PartInfo partInfo = new PartInfo();
-		partInfo.setDocBookVersion(docBookVersion);
+		initialize(partInfo);
 		return partInfo;
 	}
 
 	public PartIntro createPartIntro() {
 
 		PartIntro partIntro = new PartIntro();
-		partIntro.setDocBookVersion(docBookVersion);
+		initialize(partIntro);
 		return partIntro;
 	}
 
 	public Personname createPersonname() {
 
 		Personname personname = new Personname();
-		personname.setDocBookVersion(docBookVersion);
+		initialize(personname);
 		return personname;
 	}
 
 	public Phrase createPhrase() {
 
 		Phrase phrase = new Phrase();
-		phrase.setDocBookVersion(docBookVersion);
+		initialize(phrase);
 		return phrase;
 	}
 
 	public Primary createPrimary(String key) {
 
 		Primary primary = new Primary(key);
-		primary.setDocBookVersion(docBookVersion);
+		initialize(primary);
 		return primary;
 	}
 
 	public ProgramListing createProgramListing() {
 
 		ProgramListing programListing = new ProgramListing();
-		programListing.setDocBookVersion(docBookVersion);
+		initialize(programListing);
 		return programListing;
 	}
 
 	public ProgramListing createProgramListing(String str) {
 
 		ProgramListing programListing = new ProgramListing(str);
-		programListing.setDocBookVersion(docBookVersion);
+		initialize(programListing);
 		return programListing;
 	}
 
 	public Quote createQuote() {
 
 		Quote quote = new Quote();
-		quote.setDocBookVersion(docBookVersion);
+		initialize(quote);
 		return quote;
 	}
 
 	public RefEntry createRefEntry() {
 
 		RefEntry refEntry = new RefEntry();
-		refEntry.setDocBookVersion(docBookVersion);
+		initialize(refEntry);
 		return refEntry;
 	}
 
 	public RefEntryInfo createRefEntryInfo() {
 
 		RefEntryInfo refEntryInfo = new RefEntryInfo();
-		refEntryInfo.setDocBookVersion(docBookVersion);
+		initialize(refEntryInfo);
 		return refEntryInfo;
 	}
 
 	public Reference createReference() {
 
 		Reference reference = new Reference();
-		reference.setDocBookVersion(docBookVersion);
+		initialize(reference);
 		return reference;
 	}
 
 	public RefMeta createRefMeta() {
 
 		RefMeta refMeta = new RefMeta();
-		refMeta.setDocBookVersion(docBookVersion);
+		initialize(refMeta);
 		return refMeta;
 	}
 
 	public RefMiscInfo createRefMiscInfo(String clazz, String info) {
 
 		RefMiscInfo refMiscInfo = new RefMiscInfo(clazz, info);
-		refMiscInfo.setDocBookVersion(docBookVersion);
+		initialize(refMiscInfo);
 		return refMiscInfo;
 	}
 
 	public RefName createRefName(String name) {
 
 		RefName refName = new RefName(name);
-		refName.setDocBookVersion(docBookVersion);
+		initialize(refName);
 		return refName;
 	}
 
 	public RefNameDiv createRefNameDiv() {
 
 		RefNameDiv refNameDiv = new RefNameDiv();
-		refNameDiv.setDocBookVersion(docBookVersion);
+		initialize(refNameDiv);
 		return refNameDiv;
 	}
 
 	public RefPurpose createRefPurpose() {
 
 		RefPurpose refPurpose = new RefPurpose();
-		refPurpose.setDocBookVersion(docBookVersion);
+		initialize(refPurpose);
 		return refPurpose;
 	}
 
 	public RefSect1 createRefSect1() {
 
 		RefSect1 refSect1 = new RefSect1();
-		refSect1.setDocBookVersion(docBookVersion);
+		initialize(refSect1);
 		return refSect1;
 	}
 
 	public RefSect1 createRefSect1(String title) {
 
-		RefSect1 refSect1 = new RefSect1(title);
-		refSect1.setDocBookVersion(docBookVersion);
+		RefSect1 refSect1 = createRefSect1();
+		refSect1.appendChild(createTitle(title));
 		return refSect1;
 	}
 
 	public RefSect2 createRefSect2() {
 
 		RefSect2 refSect2 = new RefSect2();
-		refSect2.setDocBookVersion(docBookVersion);
+		initialize(refSect2);
 		return refSect2;
 	}
 
 	public RefSect2 createRefSect2(String title) {
 
-		RefSect2 refSect2 = new RefSect2(title);
-		refSect2.setDocBookVersion(docBookVersion);
+		RefSect2 refSect2 = createRefSect2();
+		refSect2.appendChild(createTitle(title));
+		initialize(refSect2);
 		return refSect2;
 	}
 
 	public RefSect3 createRefSect3() {
 
 		RefSect3 refSect3 = new RefSect3();
-		refSect3.setDocBookVersion(docBookVersion);
+		initialize(refSect3);
 		return refSect3;
 	}
 
 	public RefSect4 createRefSect4() {
 
 		RefSect4 refSect4 = new RefSect4();
-		refSect4.setDocBookVersion(docBookVersion);
+		initialize(refSect4);
 		return refSect4;
 	}
 
 	public RefSect5 createRefSect5() {
 
 		RefSect5 refSect5 = new RefSect5();
-		refSect5.setDocBookVersion(docBookVersion);
+		initialize(refSect5);
 		return refSect5;
 	}
 
 	public RefSection createRefSection() {
 
 		RefSection refSection = new RefSection();
-		refSection.setDocBookVersion(docBookVersion);
+		initialize(refSection);
 		return refSection;
 	}
 
 	public RefSection createRefSection(String title) {
 
-		RefSection refSection = new RefSection(title);
-		refSection.setDocBookVersion(docBookVersion);
+		RefSection refSection = createRefSection();
+		refSection.appendChild(createTitle(title));
 		return refSection;
 	}
 
 	public RefSynopsisDiv createRefSynopsisDiv() {
 
 		RefSynopsisDiv refSynopsisDiv = new RefSynopsisDiv();
-		refSynopsisDiv.setDocBookVersion(docBookVersion);
+		initialize(refSynopsisDiv);
 		return refSynopsisDiv;
 	}
 
 	public ReleaseInfo createReleaseInfo() {
 
 		ReleaseInfo releaseInfo = new ReleaseInfo();
-		releaseInfo.setDocBookVersion(docBookVersion);
+		initialize(releaseInfo);
 		return releaseInfo;
 	}
 
@@ -979,105 +986,104 @@ public class DocBookTagFactory {
 
 		ReleaseInfo releaseInfo = new ReleaseInfo();
 		releaseInfo.appendChild(text);
-		releaseInfo.setDocBookVersion(docBookVersion);
+		initialize(releaseInfo);
 		return releaseInfo;
 	}
 
 	public Row createRow() {
 
 		Row row = new Row();
-		row.setDocBookVersion(docBookVersion);
+		initialize(row);
 		return row;
 	}
 
 	public Screen createScreen() {
 
 		Screen screen = new Screen();
-		screen.setDocBookVersion(docBookVersion);
+		initialize(screen);
 		return screen;
 	}
 
 	public Secondary createSecondary(String key) {
 
 		Secondary secondary = new Secondary(key);
-		secondary.setDocBookVersion(docBookVersion);
+		initialize(secondary);
 		return secondary;
 	}
 
 	public Sect1 createSect1() {
 
 		Sect1 sect1 = new Sect1();
-		sect1.setDocBookVersion(docBookVersion);
+		initialize(sect1);
 		return sect1;
 	}
 
 	public Sect1 createSect1(String title) {
 
-		Sect1 sect1 = new Sect1(title);
-		sect1.setDocBookVersion(docBookVersion);
+		Sect1 sect1 = createSect1();
+		sect1.appendChild(createTitle(title));
 		return sect1;
 	}
 
 	public Sect2 createSect2() {
 
 		Sect2 sect2 = new Sect2();
-		sect2.setDocBookVersion(docBookVersion);
+		initialize(sect2);
 		return sect2;
 	}
 
 	public Sect2 createSect2(String str) {
 
-		Sect2 sect2 = new Sect2(str);
-		sect2.setDocBookVersion(docBookVersion);
+		Sect2 sect2 = createSect2();
+		sect2.appendChild(createTitle(str));
 		return sect2;
 	}
 
 	public Sect3 createSect3() {
 
 		Sect3 sect3 = new Sect3();
-		sect3.setDocBookVersion(docBookVersion);
+		initialize(sect3);
 		return sect3;
 	}
 
 	public Sect3 createSect3(String str) {
 
-		Sect3 sect3 = new Sect3(str);
-		sect3.setDocBookVersion(docBookVersion);
+		Sect3 sect3 = createSect3();
+		sect3.appendChild(createTitle(str));
 		return sect3;
 	}
 
 	public Sect4 createSect4() {
 
 		Sect4 sect4 = new Sect4();
-		sect4.setDocBookVersion(docBookVersion);
+		initialize(sect4);
 		return sect4;
 	}
 
 	public Sect5 createSect5() {
 		Sect5 sect5 = new Sect5();
-
-		sect5.setDocBookVersion(docBookVersion);
+		initialize(sect5);
 		return sect5;
 	}
 
 	public Section createSection() {
 
 		Section section = new Section();
-		section.setDocBookVersion(docBookVersion);
+		initialize(section);
 		return section;
 	}
 
 	public Section createSection(String title) {
 
-		Section section = new Section(title);
-		section.setDocBookVersion(docBookVersion);
+		Section section = createSection();
+		section.appendChild(createTitle(title));
 		return section;
 	}
 
 	public SimPara createSimPara() {
 
 		SimPara simPara = new SimPara();
-		simPara.setDocBookVersion(docBookVersion);
+		initialize(simPara);
 		return simPara;
 	}
 
@@ -1085,14 +1091,14 @@ public class DocBookTagFactory {
 
 		SimPara simPara = new SimPara();
 		simPara.appendChild(text);
-		simPara.setDocBookVersion(docBookVersion);
+		initialize(simPara);
 		return simPara;
 	}
 
 	public SimpleList createSimpleList() {
 
 		SimpleList simpleList = new SimpleList();
-		simpleList.setDocBookVersion(docBookVersion);
+		initialize(simpleList);
 		return simpleList;
 	}
 
@@ -1106,52 +1112,52 @@ public class DocBookTagFactory {
 	public SimpleSect createSimpleSect() {
 
 		SimpleSect simpleSect = new SimpleSect();
-		simpleSect.setDocBookVersion(docBookVersion);
+		initialize(simpleSect);
 		return simpleSect;
 	}
 
 	public Spanspec createSpanspec() {
 
 		Spanspec spanspec = new Spanspec();
-		spanspec.setDocBookVersion(docBookVersion);
+		initialize(spanspec);
 		return spanspec;
 	}
 
 	public Subject createSubject() {
 		Subject subject = new Subject();
-		subject.setDocBookVersion(docBookVersion);
+		initialize(subject);
 		return subject;
 	}
 
 	public Subjectset createSubjectset() {
 		Subjectset subjectset = new Subjectset();
-		subjectset.setDocBookVersion(docBookVersion);
+		initialize(subjectset);
 		return subjectset;
 	}
 
 	public Subjectterm createSubjectterm() {
 		Subjectterm subjectterm = new Subjectterm();
-		subjectterm.setDocBookVersion(docBookVersion);
+		initialize(subjectterm);
 		return subjectterm;
 	}
 
 	public Subscript createSubscript() {
 		Subscript subscript = new Subscript();
-		subscript.setDocBookVersion(docBookVersion);
+		initialize(subscript);
 		return subscript;
 	}
 
 	public Superscript createSuperscript() {
 
 		Superscript superscript = new Superscript();
-		superscript.setDocBookVersion(docBookVersion);
+		initialize(superscript);
 		return superscript;
 	}
 
 	public Surname createSurname() {
 
 		Surname surname = new Surname();
-		surname.setDocBookVersion(docBookVersion);
+		initialize(surname);
 		return surname;
 	}
 
@@ -1159,21 +1165,21 @@ public class DocBookTagFactory {
 
 		Surname surname = new Surname();
 		surname.appendChild(name);
-		surname.setDocBookVersion(docBookVersion);
+		initialize(surname);
 		return surname;
 	}
 
 	public Synopsis createSynopsis() {
 
 		Synopsis synopsis = new Synopsis();
-		synopsis.setDocBookVersion(docBookVersion);
+		initialize(synopsis);
 		return synopsis;
 	}
 
 	public Table createTable() {
 
 		Table table = new Table();
-		table.setDocBookVersion(docBookVersion);
+		initialize(table);
 		return table;
 	}
 
@@ -1181,52 +1187,52 @@ public class DocBookTagFactory {
 			throws DocBookTagFactoryException {
 
 		DocBookElement docBookElement = new DocBookElement(name);
-		docBookElement.setDocBookVersion(docBookVersion);
+		initialize(docBookElement);
 		return docBookElement;
 	}
 
 	public Tbody createTbody() {
 
 		Tbody tbody = new Tbody();
-		tbody.setDocBookVersion(docBookVersion);
+		initialize(tbody);
 		return tbody;
 	}
 
 	public Term createTerm() {
 
 		Term term = new Term();
-		term.setDocBookVersion(docBookVersion);
+		initialize(term);
 		return term;
 	}
 
 	public TextObject createTextObject() {
 
 		TextObject textObject = new TextObject();
-		textObject.setDocBookVersion(docBookVersion);
+		initialize(textObject);
 		return textObject;
 	}
 
 	public Tfoot createTfoot() {
 
 		Tfoot tfoot = new Tfoot();
-		tfoot.setDocBookVersion(docBookVersion);
+		initialize(tfoot);
 		return tfoot;
 	}
 
 	public Tgroup createTgroup() {
 
 		Tgroup tgroup = new Tgroup();
-		tgroup.setDocBookVersion(docBookVersion);
+		initialize(tgroup);
 		return tgroup;
 	}
 
 	public Tgroup createTgroup(int cols) {
 
 		Tgroup tgroup = new Tgroup();
-		tgroup.setDocBookVersion(docBookVersion);
+		initialize(tgroup);
 		tgroup.setCols(2);
-		tgroup.appendChild(new Colspec("c1", "1*"));
-		tgroup.appendChild(new Colspec("c2", "1*"));
+		tgroup.appendChild(createColspec("c1", "1*"));
+		tgroup.appendChild(createColspec("c2", "1*"));
 
 		return tgroup;
 	}
@@ -1234,105 +1240,105 @@ public class DocBookTagFactory {
 	public Thead createThead() {
 
 		Thead thead = new Thead();
-		thead.setDocBookVersion(docBookVersion);
+		initialize(thead);
 		return thead;
 	}
 
 	public Tip createTip() {
 
 		Tip tip = new Tip();
-		tip.setDocBookVersion(docBookVersion);
+		initialize(tip);
 		return tip;
 	}
 
 	public Title createTitle() {
 
 		Title title = new Title();
-		title.setDocBookVersion(docBookVersion);
+		initialize(title);
 		return title;
 	}
 
 	public Title createTitle(String str) {
 
 		Title title = new Title(str);
-		title.setDocBookVersion(docBookVersion);
+		initialize(title);
 		return title;
 	}
 
 	public Type createType() {
 
 		Type type = new Type();
-		type.setDocBookVersion(docBookVersion);
+		initialize(type);
 		return type;
 	}
 
 	public ULink createULink() {
 
 		ULink uLink = new ULink();
-		uLink.setDocBookVersion(docBookVersion);
+		initialize(uLink);
 		return uLink;
 	}
 
 	public VariableList createVariableList() {
 
 		VariableList variableList = new VariableList();
-		variableList.setDocBookVersion(docBookVersion);
+		initialize(variableList);
 		return variableList;
 	}
 
 	public VarListEntry createVarListEntry() {
 
 		VarListEntry varListEntry = new VarListEntry();
-		varListEntry.setDocBookVersion(docBookVersion);
+		initialize(varListEntry);
 		return varListEntry;
 	}
 
 	public VarName createVarName() {
 
 		VarName varName = new VarName();
-		varName.setDocBookVersion(docBookVersion);
+		initialize(varName);
 		return varName;
 	}
 
 	public VarName createVarName(String text) {
 
 		VarName varName = new VarName(text);
-		varName.setDocBookVersion(docBookVersion);
+		initialize(varName);
 		return varName;
 	}
 
 	public Void createVoid() {
 
 		Void _void = new Void();
-		_void.setDocBookVersion(docBookVersion);
+		initialize(_void);
 		return _void;
 	}
 
 	public Warning createWarning() {
 
 		Warning warning = new Warning();
-		warning.setDocBookVersion(docBookVersion);
+		initialize(warning);
 		return warning;
 	}
 
 	public Warning createWarning(String text) {
 
 		Warning warning = new Warning(text);
-		warning.setDocBookVersion(docBookVersion);
+		initialize(warning);
 		return warning;
 	}
 
 	public XRef createXRef(String linkend) {
 
 		XRef xref = new XRef(linkend);
-		xref.setDocBookVersion(docBookVersion);
+		initialize(xref);
 		return xref;
 	}
 
 	public Year createYear() {
 
 		Year year = new Year();
-		year.setDocBookVersion(docBookVersion);
+		initialize(year);
 		return year;
 	}
 
@@ -1340,7 +1346,7 @@ public class DocBookTagFactory {
 
 		Year year = new Year();
 		year.appendChild(text);
-		year.setDocBookVersion(docBookVersion);
+		initialize(year);
 		return year;
 	}
 
@@ -1372,10 +1378,10 @@ public class DocBookTagFactory {
 	}
 
 	public void createFoImageData(DocBookElement parent,
-			DocBookTagFactory dbfactory, Img img, File file) throws IOException {
+			DocBookTagFactory dbfactory, Img img, File file, List<String> additionalFormats) throws IOException {
 
 		String fileRef = FileServices.normalizePath(file.getPath());
-		String format = getImageDataFormat(fileRef);
+		String imgFormat = getImageDataFormat(fileRef);
 		fileRef = FileServices.getFileBase(fileRef);
 
 		if (FileServices.isAbsolutePath(fileRef)) {
@@ -1389,10 +1395,24 @@ public class DocBookTagFactory {
 			}
 		}
 
-		ImageObject image = dbfactory.createImageObject();
-		image.setRole("fo");
+		HashSet<String> formatList = new HashSet<>();
+		formatList.add(imgFormat);
 
-		String align = img.getAlign();
+		if (additionalFormats != null) {
+			additionalFormats.forEach(f -> formatList.add(f.toUpperCase()));
+		}
+
+		for (String format : formatList) {
+
+			ImageObject image = dbfactory.createImageObject();
+		
+			if (format.equals(imgFormat)) {
+				image.setRole("fo");
+			} else {
+				image.setRole("fo-" + format.toLowerCase());
+			}
+
+			String align = img.getAlign();
 
 		ImageData data = dbfactory.createImageData();
 
@@ -1409,10 +1429,12 @@ public class DocBookTagFactory {
 
 		image.appendChild(data);
 		parent.appendChild(image);
+		}
 	}
 
 	public void createHtmlImageData(DocBookElement parent,
-			DocBookTagFactory dbfactory, Img img, File file) throws IOException {
+			DocBookTagFactory dbfactory, Img img, File file,
+			List<String> additionalFormats) throws IOException {
 
 		String fileRef = FileServices.normalizePath(file.getPath());
 
@@ -1427,49 +1449,63 @@ public class DocBookTagFactory {
 			}
 		}
 
-		String format = getImageDataFormat(fileRef);
+		String imgFormat = getImageDataFormat(fileRef);
 		fileRef = FileServices.getFileBase(fileRef);
 
-		if (format == null) {
-			// log.warn("Can't compute image format of fileRef " + fileRef);
+		if (imgFormat == null) {
 			return;
 		}
-		
+
 		String width = img.getWidth();
 		String height = img.getHeight();
 		String align = img.getAlign();
 
-		ImageObject image = dbfactory.createImageObject();
+		HashSet<String> formatList = new HashSet<>();
+		formatList.add(imgFormat);
 
-		image.setRole("html");
-		ImageData data = dbfactory.createImageData();
-		data.setScaleFit(true);
-
-		if (width != null && width.length() > 0) {
-			data.setContentWidth(width);
+		if (additionalFormats != null) {
+			additionalFormats.forEach(f -> formatList.add(f.toUpperCase()));
 		}
 
-		if (height != null && height.length() > 0) {
-			data.setContentDepth(height);
+		for (String format : formatList) {
+
+			ImageObject image = dbfactory.createImageObject();
+
+			if (format.equals(imgFormat)) {
+				image.setRole("html");
+			} else {
+				image.setRole("html-" + format.toLowerCase());
+			}
+
+			ImageData data = dbfactory.createImageData();
+			data.setScaleFit(true);
+
+			if (width != null && width.length() > 0) {
+				data.setContentWidth(width);
+			}
+
+			if (height != null && height.length() > 0) {
+				data.setContentDepth(height);
+			}
+
+			if (file.exists() && format.equalsIgnoreCase("BASE64")) {
+
+				String fileName = FileServices.getFileBase(file) + ".base64";
+				FileServices.writeFromString(new File(fileName),
+						ImageServices.toXml(file));
+			}
+
+			data.setFormat(format);
+
+			if (align != null && align.length() > 0) {
+				data.setAlign(validateAlign(align));
+			}
+
+			String attr = fileRef + "." + format.toLowerCase();
+			data.setFileRef(attr);
+			image.appendChild(data);
+			parent.appendChild(image);
 		}
-
-		if (file.exists() && format.equalsIgnoreCase("BASE64")) {
-
-			String fileName = FileServices.getFileBase(file) + ".base64";
-			FileServices.writeFromString(new File(fileName),
-					ImageServices.toXml(file));
-		}
-
-		data.setFormat(format);
-
-		if (align != null && align.length() > 0) {
-			data.setAlign(validateAlign(align));
-		}
-
-		String attr = fileRef + "." + format.toLowerCase();
-		data.setFileRef(attr);
-		image.appendChild(data);
-		parent.appendChild(image);
 	}
 
 	public String validateAlign(String align) {
@@ -1489,18 +1525,18 @@ public class DocBookTagFactory {
 		return align;
 	}
 
-	public DocBookElement createElementByName(String tagName)  {
+	public DocBookElement createElementByName(String tagName) {
 
 		String pkg = "org.dbdoclet.tag.docbook.";
 		String lowerCase = tagName.toLowerCase();
 		DocBookElement elem = null;
-		
+
 		Class<?> clazz = null;
 
-		for (int i= 0; i< lowerCase.length(); i++) {
-			
+		for (int i = 0; i < lowerCase.length(); i++) {
+
 			String name = upcase(lowerCase, 0, i);
-			
+
 			try {
 				clazz = Class.forName(pkg + name);
 				if (clazz != null) {
@@ -1509,20 +1545,21 @@ public class DocBookTagFactory {
 						break;
 					}
 				}
-			} catch (Throwable e) {} 
+			} catch (Throwable e) {
+			}
 		}
-		
+
 		return elem;
 	}
 
-	private String upcase(String lowerCase, int...indices) {
+	private String upcase(String lowerCase, int... indices) {
 
 		char[] chars = lowerCase.toCharArray();
-		
-		for (int index: indices) {
+
+		for (int index : indices) {
 			chars[index] = Character.toUpperCase(chars[index]);
 		}
-		
+
 		return new String(chars);
 	}
 

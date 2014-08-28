@@ -8,42 +8,24 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
 
 public class Initializer extends DocBookElement {
 
-    private static final String tagName = "initializer";
-    private static final HashMap<String, HashMap<String, Object>> validParentMap;
+	private static final String tag = "initializer";
 
-    static {
+	Initializer() {
 
-        validParentMap = new HashMap<String, HashMap<String, Object>>();
+		super(tag);
+		setFormatType(FORMAT_CONTENT);
+	}
 
-        validParentMap.put(FieldSynopsis.getTag(), FieldSynopsis.getAttributeMap());
-        validParentMap.put(MethodParam.getTag(), MethodParam.getAttributeMap());
-        validParentMap.put(ParamDef.getTag(), ParamDef.getAttributeMap());
-    }
+	Initializer(String text) {
 
-    Initializer() {
+		this();
+		appendChild(hardenText(text));
+	}
 
-        super(tagName);
-        setFormatType(FORMAT_CONTENT);
-        isMixedContentModel(true);
-    }
-
-    Initializer(String text) {
-
-        this();
-        appendChild(hardenText(text));
-    }
-
-    public static String getTag() {
-        return tagName;
-    }
-
-    @Override
-    public boolean validate() {
-
-        return validate2(validParentMap);
-    }
+	public static String getTag() {
+		return tag;
+	}
 }

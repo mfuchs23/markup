@@ -15,18 +15,10 @@ public class Appendix extends SectionElement {
 
     Appendix() {
         super(tagName);
-
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
+     }
 
-    Appendix(String title) {
-        this();
-        appendChild(new Title(title));
-    }
-
-    public static String getTag() {
-
+     public static String getTag() {
         return tagName;
     }
 }

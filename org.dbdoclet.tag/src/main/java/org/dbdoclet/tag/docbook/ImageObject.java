@@ -8,11 +8,10 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class ImageObject extends DocBookElement {
 
-    ImageObject() {
-	super("imageobject");
-	setFormatType(FORMAT_BLOCK);
-    }
+	ImageObject() {
+		super("imageobject");
+		setFormatType(FORMAT_BLOCK);
+	}
 }

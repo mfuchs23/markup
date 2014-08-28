@@ -16,10 +16,7 @@ public class ClassSynopsis extends DocBookElement {
     ClassSynopsis() {
 
         super(tag);
-
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-
         setAttribute("class", "class");
         setAttribute("language", "java");
     }
@@ -27,7 +24,6 @@ public class ClassSynopsis extends DocBookElement {
     public void setLanguage(String language) {
         setAttribute("language", language);
     }
-
     
     public void setInterface(boolean value) {
 

@@ -16,10 +16,7 @@ public class FieldSynopsis extends DocBookElement {
     FieldSynopsis() {
 
         super(tagName);
-
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-
         setAttribute("language", "java");
     }
 

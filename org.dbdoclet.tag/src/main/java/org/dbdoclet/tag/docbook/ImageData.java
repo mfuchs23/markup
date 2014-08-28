@@ -16,7 +16,7 @@ public class ImageData extends DocBookElement {
 
 		super("imagedata");
 		isEmpty(true);
-		setFormatType(FORMAT_INLINE);
+		setFormatType(FORMAT_BLOCK);
 	}
 
 	public DocBookElement setAlign(String align) {

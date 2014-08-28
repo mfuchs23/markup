@@ -8,25 +8,17 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class Book extends SectionElement {
 
-    private static final String tag = "book";
+	private static final String tag = "book";
 
-    Book() {
+	Book() {
 
-        super(tag);
-        setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
-    }
+		super(tag);
+		setFormatType(FORMAT_BLOCK);
+	}
 
-    Book(String title) {
-
-        this();
-        appendChild(new Title(title));
-    }
-
-    public static String getTag() {
-        return tag;
-    }
+	public static String getTag() {
+		return tag;
+	}
 }

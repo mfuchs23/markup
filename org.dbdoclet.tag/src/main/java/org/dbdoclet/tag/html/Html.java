@@ -8,18 +8,16 @@
  */
 package org.dbdoclet.tag.html;
 
-import org.w3c.dom.Node;
-
 public class Html extends StrictElement {
 
-    private static final String tag = "html";
+	private static final String tag = "html";
 
-    public static String getTag() {
-	return tag;
-    }
+	public static String getTag() {
+		return tag;
+	}
 
-    public Html() {
-	setNodeName(tag);
-	setFormatType(FORMAT_BLOCK);
-    }
+	public Html() {
+		setNodeName(tag);
+		setFormatType(FORMAT_BLOCK);
+	}
 }

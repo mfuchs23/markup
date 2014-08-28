@@ -10,22 +10,47 @@ package org.dbdoclet.tag.docbook;
 
 import java.util.HashMap;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 
 public class DocBookElement extends ElementImpl {
 
-	private DocBookVersion docBookVersion = DocBookVersion.V5_0;
-	private boolean isContentModel = false;
+	private static Log logger = LogFactory.getLog(DocBookElement.class);
 
-	DocBookElement(String name) {
-		super(name);
-	}
+	private DocBookVersion docBookVersion = DocBookVersion.V5_0;
 
 	public static HashMap<String, Object> getAttributeMap() {
 		return new HashMap<String, Object>();
+	}
+
+	public final boolean isValidParent(String contextInfo, Node node) {
+
+		if (node == null) {
+			throw new IllegalArgumentException("Variable parent is null!");
+		}
+
+		if (node instanceof DocumentFragment) {
+			return true;
+		}
+
+		try {
+
+			node.appendChild(this);
+			return DocBookSchemaValidator.getInstance().validate(contextInfo,
+					node);
+
+		} catch (SAXException e) {
+			logger.error("", e);
+			return false;
+
+		} finally {
+			node.removeChild(this);
+		}
 	}
 
 	public static void setFlavour(String flavour) {
@@ -40,47 +65,8 @@ public class DocBookElement extends ElementImpl {
 		}
 	}
 
-	public static boolean validate2(
-			HashMap<String, HashMap<String, Object>> validParentMap,
-			DocBookElement element, Node node) {
-
-		if (validParentMap == null) {
-			throw new IllegalArgumentException(
-					"Variable validParentMap is null!");
-		}
-
-		if (element == null) {
-			throw new IllegalArgumentException(
-					"The argument element must not be null!");
-		}
-
-		if (node == null) {
-			throw new IllegalArgumentException("Variable parent is null!");
-		}
-
-		if (node instanceof DocumentFragment) {
-			return true;
-		}
-		
-		if (node instanceof DocBookElement) {
-
-			DocBookElement dbParent = (DocBookElement) node;
-
-			if (element.isSection() == false && dbParent.isSection() == true) {
-
-				SectionElement sect = (SectionElement) node;
-
-				if (sect.hasSectionChildren()) {
-					return false;
-				}
-			}
-		}
-
-		if (validParentMap.get(node.getNodeName()) != null) {
-			return true;
-		}
-
-		return false;
+	DocBookElement(String name) {
+		super(name);
 	}
 
 	public String getCondition() {
@@ -105,18 +91,13 @@ public class DocBookElement extends ElementImpl {
 		return getAttribute("remap");
 	}
 
-	public boolean isContentModel() {
+	protected boolean isDocBook5() {
 
-		if (getNodeName().equalsIgnoreCase(".")) {
+		if (docBookVersion == DocBookVersion.V5_0) {
 			return true;
+		} else {
+			return false;
 		}
-
-		return isContentModel;
-	}
-
-	public void isContentModel(boolean isContentModel) {
-
-		this.isContentModel = isContentModel;
 	}
 
 	public boolean isList() {
@@ -146,37 +127,24 @@ public class DocBookElement extends ElementImpl {
 		return false;
 	}
 
-	public boolean isMixedContentModel() {
-		return !isContentModel();
-	}
-
-	public void isMixedContentModel(boolean isMixedContentModel) {
-
-		this.isContentModel = !isMixedContentModel;
-	}
-
 	public boolean isSection() {
 
 		String name = getNodeName();
 
-		if (name.equalsIgnoreCase("book")) {
-			return true;
-		}
-
-		if (name.equalsIgnoreCase("article")) {
-			return true;
-		}
-
-		if (name.equalsIgnoreCase("chapter")) {
-			return true;
-		}
-
-		if (name.equalsIgnoreCase("sect1")) {
-
-			return true;
-		}
-
-		if (name.equalsIgnoreCase("sect2")) {
+		if (name.equalsIgnoreCase("book") || name.equalsIgnoreCase("article")
+				|| name.equalsIgnoreCase("chapter")
+				|| name.equalsIgnoreCase("sect1")
+				|| name.equalsIgnoreCase("sect2")
+				|| name.equalsIgnoreCase("sect3")
+				|| name.equalsIgnoreCase("sect4")
+				|| name.equalsIgnoreCase("sect5")
+				|| name.equalsIgnoreCase("section")
+				|| name.equalsIgnoreCase("refsect1")
+				|| name.equalsIgnoreCase("refsect2")
+				|| name.equalsIgnoreCase("refsect3")
+				|| name.equalsIgnoreCase("refsect4")
+				|| name.equalsIgnoreCase("refsect5")
+				|| name.equalsIgnoreCase("refsection")) {
 			return true;
 		}
 
@@ -201,10 +169,6 @@ public class DocBookElement extends ElementImpl {
 		}
 
 		return false;
-	}
-
-	public boolean isValidParent(Node parent) {
-		return true;
 	}
 
 	public DocBookElement setCondition(String condition) {
@@ -239,7 +203,7 @@ public class DocBookElement extends ElementImpl {
 		}
 
 		if (docBookVersion == DocBookVersion.V5_0) {
-			setAttribute("xml:id", hardenId(id));
+			setAttributeNS(XmlConstants.NAMESPACE_XML, "xml:id", hardenId(id));
 		} else {
 			setAttribute("id", hardenId(id));
 		}
@@ -252,7 +216,7 @@ public class DocBookElement extends ElementImpl {
 		}
 
 		if (docBookVersion == DocBookVersion.V5_0) {
-			setAttributeNS(XmlConstants.NAMESPACE_XML,"xml:lang", lang);
+			setAttributeNS(XmlConstants.NAMESPACE_XML, "xml:lang", lang);
 		} else {
 			setAttribute("lang", lang);
 		}
@@ -289,48 +253,7 @@ public class DocBookElement extends ElementImpl {
 		return this;
 	}
 
-	public boolean validate() {
-
-		Node parentNode = getParentNode();
-
-		if (parentNode != null && parentNode instanceof DocBookElement) {
-
-			DocBookElement parent = (DocBookElement) parentNode;
-
-			if (isSection() == false && parent.isSection() == true) {
-
-				SectionElement sect = (SectionElement) parent;
-
-				if (sect.hasSectionChildren()) {
-					return false;
-				}
-			}
-		}
-
-		return true;
-	}
-
-	public boolean validate(
-			HashMap<String, HashMap<String, Object>> invalidParentMap) {
-
-		if (getParentNode() == null || invalidParentMap.get(getParentNode().getNodeName()) != null) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public boolean validate2(
-			HashMap<String, HashMap<String, Object>> validParentMap) {
-		return validate2(validParentMap, this, getParentNode());
-	}
-
-	protected boolean isDocBook5() {
-
-		if (docBookVersion == DocBookVersion.V5_0) {
-			return true;
-		} else {
-			return false;
-		}
+	public boolean isInline() {
+		return getFormatType() == FORMAT_INLINE;
 	}
 }

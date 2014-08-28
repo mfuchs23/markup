@@ -16,7 +16,6 @@ public class Abstract extends DocBookElement {
     Abstract() {
 
         super(tagName);
-        setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
+        setFormatType(FORMAT_CONTENT);
     }
 }

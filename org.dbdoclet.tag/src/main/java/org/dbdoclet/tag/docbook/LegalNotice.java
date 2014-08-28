@@ -17,6 +17,5 @@ public class LegalNotice extends DocBookElement {
 
         super(tagName);
         setFormatType(FORMAT_BLOCK);
-        isContentModel(true);
     }
 }

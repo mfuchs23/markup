@@ -8,16 +8,13 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class OoException extends DocBookElement {
 
-    private static String tagName = "ooexception";
+	private static String tagName = "ooexception";
 
-    OoException() {
+	OoException() {
 
-	super(tagName);
-
-	setFormatType(FORMAT_BLOCK);
-	isContentModel(true);
-    }
+		super(tagName);
+		setFormatType(FORMAT_BLOCK);
+	}
 }

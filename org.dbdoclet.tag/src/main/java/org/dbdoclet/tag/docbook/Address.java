@@ -8,42 +8,25 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
 import org.dbdoclet.xiphias.XmlServices;
 
 public class Address extends DocBookElement {
 
-    private static final String tagName = "address";
-    private static final HashMap<String, HashMap<String, Object>> invalidParentMap;
+	private static final String tag = "address";
 
-    static {
+	Address() {
 
-        invalidParentMap = new HashMap<String, HashMap<String, Object>>();
-        invalidParentMap.put(Subscript.getTag(), Subscript.getAttributeMap());
-        invalidParentMap.put(Superscript.getTag(),
-                             Superscript.getAttributeMap());
-    }
+		super(tag);
+		setFormatType(FORMAT_BLOCK);
+	}
 
-    Address() {
+	Address(String text) {
 
-        super(tagName);
-        setFormatType(FORMAT_BLOCK);
-        isMixedContentModel(true);
-    }
+		this();
+		appendChild(XmlServices.textToXml(text));
+	}
 
-    Address(String text) {
-
-        this();
-        appendChild(XmlServices.textToXml(text));
-    }
-
-    public static String getTag() {
-        return tagName;
-    }
-
-    @Override
-    public boolean validate() {
-        return validate(invalidParentMap);
-    }
+	public static String getTag() {
+		return tag;
+	}
 }

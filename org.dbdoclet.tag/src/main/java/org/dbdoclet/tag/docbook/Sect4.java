@@ -8,27 +8,15 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
-
-
 public class Sect4 extends SectionElement {
 
     private final static String tag = "sect4";
 
     Sect4() {
-
         super(tag);
-        isContentModel(true);
     }
 
-    Sect4(String title) {
-
-        super(tag);
-        appendChild(new Title(title));
-        isContentModel(true);
-    }
-
-    public static String getTag() {
+     public static String getTag() {
         return tag;
     }
 }

@@ -40,10 +40,4 @@ public class SimPara extends DocBookElement {
 
         return tag;
     }
-
-    @Override
-    public boolean validate() {
-
-        return validate(invalidParentMap);
-    }
 }

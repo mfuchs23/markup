@@ -18,7 +18,6 @@ public class Code extends DocBookElement {
 
         super(tag);
         setFormatType(FORMAT_INLINE);
-        isMixedContentModel(true);
     }
 
     Code(String text) {
