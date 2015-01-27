@@ -12,6 +12,7 @@ import java.util.HashMap;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.dbdoclet.tag.ITransformPosition;
 import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.w3c.dom.DocumentFragment;
@@ -28,7 +29,7 @@ public class DocBookElement extends ElementImpl {
 		return new HashMap<String, Object>();
 	}
 
-	public final boolean isValidParent(String contextInfo, Node node) {
+	public final boolean isValidParent(ITransformPosition pos, Node node) {
 
 		if (node == null) {
 			throw new IllegalArgumentException("Variable parent is null!");
@@ -41,7 +42,7 @@ public class DocBookElement extends ElementImpl {
 		try {
 
 			node.appendChild(this);
-			return DocBookSchemaValidator.getInstance().validate(contextInfo,
+			return DocBookSchemaValidator.getInstance().validate(pos,
 					node);
 
 		} catch (SAXException e) {

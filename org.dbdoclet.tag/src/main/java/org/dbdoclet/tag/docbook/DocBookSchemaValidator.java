@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.service.ResourceServices;
 import org.dbdoclet.service.StringServices;
+import org.dbdoclet.tag.ITransformPosition;
 import org.dbdoclet.xiphias.NodeSerializer;
 import org.w3c.dom.Node;
 import org.xml.sax.ErrorHandler;
@@ -37,12 +38,12 @@ public class DocBookSchemaValidator {
 		validator.setErrorHandler(new DocBookSchemaValidatorErrorHandler());
 	}
 
-	public boolean validate(String contextInfo, Node node) {
+	public boolean validate(ITransformPosition pos, Node node) {
 		try {
 			validator.validate(new DOMSource(node));
 			return true;
 		} catch (SAXException | IOException oops) {
-			logger.warn(String.format("[%s] %s:\nXML::%s::\n%s\n", contextInfo, oops.getClass()
+			logger.warn(String.format("[%s] %s:\nXML::%s::\n%s\n", pos.getDescription(), oops.getClass()
 					.getSimpleName(), new NodeSerializer().toXML(node),
 					StringServices.splitAt(oops.getMessage(), " ")));
 			return false;
