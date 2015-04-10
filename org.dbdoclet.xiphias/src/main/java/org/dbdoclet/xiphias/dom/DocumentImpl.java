@@ -128,6 +128,7 @@ public class DocumentImpl extends NodeImpl implements Document {
 	public Text createTextNode(String data) {
 
 		TextImpl text = new TextImpl(data);
+		text.setDocument(this);
 		return text;
 	}
 

@@ -29,7 +29,7 @@ public class DocBookElement extends ElementImpl {
 		return new HashMap<String, Object>();
 	}
 
-	public final boolean isValidParent(ITransformPosition pos, Node node) {
+	public boolean isValidParent(ITransformPosition pos, Node node) {
 
 		if (node == null) {
 			throw new IllegalArgumentException("Variable parent is null!");
@@ -43,7 +43,7 @@ public class DocBookElement extends ElementImpl {
 
 			node.appendChild(this);
 			return DocBookSchemaValidator.getInstance().validate(pos,
-					node);
+					node).isValid();
 
 		} catch (SAXException e) {
 			logger.error("", e);

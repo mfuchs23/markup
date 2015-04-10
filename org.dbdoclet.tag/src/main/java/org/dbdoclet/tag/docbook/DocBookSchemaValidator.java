@@ -9,8 +9,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.dbdoclet.ValidationResult;
 import org.dbdoclet.service.ResourceServices;
 import org.dbdoclet.service.StringServices;
 import org.dbdoclet.tag.ITransformPosition;
@@ -22,7 +21,7 @@ import org.xml.sax.SAXParseException;
 
 public class DocBookSchemaValidator {
 
-	private static Log logger = LogFactory.getLog(DocBookSchemaValidator.class);
+	// private static Log logger = LogFactory.getLog(DocBookSchemaValidator.class);
 
 	private static DocBookSchemaValidator singleton;
 	private Validator validator;
@@ -38,15 +37,23 @@ public class DocBookSchemaValidator {
 		validator.setErrorHandler(new DocBookSchemaValidatorErrorHandler());
 	}
 
-	public boolean validate(ITransformPosition pos, Node node) {
+	public ValidationResult validate(ITransformPosition pos, Node node) {
+
+		ValidationResult result = new ValidationResult();
+		
 		try {
+			
 			validator.validate(new DOMSource(node));
-			return true;
+			result.setValid(true);
+			return result;
+			
 		} catch (SAXException | IOException oops) {
-			logger.warn(String.format("[%s] %s:\nXML::%s::\n%s\n", pos.getDescription(), oops.getClass()
+			
+			result.setMessage(String.format("[%s] %s:\nXML::%s::\n%s\n", pos.getDescription(), oops.getClass()
 					.getSimpleName(), new NodeSerializer().toXML(node),
 					StringServices.splitAt(oops.getMessage(), " ")));
-			return false;
+			result.setValid(false);
+			return result;
 		}
 	}
 

@@ -14,5 +14,6 @@ Export-Package: org.dbdoclet.tag,
  org.dbdoclet.tag.jsf,
  org.dbdoclet.tag.jsf.html,
  org.dbdoclet.tag.presentation
-Import-Package: org.dbdoclet.xiphias,
+Import-Package: org.dbdoclet,
+ org.dbdoclet.xiphias,
  org.dbdoclet.xiphias.dom
