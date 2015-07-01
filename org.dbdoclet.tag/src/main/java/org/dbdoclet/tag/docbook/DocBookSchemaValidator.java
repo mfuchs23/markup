@@ -49,7 +49,13 @@ public class DocBookSchemaValidator {
 			
 		} catch (SAXException | IOException oops) {
 			
-			result.setMessage(String.format("[%s] %s:\nXML::%s::\n%s\n", pos.getDescription(), oops.getClass()
+			String description = "";
+			
+			if (pos != null) {
+				description = pos.getDescription();
+			}
+			
+			result.setMessage(String.format("[%s] %s:\nXML::%s::\n%s\n", description, oops.getClass()
 					.getSimpleName(), new NodeSerializer().toXML(node),
 					StringServices.splitAt(oops.getMessage(), " ")));
 			result.setValid(false);
