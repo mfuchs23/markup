@@ -8,24 +8,16 @@
  */
 package org.dbdoclet.tag.docbook;
 
-import java.util.HashMap;
-
-
 public class OrderedList extends DocBookElement {
 
     private static String tag = "orderedlist";
 
     OrderedList() {
         super(tag);
+		setFormatType(FORMAT_BLOCK);        
     }
 
     public static String getTag() {
-
         return tag;
-    }
-
-    public static HashMap<String, Object> getAttributeMap() {
-
-        return new HashMap<String, Object>();
     }
 }
