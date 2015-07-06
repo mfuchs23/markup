@@ -13,10 +13,8 @@ package org.dbdoclet.tag.docbook;
 
 public class Secondary extends DocBookElement {
 
-    Secondary(String secondary) {
+    Secondary() {
         super("secondary");
         setFormatType(FORMAT_INLINE);
-
-        appendChild(secondary);
     }
 }

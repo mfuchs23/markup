@@ -11,9 +11,14 @@ package org.dbdoclet.tag.docbook;
 
 public class Function extends DocBookElement {
 
-    Function(String function) {
-        super("function");
-        appendChild(function);
+	private static String tag = "function";
+
+	public static String getTag() {
+		return tag;
+	}
+
+    Function() {
+		super(tag);
         setFormatType(FORMAT_INLINE);
     }
 }

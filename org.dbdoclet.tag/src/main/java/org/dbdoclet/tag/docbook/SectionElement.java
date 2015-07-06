@@ -90,7 +90,7 @@ public class SectionElement extends DocBookElement {
 
 			if (node != null && node instanceof ElementImpl) {
 
-				if (node instanceof Title || node instanceof IndexTerm
+				if (node instanceof Title || node instanceof Indexterm
 						|| node instanceof CommentImpl) {
 					continue;
 				}

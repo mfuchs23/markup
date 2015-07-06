@@ -11,12 +11,15 @@ package org.dbdoclet.xiphias.dom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.service.StringServices;
 import org.dbdoclet.xiphias.XmlServices;
+import org.dbdoclet.xiphias.annotation.Annotation;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
@@ -36,22 +39,23 @@ import org.w3c.dom.UserDataHandler;
  */
 public class NodeImpl implements Node {
 
-	public static final int FORMAT_BLOCK = 3;
 
+	public static final int FORMAT_BLOCK = 3;
 	public static final int FORMAT_CONTENT = 2;
 	public static final int FORMAT_INLINE = 1;
 	public static final int HTML = 3;
-	public static final int SGML = 1;
-	public static final int XML = 2;
-	public static final short XML_DECLARATION = 23;
-	private static int flavour = XML;
-
 	private static Log logger = LogFactory.getLog(NodeImpl.class);
 	private static final String LSEP = System.getProperty("line.separator");
+
+	public static final int SGML = 1;
+	public static final int XML = 2;
+	private static int flavour = XML;
+	public static final short XML_DECLARATION = 23;
 
 	private NodeListImpl childNodes = new NodeListImpl();
 	private int column;
 	private DocumentImpl document;
+	protected boolean isCaseInsensitive = false;
 	private boolean isEmpty = false;
 	private boolean isMute = false;
 	private boolean isRawData = false;
@@ -63,30 +67,8 @@ public class NodeImpl implements Node {
 	private String nodeValue;
 	private NodeImpl parent = null;
 	private String prefix;
-	private TransformInstruction transformInstruction;
 	private HashMap<String, Object> userDataMap;
-	protected boolean isCaseInsensitive = false;
-
-	public NodeImpl() {
-		super();
-	}
-
-	public NodeImpl(String name) {
-		this(name, null);
-	}
-
-	public NodeImpl(String name, NodeImpl parent) {
-
-		if (name != null) {
-			nodeName = name;
-		}
-
-		if (isCaseInsensitive) {
-			nodeName = nodeName.toLowerCase();
-		}
-
-		this.parent = parent;
-	}
+	private ArrayList<Annotation> annotationList;
 
 	/**
 	 * The method <code>findParent</code> tries to find the nearest parent,
@@ -219,6 +201,39 @@ public class NodeImpl implements Node {
 			for (int i = 0; i < childList.getLength(); i++) {
 				traverse(childList.item(i), visitor);
 			}
+		}
+	}
+
+	public NodeImpl() {
+		super();
+	}
+
+	public NodeImpl(String name) {
+		this(name, null);
+	}
+
+	public NodeImpl(String name, NodeImpl parent) {
+
+		if (name != null) {
+			nodeName = name;
+		}
+
+		if (isCaseInsensitive) {
+			nodeName = nodeName.toLowerCase();
+		}
+
+		this.parent = parent;
+	}
+
+	public void addAnnotation(Annotation annotation) {
+		
+		if (annotation != null) {
+			
+			if (annotationList == null) {
+				annotationList = new ArrayList<>();
+			}
+			
+			annotationList.add(annotation);
 		}
 	}
 
@@ -368,6 +383,15 @@ public class NodeImpl implements Node {
 		if (this instanceof Element) {
 			return ((Element) this).getAttributes();
 		}
+		return null;
+	}
+
+	public Map<String, Attr> getAttributesAsMap() {
+
+		if (this instanceof ElementImpl) {
+			return this.getAttributesAsMap();
+		}
+
 		return null;
 	}
 
@@ -731,15 +755,6 @@ public class NodeImpl implements Node {
 		return NodeImpl.getTextContent(this);
 	}
 
-	public Map<String, Attr> getAttributesAsMap() {
-
-		if (this instanceof ElementImpl) {
-			return this.getAttributesAsMap();
-		}
-
-		return null;
-	}
-
 	public NodeListImpl getTrafoChildNodes() {
 
 		if (childNodes == null) {
@@ -751,10 +766,6 @@ public class NodeImpl implements Node {
 
 	public NodeImpl getTrafoParentNode() {
 		return parent;
-	}
-
-	public TransformInstruction getTransformInstruction() {
-		return transformInstruction;
 	}
 
 	@Override
@@ -1215,11 +1226,6 @@ public class NodeImpl implements Node {
 		}
 	}
 
-	public void setTransformInstruction(
-			TransformInstruction transformInstruction) {
-		this.transformInstruction = transformInstruction;
-	}
-
 	@Override
 	public Object setUserData(String key, Object data, UserDataHandler handler) {
 
@@ -1362,6 +1368,10 @@ public class NodeImpl implements Node {
 		return toTree("", levels, 0);
 	}
 
+	protected boolean validateAttributes() {
+		return true;
+	}
+
 	public boolean validateParentPath(
 			HashMap<String, HashMap<String, String>> validParentMap) {
 
@@ -1409,6 +1419,22 @@ public class NodeImpl implements Node {
 		return true;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T getAnnotation(Class<T> type) {
+		
+		if (annotationList == null) {
+			return null;
+		}
+		
+		List<Annotation> collected = annotationList.stream().filter(annotation -> type.isInstance(annotation)).collect(Collectors.toList());
+		
+		if (collected != null && collected.size() > 0) {
+			return (T) collected.get(0);
+		}
+		
+		return null;
+	}
+	
 	public void vanish() {
 
 		if (parent != null) {
@@ -1418,10 +1444,22 @@ public class NodeImpl implements Node {
 		}
 	}
 
-	protected boolean validateAttributes() {
+	@SuppressWarnings("unchecked")
+	public <T> List<T> getAnnotations(Class<T> type) {
 
-		// To be overwritten
-		return true;
+		ArrayList<T> foundList = new ArrayList<>();
+		
+		if (annotationList == null) {
+			return foundList;
+		}
+		
+		List<Annotation> collected = annotationList.stream().filter(annotation -> type.isInstance(annotation)).collect(Collectors.toList());
+		
+		if (collected != null && collected.size() > 0) {
+			return (List<T>) collected;
+		}
+		
+		return foundList;
 	}
 
 }

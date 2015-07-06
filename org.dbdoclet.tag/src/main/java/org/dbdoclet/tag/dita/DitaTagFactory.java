@@ -1,8 +1,11 @@
 package org.dbdoclet.tag.dita;
 
+import org.dbdoclet.tag.TagFactory;
+import org.dbdoclet.tag.docbook.DocBookElement;
 import org.dbdoclet.xiphias.dom.TextImpl;
+import org.w3c.dom.Element;
 
-public class DitaTagFactory {
+public class DitaTagFactory extends TagFactory {
 
 	public Abstract createAbstract() {
 
@@ -10,10 +13,18 @@ public class DitaTagFactory {
 		return _abstract;
 	}
 
+	public B createB() {
+		return new B();
+	}
+	
+	public Body createBody() {
+		return new Body();
+	}
+
 	public P createP() {
 		return new P();
 	}
-	
+
 	public P createP(String text) {
 		P p = new P();
 		p.appendChild(new TextImpl(text));
@@ -44,20 +55,20 @@ public class DitaTagFactory {
 		return new Topic();
 	}
 
-	public B createB() {
-		return new B();
+	public Tt createTt() {
+		return new Tt();
 	}
 
 	public U createU() {
 		return new U();
 	}
 
-	public Tt createTt() {
-		return new Tt();
+	@Override
+	public Element createElement(String mapTo) {
+		return null;
 	}
 
-	public Body createBody() {
-		return new Body();
+	@Override
+	protected void initialize(DocBookElement elem) {
 	}
-
 }

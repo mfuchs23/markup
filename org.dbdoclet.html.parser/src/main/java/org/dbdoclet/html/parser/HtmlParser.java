@@ -358,22 +358,6 @@ public class HtmlParser {
 				|| tag.equalsIgnoreCase("h5") || tag.equalsIgnoreCase("h6")) {
 
 			search = "p";
-
-			/*
-			 * String[] nodes = { "ul", "ol", "menu", "dl" }; index1 =
-			 * searchNearset();
-			 * 
-			 * if ( ( index1 != -1 ) { openTags.search("ul")) != -1 ) {
-			 * 
-			 * index2 = openTags.search("li");
-			 * 
-			 * if ( index2 > index1 ) search = "ul";
-			 * 
-			 * } else if ( openTags.search("ol") != -1 && openTags.search("li")
-			 * == -1) search = "ol"; else if ( openTags.search("menu") != -1 )
-			 * search = "menu"; else if ( openTags.search("dl") != -1 &&
-			 * openTags.search("dd") == -1) search = "dl";
-			 */
 		}
 
 		if (tag.equalsIgnoreCase("td")) {

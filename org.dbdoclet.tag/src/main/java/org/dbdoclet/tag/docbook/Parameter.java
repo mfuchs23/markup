@@ -11,11 +11,8 @@ package org.dbdoclet.tag.docbook;
 
 public class Parameter extends DocBookElement {
 
-    Parameter(String parameter) {
-
+    Parameter() {
         super("parameter");
-
         setFormatType(FORMAT_INLINE);
-        appendChild(parameter);
     }
 }

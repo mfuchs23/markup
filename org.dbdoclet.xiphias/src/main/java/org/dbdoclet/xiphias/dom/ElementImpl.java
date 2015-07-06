@@ -30,6 +30,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.TypeInfo;
 
+
 public class ElementImpl extends NodeImpl implements Element {
 
 	public static final int FORMAT_BLOCK = 3;
@@ -47,6 +48,7 @@ public class ElementImpl extends NodeImpl implements Element {
 	
 	private int formatType = FORMAT_CONTENT;
 	private boolean isLiteral = false;
+	
 	public static String hardenId(String id) {
 
 		if (id == null || id.length() == 0) {
@@ -495,7 +497,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 
 		attributes.putAll(nattrs);
-
+		attributes.values().stream().forEach(attr -> { ((AttrImpl) attr).setOwnerElement(this);});
 		return this;
 	}
 
@@ -515,6 +517,7 @@ public class ElementImpl extends NodeImpl implements Element {
 
 			AttrImpl attr = (AttrImpl) getDocument().createAttribute(attrName);
 			attr.setNodeValue(tokenAttrs.get(tokenAttrName));
+			attr.setOwnerElement(this);
 			addAttribute(attr);
 		}
 
