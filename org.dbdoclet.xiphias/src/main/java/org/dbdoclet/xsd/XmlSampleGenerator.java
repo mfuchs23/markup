@@ -842,7 +842,7 @@ public class XmlSampleGenerator {
 		String varName = StringServices.lowerFirstLetter(parent.getTagName());
 
 		String childTagName = child.getTagName();
-		String childVarName = StringServices.lowerFirstLetter(child
+		String childVarname = StringServices.lowerFirstLetter(child
 				.getTagName());
 
 		XsdMetaData childXsdData = (XsdMetaData) child.getUserData("xsd");
@@ -861,13 +861,13 @@ public class XmlSampleGenerator {
 			buffer.append("            for (" + childType + " "
 					+ StringServices.lowerFirstLetter(childType) + ": "
 					+ varName + "Type.get" + childTagName + "()) {\n\n");
-			buffer.append("              " + childTagName + " " + childVarName
+			buffer.append("              " + childTagName + " " + childVarname
 					+ " = bof.create" + childTagName + "();\n");
 
 			if (child.getChildNodes().getLength() > 0) {
 
 				buffer.append("              " + varName + ".set" + childTagName
-						+ "(" + childVarName + ");\n\n");
+						+ "(" + childVarname + ");\n\n");
 				
 				for (int i = 0; i < child.getChildNodes().getLength(); i++) {
 					createProcessorChild(buffer, child, (Element) child
@@ -877,7 +877,7 @@ public class XmlSampleGenerator {
 			} else {
 
 				buffer.append("          " + varName + ".add" + childTagName
-						+ "(" + childVarName + ");\n");
+						+ "(" + childVarname + ");\n");
 			}
 
 			buffer.append("          }\n}\n");
@@ -893,20 +893,20 @@ public class XmlSampleGenerator {
 			if (gcCount == 0) {
 
 				buffer.append("            " + childTagName + " "
-						+ childVarName + " = bof.create" + childTagName + "("
+						+ childVarname + " = bof.create" + childTagName + "("
 						+ varName + "Type.get" + childTagName + "());\n");
 
 				buffer.append("        " + varName + ".set" + childTagName
-						+ "(" + childVarName + ");\n");
+						+ "(" + childVarname + ");\n");
 
 			} else {
 
 				buffer.append("            " + childTagName + " "
-						+ childVarName + " = bof.create" + childTagName
+						+ childVarname + " = bof.create" + childTagName
 						+ "();\n");
 				buffer.append("        " + varName + ".set" + childTagName
-						+ "(" + childVarName + ");\n");
-				buffer.append("        " + childTagName + "Type " + childVarName + "Type = " + varName + "Type.get" + childTagName + "();\n\n");
+						+ "(" + childVarname + ");\n");
+				buffer.append("        " + childTagName + "Type " + childVarname + "Type = " + varName + "Type.get" + childTagName + "();\n\n");
 
 				for (int i = 0; i < child.getChildNodes().getLength(); i++) {
 					createProcessorChild(buffer, child, (Element) child

@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HTML Parser
 Bundle-SymbolicName: org.dbdoclet.html.parser
-Bundle-Version: 7.0.0
+Bundle-Version: 8.0.0
 Export-Package: org.dbdoclet.html.parser,
  org.dbdoclet.html.tokenizer,
  org.dbdoclet.html.tokenizer.parser
 Import-Package: org.dbdoclet.tag,
  org.dbdoclet.tag.html
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: org.junit

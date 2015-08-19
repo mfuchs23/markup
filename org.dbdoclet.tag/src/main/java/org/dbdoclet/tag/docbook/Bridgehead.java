@@ -16,15 +16,15 @@ public class Bridgehead extends DocBookElement {
         setFormatType(FORMAT_BLOCK);
     }
 
-    Bridgehead(String bridgehead) {
+    Bridgehead(String Bridgehead) {
         this();
-        appendChild(bridgehead);
+        appendChild(Bridgehead);
     }
 
-    Bridgehead(String bridgehead, String renderAs) {
+    Bridgehead(String Bridgehead, String renderAs) {
         this();
         setAttribute("renderas", renderAs);
-        appendChild(bridgehead);
+        appendChild(Bridgehead);
     }
 
     public void setRenderAs(String renderAs) {

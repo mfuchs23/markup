@@ -1,6 +1,5 @@
 package org.dbdoclet.html.parser;
 
-import org.dbdoclet.tag.html.HtmlFragment;
 import org.junit.Test;
 
 public class AttributeTests extends AbstractTests {
@@ -11,6 +10,6 @@ public class AttributeTests extends AbstractTests {
     }
     @Test
     public void testAttributeTrHeightZero()  {
-       HtmlFragment fragment = parseFragment("<table><tr height=0><td>A</td></tr></table>");
+       parseFragment("<table><tr height=0><td>A</td></tr></table>");
     }
 }

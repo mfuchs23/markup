@@ -1,6 +1,6 @@
 package org.dbdoclet.html.parser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.dbdoclet.tag.html.HtmlFragment;
 import org.dbdoclet.xiphias.NodeSerializer;

@@ -310,9 +310,9 @@ public abstract class BaseTagFactory extends TagFactory {
 
 	public Bridgehead createBridgehead() {
 	
-		Bridgehead bridgehead = new Bridgehead();
-		initialize(bridgehead);
-		return bridgehead;
+		Bridgehead Bridgehead = new Bridgehead();
+		initialize(Bridgehead);
+		return Bridgehead;
 	}
 
 	public Callout createCallout() {
@@ -722,7 +722,7 @@ public abstract class BaseTagFactory extends TagFactory {
 			return createBlockquote();
 		case "book":
 			return createBook();
-		case "bridgehead":
+		case "Bridgehead":
 			return createBridgehead();
 		case "callout":
 			return createCallout();
@@ -2285,7 +2285,7 @@ public abstract class BaseTagFactory extends TagFactory {
 		return part;
 	}
 
-	public Partinfo createPartInfo() {
+	public Partinfo createPartinfo() {
 	
 		Partinfo partInfo = new Partinfo();
 		initialize(partInfo);
@@ -2523,7 +2523,7 @@ public abstract class BaseTagFactory extends TagFactory {
 		return refentry;
 	}
 
-	public Refentryinfo createRefEntryInfo() {
+	public Refentryinfo createRefentryinfo() {
 	
 		Refentryinfo refEntryInfo = new Refentryinfo();
 		initialize(refEntryInfo);
@@ -2891,13 +2891,6 @@ public abstract class BaseTagFactory extends TagFactory {
 		Simpara simpara = new Simpara();
 		initialize(simpara);
 		return simpara;
-	}
-
-	public Simplelist createSimpleist(int type) {
-	
-		Simplelist simpleList = createSimplelist();
-		simpleList.setType(type);
-		return simpleList;
 	}
 
 	public Simplelist createSimplelist() {

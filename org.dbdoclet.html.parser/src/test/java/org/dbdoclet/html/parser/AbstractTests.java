@@ -1,6 +1,6 @@
 package org.dbdoclet.html.parser;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
 
 import org.dbdoclet.tag.html.HtmlFragment;
 

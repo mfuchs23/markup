@@ -415,6 +415,13 @@ public class DocBookTagFactory extends BaseTagFactory {
 		return manVolNum;
 	}
 
+	public Methodname createMethodname(String name) {
+
+		Methodname methodName = createMethodname();
+		methodName.appendChild(name);
+		return methodName;
+	}
+
 	public Modifier createModifier(String text) {
 
 		Modifier modifier = new Modifier();
@@ -446,7 +453,7 @@ public class DocBookTagFactory extends BaseTagFactory {
 		return primary;
 	}
 
-	public Programlisting createProgramListing(String str) {
+	public Programlisting createProgramlisting(String str) {
 
 		Programlisting programListing = new Programlisting(str);
 		initialize(programListing);
@@ -541,6 +548,13 @@ public class DocBookTagFactory extends BaseTagFactory {
 		initialize(simPara);
 		simPara.appendChild(text);
 		return simPara;
+	}
+
+	public Simplelist createSimplelist(int type) {
+	
+		Simplelist simpleList = createSimplelist();
+		simpleList.setType(type);
+		return simpleList;
 	}
 
 	public Surname createSurname(String name) {
