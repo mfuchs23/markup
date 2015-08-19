@@ -1,4 +1,4 @@
-version=8.0.0
+version=8.0.1-SNAPSHOT
 Bundle-Name=org.dbdoclet.html.parser
 Bundle-SymbolicName=org.dbdoclet.html.parser
 Bundle-Version=${version}
