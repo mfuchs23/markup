@@ -7,4 +7,5 @@ Fragment-Host: org.dbdoclet.xiphias;bundle-version="6.1.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.dbdoclet.xiphias,
  org.dbdoclet.xsd
-Import-Package: org.junit;version="4.10.0"
+Import-Package: org.dbdoclet.log,
+ org.junit;version="4.10.0"
