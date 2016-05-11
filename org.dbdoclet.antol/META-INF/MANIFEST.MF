@@ -30,3 +30,4 @@ Bundle-ClassPath: .,
  lib/ant_1.8.4.jar,
  lib/ant-launcher_1.8.4.jar
 Bundle-ManifestVersion: 2
+Export-Package: org.dbdoclet.antol

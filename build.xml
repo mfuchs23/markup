@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-### Copyright (C) 2001-2012 Michael Fuchs ###
--->
-<project name="common" default="build">
+<project name="common" default="rebuild">
 
   <property file="module.properties" />
   <import file="../build/build.config/defaultBuild.xml"/>  
@@ -19,13 +16,18 @@
     </sequential>
   </macrodef>
 
-  <target name="clean">
-    <iterate target="clean"/>
+  <target name="distclean">
+    <iterate target="distclean"/>
   </target>
 
-  <target name="build">
-    <ant dir="org.dbdoclet.tag" target="build"/>
-    <iterate target="build"/>
+  <target name="rebuild">
+    <iterate target="distclean"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.xiphias" target="build"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.tag" target="build"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.svg" target="build"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.css" target="build"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.html.parser" target="build"/>
+    <ant useNativeBasedir="true" dir="org.dbdoclet.antol" target="build"/>
   </target>
 
 </project>
