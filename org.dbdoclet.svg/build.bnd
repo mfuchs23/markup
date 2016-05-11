@@ -1,4 +1,4 @@
-version=8.1.0-SNAPSHOT
+version=8.1.0
 Bundle-SymbolicName=org.dbdoclet.svg
 Bundle-Version=${version}
 Bundle-ClassPath: ., lib/batik.jar

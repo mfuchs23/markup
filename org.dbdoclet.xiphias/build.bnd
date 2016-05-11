@@ -1,4 +1,4 @@
-version=8.1.0-SNAPSHOT
+version=8.1.0
 Bundle-Name=org.dbdoclet.xiphias
 Bundle-SymbolicName=org.dbdoclet.xiphias
 Bundle-Version=${version}
