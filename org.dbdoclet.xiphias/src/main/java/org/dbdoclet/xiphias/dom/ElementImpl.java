@@ -260,7 +260,7 @@ public class ElementImpl extends NodeImpl implements Element {
 			}
 		}
 
-		Boolean b = new Boolean(bval);
+		Boolean b = Boolean.valueOf(bval);
 		return b.booleanValue();
 	}
 

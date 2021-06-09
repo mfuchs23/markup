@@ -8,15 +8,14 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
 public class Entrytbl extends DocBookElement {
 
-    Entrytbl() {
-	super("entrytbl");
-    }
+	Entrytbl() {
+		super("entrytbl");
+	}
 
-    public Entrytbl setCols(int cols) {
-	setAttribute("cols", new Integer(cols));
-	return this;
-    }
+	public Entrytbl setCols(int cols) {
+		setAttribute("cols", Integer.valueOf(cols));
+		return this;
+	}
 }

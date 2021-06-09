@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.dbdoclet",
+    "module": "org.dbdoclet.tag",
+    "version": "9.0",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "org.dbdoclet.tag-9.0.jar",
+          "url": "org.dbdoclet.tag-9.0.jar",
+          "size": 426681,
+          "sha512": "a47babd4391d8dc9e3fd165cf75e8be2f701c9f07c573cddafbe3bc8c20c560f6a37a314d31bf4add6cf8b3d07cda394dd356fc356ef6a36100d627322473287",
+          "sha256": "9a397276bab3a72f273ea88e8c8522f4fbed8aeeae23293c9bff4dad54cf4f81",
+          "sha1": "67a6f499db52a4e191c59d82ed82a47cc08ac8b8",
+          "md5": "8ff8c2acd3fcd3ac743eb052eafd8888"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "org.dbdoclet.tag-9.0.jar",
+          "url": "org.dbdoclet.tag-9.0.jar",
+          "size": 426681,
+          "sha512": "a47babd4391d8dc9e3fd165cf75e8be2f701c9f07c573cddafbe3bc8c20c560f6a37a314d31bf4add6cf8b3d07cda394dd356fc356ef6a36100d627322473287",
+          "sha256": "9a397276bab3a72f273ea88e8c8522f4fbed8aeeae23293c9bff4dad54cf4f81",
+          "sha1": "67a6f499db52a4e191c59d82ed82a47cc08ac8b8",
+          "md5": "8ff8c2acd3fcd3ac743eb052eafd8888"
+        }
+      ]
+    }
+  ]
+}

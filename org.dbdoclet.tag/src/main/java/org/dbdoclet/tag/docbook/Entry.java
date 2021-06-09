@@ -52,7 +52,7 @@ public class Entry extends DocBookElement {
 
     public Entry setMorerows(int mr) {
 
-	setAttribute("morerows", new Integer(mr));
+	setAttribute("morerows", Integer.valueOf(mr));
 	return this;
     }
 

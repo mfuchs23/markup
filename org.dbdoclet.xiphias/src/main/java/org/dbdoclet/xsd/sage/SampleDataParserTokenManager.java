@@ -244,6 +244,7 @@ private int jjStartNfaWithStates_0(int pos, int kind, int state)
    catch(java.io.IOException e) { return pos + 1; }
    return jjMoveNfa_0(state, pos + 1);
 }
+@SuppressWarnings("unused")
 private int jjMoveNfa_0(int startState, int curPos)
 {
    int startsAt = 0;
@@ -327,6 +328,7 @@ static final long[] jjbitVec0 = {
 static final long[] jjbitVec2 = {
    0x0L, 0x0L, 0xffffffffffffffffL, 0xffffffffffffffffL
 };
+@SuppressWarnings("unused")
 private int jjMoveNfa_1(int startState, int curPos)
 {
    int startsAt = 0;
@@ -631,6 +633,7 @@ private void jjCheckNAdd(int state)
       jjrounds[state] = jjround;
    }
 }
+@SuppressWarnings("unused")
 private void jjAddStates(int start, int end)
 {
    do {
