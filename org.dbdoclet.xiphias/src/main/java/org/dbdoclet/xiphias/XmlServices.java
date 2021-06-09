@@ -29,6 +29,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -56,7 +57,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Die Klasse <code>XmlServices</code> stellt eine Sammlung statischer Methoden
@@ -1780,7 +1780,7 @@ public class XmlServices {
 
 			try {
 
-				XMLReader reader = XMLReaderFactory.createXMLReader();
+				XMLReader reader = SAXParserFactory.newDefaultInstance().newSAXParser().getXMLReader();
 
 				if (validate == true) {
 					reader.setEntityResolver(new CatalogResolver());

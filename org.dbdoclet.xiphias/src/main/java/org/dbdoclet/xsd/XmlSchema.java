@@ -678,7 +678,7 @@ public class XmlSchema {
 					"xs", XML_SCHEMA_URI, "/xs:maxLength");
 
 			if (maxLength != null) {
-				xsdData.setMaxLength(new Integer((maxLength
+				xsdData.setMaxLength(Integer.valueOf((maxLength
 						.getAttribute("value"))));
 			}
 		}

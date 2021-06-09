@@ -1,0 +1,60 @@
+{
+  "formatVersion": "1.1",
+  "component": {
+    "group": "org.dbdoclet",
+    "module": "org.dbdoclet.xiphias",
+    "version": "9.0",
+    "attributes": {
+      "org.gradle.status": "integration"
+    }
+  },
+  "createdBy": {
+    "gradle": {
+      "version": "7.0.2"
+    }
+  },
+  "variants": [
+    {
+      "name": "apiElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-api"
+      },
+      "files": [
+        {
+          "name": "org.dbdoclet.xiphias-9.0.jar",
+          "url": "org.dbdoclet.xiphias-9.0.jar",
+          "size": 178118,
+          "sha512": "3e8a54f45fde642abd06f9354c363cdc8d525337ac51098a55e84468fb47f7695b2202b208e3217832a298e63d4268330550ec9dbf1587e9e3f994e67e1ff151",
+          "sha256": "8dcc0d97bf4642609281d294c1d1d3ae45bf9147a9e9a679e7e992527b575841",
+          "sha1": "6d0f6ad6ce70613c57d13cebf008947bd8eaafc2",
+          "md5": "54b2bcfbc12b6b6e88062100cfb2e05d"
+        }
+      ]
+    },
+    {
+      "name": "runtimeElements",
+      "attributes": {
+        "org.gradle.category": "library",
+        "org.gradle.dependency.bundling": "external",
+        "org.gradle.jvm.version": 11,
+        "org.gradle.libraryelements": "jar",
+        "org.gradle.usage": "java-runtime"
+      },
+      "files": [
+        {
+          "name": "org.dbdoclet.xiphias-9.0.jar",
+          "url": "org.dbdoclet.xiphias-9.0.jar",
+          "size": 178118,
+          "sha512": "3e8a54f45fde642abd06f9354c363cdc8d525337ac51098a55e84468fb47f7695b2202b208e3217832a298e63d4268330550ec9dbf1587e9e3f994e67e1ff151",
+          "sha256": "8dcc0d97bf4642609281d294c1d1d3ae45bf9147a9e9a679e7e992527b575841",
+          "sha1": "6d0f6ad6ce70613c57d13cebf008947bd8eaafc2",
+          "md5": "54b2bcfbc12b6b6e88062100cfb2e05d"
+        }
+      ]
+    }
+  ]
+}

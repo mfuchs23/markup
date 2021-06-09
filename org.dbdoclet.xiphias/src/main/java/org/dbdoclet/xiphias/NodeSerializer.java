@@ -79,7 +79,7 @@ public class NodeSerializer {
 		}
 		
 		int pos = getChunkIndex(node);
-		chunkElementStack.push(new Integer(pos));
+		chunkElementStack.push(Integer.valueOf(pos));
 		
 		String fileName = "";
 		

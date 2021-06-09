@@ -25,19 +25,16 @@ public class Programlisting extends DocBookElement {
 
     Programlisting(String text) {
         this();
-
         appendChild(text);
     }
 
     Programlisting setWidth(int width) {
 
-        setAttribute("width", new Integer(width));
-
+        setAttribute("width", Integer.valueOf(width));
         return this;
     }
 
     public static String getTag() {
-
         return tag;
     }
 

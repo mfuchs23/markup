@@ -75,9 +75,9 @@ public class SampleData implements SampleDataParserVisitor {
 		Integer usage = statisticMap.get(value);
 
 		if (usage == null) {
-			statisticMap.put(value, new Integer(1));
+			statisticMap.put(value, Integer.valueOf(1));
 		} else {
-			statisticMap.put(value, new Integer(usage.intValue() + 1));
+			statisticMap.put(value, Integer.valueOf(usage.intValue() + 1));
 		}
 
 		lastValue = value;
