@@ -11,8 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.Sfv;
 import org.dbdoclet.progress.ProgressEvent;
 import org.dbdoclet.progress.ProgressListener;
@@ -36,8 +34,6 @@ import org.w3c.dom.Text;
 public class NodeSerializer {
 
 	private static final String INDENT = "  ";
-
-	private static Log logger = LogFactory.getLog(NodeSerializer.class);
 
 	private HashMap<String, Integer> chunkElementSet;
 	private HashMap<Node, Writer> chunkOutMap;
@@ -79,7 +75,7 @@ public class NodeSerializer {
 		}
 		
 		int pos = getChunkIndex(node);
-		chunkElementStack.push(new Integer(pos));
+		chunkElementStack.push(Integer.valueOf(pos));
 		
 		String fileName = "";
 		
@@ -95,7 +91,6 @@ public class NodeSerializer {
 		fileName = String.format("%s-%s.xml", tagName, fileName);
 
 		File incFile = new File(baseDir, fileName);
-		logger.debug(String.format("Creating chunk file %s", fileName));
 
 		out.write(indent + "<xi:include href=\""
 				+ XmlServices.textToXml(fileName) + "\"/>" + Sfv.LSEP);
@@ -349,7 +344,6 @@ public class NodeSerializer {
 				buffer.insert(0, parent.getNodeName() + " -> ");
 				
 				if (parent == node) {
-					logger.fatal(String.format("Endless self referncing loop ! %s", buffer.toString()));
 					return;
 				}
 				
@@ -387,14 +381,7 @@ public class NodeSerializer {
 			break;
 
 		case Node.ELEMENT_NODE:
-
-			try {
-				writeElementNode(node, out, inMixedContent, indent);
-			} catch (StackOverflowError oops) {
-				logger.fatal("[NodeSerializer.write] StackOverflowError. Self referencing recursive structure detected!!! Node: "
-						+ node.toString());
-			}
-
+			writeElementNode(node, out, inMixedContent, indent);
 			break;
 
 		case Node.TEXT_NODE:
@@ -423,9 +410,6 @@ public class NodeSerializer {
 
 		if (out != null) {
 
-			logger.debug(String.format("Closing chunk for Node %s:%s",
-					node.getNodeName(), node.hashCode()));
-			
 			out.close();
 			
 			if (chunkElementStack.empty() == false) {

@@ -10,6 +10,7 @@ package org.dbdoclet.svg.shape.xml;
 
 import java.awt.Color;
 
+import org.dbdoclet.svg.SvgConstants;
 import org.dbdoclet.svg.SvgServices;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,7 +38,7 @@ public class XmlCircle extends XmlElement {
         this.cy = cy;
         this.radius = radius;
 
-        circle = doc.createElementNS(SVGNS, "circle");
+        circle = doc.createElementNS(SvgConstants.SVGNS, "circle");
         circle.setAttributeNS(null, "cx", String.valueOf(cx));
         circle.setAttributeNS(null, "cy", String.valueOf(cy));
         circle.setAttributeNS(null, "r", String.valueOf(radius));
@@ -69,7 +70,7 @@ public class XmlCircle extends XmlElement {
 
         if (shadowEnabled == true) {
 
-            Element shadow = doc.createElementNS(SVGNS, "circle");
+            Element shadow = doc.createElementNS(SvgConstants.SVGNS, "circle");
             shadow.setAttributeNS(null, "cx", String.valueOf(cx + 3));
             shadow.setAttributeNS(null, "cy", String.valueOf(cy + 3));
             shadow.setAttributeNS(null, "r", String.valueOf(radius));

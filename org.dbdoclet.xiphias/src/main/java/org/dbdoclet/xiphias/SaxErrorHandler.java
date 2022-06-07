@@ -2,8 +2,6 @@ package org.dbdoclet.xiphias;
 
 import java.io.File;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXParseException;
 
@@ -18,8 +16,6 @@ import org.xml.sax.SAXParseException;
  * @version 1.0
  */
 public class SaxErrorHandler implements ErrorHandler {
-
-    private static Log logger = LogFactory.getLog("sax");
 
     private static String fatalPrefix = "[XML Parser FATAL] ";
     private static String errorPrefix = "[XML Parser ERROR] ";
@@ -129,18 +125,5 @@ public class SaxErrorHandler implements ErrorHandler {
             + oops.getMessage();
 
         System.err.println(line);
-        
-        if (line.startsWith(fatalPrefix)) {
-            logger.fatal(line);
-        }
-
-        if (line.startsWith(errorPrefix)) {
-            logger.error(line);
-        }
-
-        if (line.startsWith(warnPrefix)) {
-            logger.warn(line);
-        }
-
     }
 }

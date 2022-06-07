@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-SymbolicName: org.dbdoclet.svg
-Bundle-Version: 7.0.0
+Bundle-Version: 9.0.1
 Bundle-Name: org.dbdoclet.svg
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.apache.commons.logging;specification-version="1.0.4",
@@ -9,6 +9,7 @@ Import-Package: org.apache.commons.logging;specification-version="1.0.4",
  org.dbdoclet.option,
  org.dbdoclet.service,
  org.dbdoclet.xiphias,
+ org.junit.jupiter.api;specification-version="5.8.1",
  org.w3c.dom
 Provide-Package: org.dbdoclet.svg,
  org.dbdoclet.svg.shape,

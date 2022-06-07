@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.dbdoclet.xiphias.dom.ElementImpl;
 import org.dbdoclet.xiphias.dom.NodeImpl;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class NodeImplTests {
 

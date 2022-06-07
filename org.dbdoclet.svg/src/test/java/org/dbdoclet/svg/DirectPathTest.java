@@ -1,4 +1,4 @@
-package org.dbdoclet.test.svg;
+package org.dbdoclet.svg;
 
 import static org.junit.Assert.fail;
 

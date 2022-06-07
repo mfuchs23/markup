@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.dbdoclet.service.FileServices;
 import org.dbdoclet.service.ResourceServices;
@@ -49,7 +50,7 @@ public class XmlSchema {
 	private Stack<Integer> complexTypeStack;
 
 	public XmlSchema(File xsdFile) throws IOException, SAXException,
-			ParserConfigurationException {
+			ParserConfigurationException, XPathExpressionException {
 
 		InputSource xsdSource = new InputSource(new FileInputStream(xsdFile));
 		xsdSource.setSystemId(xsdFile.getCanonicalPath());
@@ -57,12 +58,12 @@ public class XmlSchema {
 	}
 
 	public XmlSchema(InputSource xsdSource) throws IOException, SAXException,
-			ParserConfigurationException {
+			ParserConfigurationException, XPathExpressionException {
 		construct(xsdSource);
 	}
 
 	private void construct(InputSource xsdSource) throws IOException, SAXException,
-			ParserConfigurationException {
+			ParserConfigurationException, XPathExpressionException {
 
 		this.xsdSource = xsdSource;
 		Document xsdDocument = XmlServices.parse(xsdSource, false, null);
@@ -152,7 +153,7 @@ public class XmlSchema {
 		return namespaceMap.get(XML_SCHEMA_URI);
 	}
 
-	public void traverse(Document doc, Element element, Node xsdNode) {
+	public void traverse(Document doc, Element element, Node xsdNode) throws XPathExpressionException {
 
 		if (xsdNode != null) {
 
@@ -240,7 +241,7 @@ public class XmlSchema {
 	}
 
 	private void initialize(Document xsdDocument) throws IOException,
-			SAXException, ParserConfigurationException {
+			SAXException, ParserConfigurationException, XPathExpressionException {
 
 		xsdDocumentList.add(xsdDocument);
 
@@ -324,7 +325,7 @@ public class XmlSchema {
 		}
 	}
 
-	private void initializeAttributeGroups() {
+	private void initializeAttributeGroups() throws XPathExpressionException {
 
 		for (Document doc : xsdDocumentList) {
 
@@ -355,7 +356,7 @@ public class XmlSchema {
 		}
 	}
 
-	private void initializeComplexTypes() {
+	private void initializeComplexTypes() throws XPathExpressionException {
 
 		for (Document doc : xsdDocumentList) {
 
@@ -393,7 +394,7 @@ public class XmlSchema {
 		}
 	}
 
-	private void initializeGroups() {
+	private void initializeGroups() throws XPathExpressionException {
 
 		for (Document doc : xsdDocumentList) {
 
@@ -422,7 +423,7 @@ public class XmlSchema {
 		}
 	}
 
-	private void initializeSimpleTypes() {
+	private void initializeSimpleTypes() throws XPathExpressionException {
 
 		for (Document doc : xsdDocumentList) {
 
@@ -460,7 +461,7 @@ public class XmlSchema {
 	}
 
 	private void initialzeImports(Document xsdDocument) throws IOException,
-			SAXException, ParserConfigurationException {
+			SAXException, ParserConfigurationException, XPathExpressionException {
 
 		ArrayList<Node> nodeList = XPathServices.getNodes(xsdDocument, "xs",
 				XML_SCHEMA_URI, "/xs:schema/xs:import | /xs:schema/xs:include");
@@ -510,7 +511,7 @@ public class XmlSchema {
 		}
 	}
 
-	private boolean isComplexType(Element xsdElement) {
+	private boolean isComplexType(Element xsdElement) throws XPathExpressionException {
 
 		Element complexType = (Element) XPathServices.getNode(xsdElement, "xs",
 				XML_SCHEMA_URI, "/xs:complexType");
@@ -522,7 +523,7 @@ public class XmlSchema {
 		}
 	}
 
-	private boolean isSimpleContent(Element xsdElement) {
+	private boolean isSimpleContent(Element xsdElement) throws XPathExpressionException {
 
 		Element simpleContent = (Element) XPathServices.getNode(xsdElement,
 				"xs", XML_SCHEMA_URI, "/xs:simpleContent");
@@ -534,7 +535,7 @@ public class XmlSchema {
 		}
 	}
 
-	private boolean isSimpleType(Element xsdElement) {
+	private boolean isSimpleType(Element xsdElement) throws XPathExpressionException {
 
 		Element simpleType = (Element) XPathServices.getNode(xsdElement, "xs",
 				XML_SCHEMA_URI, "/xs:simpleType");
@@ -547,7 +548,7 @@ public class XmlSchema {
 	}
 
 	private void parseAttributes(Document doc, Element element,
-			Element xsdElement, XsdMetaData xsdData) {
+			Element xsdElement, XsdMetaData xsdData) throws XPathExpressionException {
 
 		Element attributeGroup = (Element) XPathServices.getNode(xsdElement,
 				"xs", XML_SCHEMA_URI, "xs:attributeGroup");
@@ -599,9 +600,10 @@ public class XmlSchema {
 	 * @param element
 	 * @param xsdElement
 	 * @param xsdData
+	 * @throws XPathExpressionException 
 	 */
 	private boolean parseComplexType(Document doc, Element element,
-			Element xsdElement, XsdMetaData xsdData) {
+			Element xsdElement, XsdMetaData xsdData) throws XPathExpressionException {
 
 		// Unterbrechen von rekursiven Strukturen um eine Endlosschleife zu
 		// verhindern.
@@ -642,7 +644,7 @@ public class XmlSchema {
 	}
 
 	private void parseExtension(Document doc, Element element,
-			Element xsdElement, XsdMetaData xsdData) {
+			Element xsdElement, XsdMetaData xsdData) throws XPathExpressionException {
 
 		Element extension = (Element) XPathServices.getNode(xsdElement, "xs",
 				XML_SCHEMA_URI,
@@ -657,7 +659,7 @@ public class XmlSchema {
 	}
 
 	private void parseRestriction(Document doc, Element element,
-			Element xsdElement, XsdMetaData xsdData) {
+			Element xsdElement, XsdMetaData xsdData) throws XPathExpressionException {
 		Element restriction = (Element) XPathServices.getNode(xsdElement, "xs",
 				XML_SCHEMA_URI,
 				"/*/*/xs:restriction | /*/xs:restriction | xs:restriction");
@@ -678,14 +680,14 @@ public class XmlSchema {
 					"xs", XML_SCHEMA_URI, "/xs:maxLength");
 
 			if (maxLength != null) {
-				xsdData.setMaxLength(new Integer((maxLength
+				xsdData.setMaxLength(Integer.valueOf((maxLength
 						.getAttribute("value"))));
 			}
 		}
 	}
 
 	private void parseSimpleType(Document doc, Element element,
-			Element xsdElement, XsdMetaData xsdData) {
+			Element xsdElement, XsdMetaData xsdData) throws XPathExpressionException {
 
 		xsdData.setContentModel(ContentModel.PCDATA);
 
@@ -707,7 +709,7 @@ public class XmlSchema {
 	}
 
 	private void processBase(Document doc, Element element, Element xsdElement,
-			XsdMetaData xsdData, String base) {
+			XsdMetaData xsdData, String base) throws XPathExpressionException {
 
 		if (base != null) {
 
@@ -744,7 +746,7 @@ public class XmlSchema {
 		}
 	}
 
-	private void processElement(Document doc, Element elem, Element xsdElement) {
+	private void processElement(Document doc, Element elem, Element xsdElement) throws XPathExpressionException {
 
 		String name = xsdElement.getAttribute("name");
 		boolean isRef = false;
@@ -827,7 +829,7 @@ public class XmlSchema {
 		traverse(doc, child, xsdElement);
 	}
 
-	protected boolean isComplexContent(Element xsdElement) {
+	protected boolean isComplexContent(Element xsdElement) throws XPathExpressionException {
 
 		Element complexContent = (Element) XPathServices.getNode(xsdElement,
 				"xs", XML_SCHEMA_URI, "/xs:complexContent");

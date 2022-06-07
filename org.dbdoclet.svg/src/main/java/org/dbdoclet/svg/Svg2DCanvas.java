@@ -49,7 +49,7 @@ public class Svg2DCanvas extends SvgCanvas {
     public Svg2DCanvas() {
 
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-        Document document = domImpl.createDocument(SVGNS, "svg", null);
+        Document document = domImpl.createDocument(SvgConstants.SVGNS, "svg", null);
 
         g2d = new SVGGraphics2D(document);
         g2d.setBackground(Color.white);

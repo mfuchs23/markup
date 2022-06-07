@@ -1,21 +1,18 @@
 package org.dbdoclet.xsd;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 
-import org.dbdoclet.log.Logger;
 import org.dbdoclet.service.FileServices;
 import org.dbdoclet.xiphias.XmlValidationResult;
 import org.dbdoclet.xiphias.XsdServices;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Element;
 
 public class XmlSampleGeneratorTests {
 
 	@Test
-	@Ignore
 	public void testDocBookMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -52,7 +49,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testGsmHabmMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -89,7 +86,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testIrMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -126,7 +123,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testHabmMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -163,7 +160,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testHabmRandom() {
 
 		XmlSampleGenerator xsg;
@@ -175,7 +172,6 @@ public class XmlSampleGeneratorTests {
 
 			xsg = new XmlSampleGenerator(xsdFile);
 			xsg.setVerboseEnabled(true);
-			Logger.setRootLogLevel(Logger.WARN);
 			xsg.createRandom(new File("build/xml/habm/"), 200);
 
 		} catch (Exception oops) {
@@ -186,7 +182,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testMarkeXsg_1() {
 
 		XmlSampleGenerator xsg;
@@ -195,7 +191,7 @@ public class XmlSampleGeneratorTests {
 			xsg = new XmlSampleGenerator(new File(
 					"./src/test/resources/xsd/marke/DPMARegisterSchema.xsd"));
 			String xmlBuffer = xsg.createSample();
-			// System.out.println(xmlBuffer);
+			System.out.println(xmlBuffer);
 		} catch (Exception oops) {
 			oops.printStackTrace();
 			fail(oops.getMessage());
@@ -203,14 +199,14 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testGsmXsg_1() {
 		XmlSampleGenerator xsg;
 		try {
 			xsg = new XmlSampleGenerator(new File(
 					"./src/test/resources/xsd/gsm/DPMARegisterGsm.xsd"));
 			String xmlBuffer = xsg.createSample();
-			// System.out.println(xmlBuffer);
+			System.out.println(xmlBuffer);
 		} catch (Exception oops) {
 			oops.printStackTrace();
 			fail(oops.getMessage());
@@ -218,7 +214,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testPatentXsg_1() {
 
 		XmlSampleGenerator xsg;
@@ -228,7 +224,7 @@ public class XmlSampleGeneratorTests {
 			xsg = new XmlSampleGenerator(new File(
 					"./src/test/resources/xsd/patent/DPMAregisterPatent.xsd"));
 			String xmlBuffer = xsg.createSample();
-			// System.out.println(xmlBuffer);
+			System.out.println(xmlBuffer);
 
 		} catch (Exception oops) {
 
@@ -238,7 +234,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testMarkeMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -270,7 +266,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testPatentMaximal() {
 
 		XmlSampleGenerator xsg;
@@ -307,7 +303,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testPatentMinimal() {
 
 		XmlSampleGenerator xsg;
@@ -343,7 +339,7 @@ public class XmlSampleGeneratorTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testPatentRandom() {
 
 		XmlSampleGenerator xsg;
@@ -355,7 +351,6 @@ public class XmlSampleGeneratorTests {
 
 			xsg = new XmlSampleGenerator(xsdFile);
 			xsg.setVerboseEnabled(true);
-			Logger.setRootLogLevel(Logger.WARN);
 			xsg.createRandom(new File("build/xml/patent/"), 1);
 
 		} catch (Exception oops) {

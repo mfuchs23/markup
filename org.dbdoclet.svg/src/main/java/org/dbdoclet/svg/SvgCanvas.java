@@ -18,7 +18,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.apache.batik.transcoder.TranscoderException;
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
@@ -36,8 +35,6 @@ import org.w3c.dom.Document;
 public abstract class SvgCanvas {
 
 	private static Log logger = LogFactory.getLog(SvgCanvas.class);
-
-	public final static String SVGNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
 	protected ArrayList<Connector> connectorList;
 	protected ArrayList<Shape> shapeList;

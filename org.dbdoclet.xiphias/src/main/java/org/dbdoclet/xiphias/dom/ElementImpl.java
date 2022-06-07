@@ -19,8 +19,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.service.StringServices;
 import org.w3c.dom.Attr;
 import org.w3c.dom.DOMException;
@@ -38,7 +36,6 @@ public class ElementImpl extends NodeImpl implements Element {
 	public static final int FORMAT_INLINE = 1;
 
 	private static int idCounter = 1;
-	private static Log logger = LogFactory.getLog(ElementImpl.class);
 
 	private static final Pattern xmlIdPattern = Pattern.compile("[^\\w\\.-]+");
 	private static final Pattern xmlNameStartPattern = Pattern
@@ -61,8 +58,8 @@ public class ElementImpl extends NodeImpl implements Element {
 
 		try {
 			buffer = URLDecoder.decode(buffer, "UTF-8");
-		} catch (UnsupportedEncodingException oops) {
-			logger.fatal("Decoding of id '" + buffer + "' failed!", oops);
+		} catch (UnsupportedEncodingException e) {
+			// Dann halt ohne
 		}
 
 		Matcher matcher = xmlIdPattern.matcher(buffer);
@@ -260,7 +257,7 @@ public class ElementImpl extends NodeImpl implements Element {
 			}
 		}
 
-		Boolean b = new Boolean(bval);
+		Boolean b = Boolean.valueOf(bval);
 		return b.booleanValue();
 	}
 
@@ -312,19 +309,7 @@ public class ElementImpl extends NodeImpl implements Element {
 			return null;
 		}
 
-		int number = 0;
-
-		try {
-			number = Integer.parseInt(value.trim());
-		} catch (NumberFormatException oops) {
-
-			logger.warn("Attribute " + name + " of tag " + getTagName()
-					+ " is not a valid integer. It has a value of '" + value
-					+ "'.");
-
-			return null;
-		}
-
+		int number = Integer.parseInt(value.trim());
 		return number;
 	}
 

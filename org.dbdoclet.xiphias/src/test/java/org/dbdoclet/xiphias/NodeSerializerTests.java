@@ -1,6 +1,6 @@
 package org.dbdoclet.xiphias;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,8 +8,8 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.dbdoclet.service.FileServices;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -17,7 +17,7 @@ public class NodeSerializerTests {
 
 	private File buildDir;
 
-	@Before
+	@BeforeEach
 	public void startUp() throws IOException {
 		buildDir = new File("build/chunk");
 		FileServices.delete(buildDir);
@@ -72,7 +72,7 @@ public class NodeSerializerTests {
 
 	private void assertExists(File file) {
 
-		assertTrue(String.format("Die Datei %s wurde nicht erzeugt",  file), file.exists());
+		assertTrue(file.exists(),String.format("Die Datei %s wurde nicht erzeugt",  file));
 	}
 
 }

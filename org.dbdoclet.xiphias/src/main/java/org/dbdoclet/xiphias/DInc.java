@@ -19,9 +19,8 @@ import java.util.Iterator;
 import java.util.UUID;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.progress.ProgressEvent;
 import org.dbdoclet.progress.ProgressListener;
 import org.dbdoclet.service.FileServices;
@@ -32,8 +31,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class DInc {
-
-	private static Log logger = LogFactory.getLog(DInc.class);
 
 	private String includeMsg = "Including file {0}";
 	private String relocateMsg = "Relocating file {0}";
@@ -72,7 +69,7 @@ public class DInc {
 	}
 
 	public void merge(File xmlFile, File xmlBase, String sectionNode)
-			throws IOException, SAXException, ParserConfigurationException {
+			throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
 
 		if (xmlFile == null) {
 			throw new IllegalArgumentException(
@@ -91,14 +88,10 @@ public class DInc {
 			sectionNode = "//sect1";
 		}
 
-		logger.debug("Mergin the xml file '" + xmlFile.getCanonicalPath()
-				+ "'...");
-
 		Document doc = XmlServices.parse(xmlFile, false);
 
 		ArrayList<Node> dincList = XPathServices.getNodes(doc, "dodo",
 				"http://www.dbdoclet.org/xml/ns/dodo", "//dodo:include");
-		logger.debug("Number of dodo:include elements " + dincList.size() + ".");
 
 		path = FileServices.appendPath(xmlFileDir, "data");
 		FileServices.delete(path);
@@ -133,12 +126,9 @@ public class DInc {
 				file = new File(fileName);
 
 				if (file.exists() == false) {
-					logger.warn("The file " + fileName + " doesn't exist.");
 					parent.removeChild(elem);
 					continue;
 				}
-
-				logger.debug("including the file " + fileName);
 
 				fireProgressEvent(fileName, includeMsg);
 				incDoc = XmlServices.parse(file);
@@ -169,7 +159,7 @@ public class DInc {
 		serializer.write(doc, xmlFile);
 	}
 
-	private void checkMids(Node node) {
+	private void checkMids(Node node) throws XPathExpressionException {
 
 		ArrayList<?> idAttrList = XPathServices.getNodes(node, "//@xml:id");
 		for (Object idObj : idAttrList) {
@@ -191,7 +181,7 @@ public class DInc {
 	}
 
 	private void relocateImages(File destDir, File xmlBase, Node node)
-			throws IOException {
+			throws IOException, XPathExpressionException {
 
 		if (destDir == null) {
 			throw new IllegalArgumentException(
@@ -204,9 +194,6 @@ public class DInc {
 		}
 
 		ArrayList<Node> srcList = XPathServices.getNodes(node, "//imgdata");
-
-		logger.debug("Number of elements with attribute fileref "
-				+ srcList.size() + ".");
 
 		File srcFile;
 		File destFile;
@@ -274,7 +261,7 @@ public class DInc {
 						destFile = ImageServices.giftopng(srcFile, destFile);
 					}
 					if (extensionSrc.equals("png")) {
-						ImageServices.toEps(srcFile, destFile);
+						// ImageServices.toEps(srcFile, destFile);
 					}
 				} else {
 					// TODO: if more formats are needed

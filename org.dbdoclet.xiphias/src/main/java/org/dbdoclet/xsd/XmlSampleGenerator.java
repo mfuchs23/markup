@@ -13,9 +13,8 @@ import java.util.Random;
 import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.option.DirectoryOption;
 import org.dbdoclet.option.FileOption;
 import org.dbdoclet.option.OptionList;
@@ -40,8 +39,6 @@ public class XmlSampleGenerator {
 	public enum Type {
 		MAXIMAL, MINIMAL, RANDOM;
 	}
-
-	private static Log logger = LogFactory.getLog("XmlSampleGenerator");
 
 	private static String[] TEXTE = new String[] {
 			"Aber die Sonne duldet kein Weißes, // Überall regt sich Bildung und Streben, // Alles will sie mit Farben beleben; // Doch an Blumen fehlts im Revier, // Sie nimmt geputzte Menschen dafür.",
@@ -83,7 +80,7 @@ public class XmlSampleGenerator {
 	private final File xsdFile;
 
 	public XmlSampleGenerator(File xsdFile) throws IOException, SAXException,
-			ParserConfigurationException {
+			ParserConfigurationException, XPathExpressionException {
 
 		if (xsdFile == null) {
 			throw new IllegalArgumentException(
@@ -1068,22 +1065,11 @@ public class XmlSampleGenerator {
 						String value = sd.getValue(fsd.getLastIndex());
 
 						if (value == null) {
-
-							logger.warn("Can't find value for index "
-									+ fsd.getLastIndex() + " used by follows "
-									+ follows + ".");
-
 							return fsd.getLastValue();
 						}
 
 						return value;
-
-					} else {
-
-						logger.warn("Can't find sample data for follows "
-								+ follows + ".");
-					}
-
+					} 
 				}
 
 				return sd.getValue();

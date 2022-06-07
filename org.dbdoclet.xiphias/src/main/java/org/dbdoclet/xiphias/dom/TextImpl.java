@@ -16,14 +16,10 @@
  */
 package org.dbdoclet.xiphias.dom;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Text;
 
 public class TextImpl extends CharacterDataImpl implements Text {
-
-	private static Log logger = LogFactory.getLog(TextImpl.class);
 
 	public TextImpl(String text, NodeImpl parent) {
 
@@ -33,8 +29,6 @@ public class TextImpl extends CharacterDataImpl implements Text {
 		setNodeName("#text");
 		setParentNode(parent);
 		setData(text);
-
-		logger.debug("Text text=[" + text + "]");
 	}
 
 	public TextImpl(String text) {
@@ -68,20 +62,18 @@ public class TextImpl extends CharacterDataImpl implements Text {
 
 	@Override
 	public String getWholeText() {
-		// TODO Auto-generated method stub
-		return null;
+		return getData();
 	}
 
 	@Override
 	public boolean isElementContentWhitespace() {
-		// TODO Auto-generated method stub
-		return false;
+		return getData().trim().length() == 0;
 	}
 
 	@Override
 	public Text replaceWholeText(String content) throws DOMException {
-		// TODO Auto-generated method stub
-		return null;
+		setData(content);
+		return this;
 	}
 
 	@Override

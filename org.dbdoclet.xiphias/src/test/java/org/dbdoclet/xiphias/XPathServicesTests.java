@@ -1,16 +1,16 @@
 package org.dbdoclet.xiphias;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
 import org.dbdoclet.service.ResourceServices;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -21,7 +21,7 @@ public class XPathServicesTests {
 
 	private URL xsdUrl;
 
-	@Before
+	@BeforeEach
 	public void startUp() {
 		xsdUrl = ResourceServices.getResourceAsUrl("/x-docu/5.0/x-docu.xsd");
 	}

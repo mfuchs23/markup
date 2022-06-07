@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.service.StringServices;
 import org.dbdoclet.xiphias.XmlServices;
 import org.dbdoclet.xiphias.annotation.Annotation;
@@ -44,7 +42,6 @@ public class NodeImpl implements Node {
 	public static final int FORMAT_CONTENT = 2;
 	public static final int FORMAT_INLINE = 1;
 	public static final int HTML = 3;
-	private static Log logger = LogFactory.getLog(NodeImpl.class);
 	private static final String LSEP = System.getProperty("line.separator");
 
 	public static final int SGML = 1;
@@ -122,17 +119,9 @@ public class NodeImpl implements Node {
 			}
 
 			if (o instanceof TextImpl) {
-
 				buffer += ((TextImpl) o).getData();
-
 			} else {
-
-				try {
-					buffer += NodeImpl.getTextContent(o);
-				} catch (StackOverflowError oops) {
-					logger.fatal("[NodeImpl.getTextContent] StackOverflowError. Possibly recursive structure detected!!! Node: "
-							+ node.toString());
-				}
+				buffer += NodeImpl.getTextContent(o);
 			}
 		}
 
@@ -173,9 +162,7 @@ public class NodeImpl implements Node {
 			flavour = SGML;
 		} else if (type.equalsIgnoreCase("html")) {
 			flavour = HTML;
-		} else {
-			logger.error("Unknown type " + type + ". Using SGML!");
-		}
+		} 
 	}
 
 	public static void traverse(Node node, INodeVisitor visitor)
@@ -281,8 +268,6 @@ public class NodeImpl implements Node {
 			
 			childNodes.add(node);
 		}
-
-		logger.debug("Appended child " + node + " to " + this + ".");
 
 		return this;
 	}
@@ -929,13 +914,11 @@ public class NodeImpl implements Node {
 
 				NodeImpl newChildImpl = (NodeImpl) newChild;
 				newChildImpl.setParentNode(this);
-				logger.debug("Inserting " + newChild + "before " + refChild);
 				childList.add(i, newChildImpl);
 				return this;
 			}
 		}
 
-		logger.warn("InsertBefore: Couldn't find reference child " + refChild);
 		return this;
 	}
 
@@ -1119,9 +1102,6 @@ public class NodeImpl implements Node {
 	@Override
 	public Node replaceChild(Node newChild, Node oldChild) throws DOMException {
 
-		logger.debug("(W3C) Replacing child " + oldChild + " with child "
-				+ newChild);
-
 		NodeList childList = getChildNodes();
 
 		for (int i = 0; i < childList.getLength(); i++) {
@@ -1130,7 +1110,6 @@ public class NodeImpl implements Node {
 
 			if (child.equals(oldChild)) {
 
-				logger.debug("Found child to replace.");
 				insertBefore(newChild, oldChild);
 				removeChild(oldChild);
 			}
@@ -1301,10 +1280,9 @@ public class NodeImpl implements Node {
 	public String toTree(String prefix, int[] levels, int level) {
 
 		if (level >= levels.length) {
-			logger.fatal(String.format(
+			throw new IllegalArgumentException(String.format(
 					"Resulting node tree has more than %d levels.",
 					levels.length));
-			return "";
 		}
 
 		String buffer = "";

@@ -11,6 +11,7 @@ package org.dbdoclet.svg.shape.xml;
 import java.awt.Color;
 import java.awt.Font;
 
+import org.dbdoclet.svg.SvgConstants;
 import org.dbdoclet.svg.SvgServices;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -35,7 +36,7 @@ public class XmlText extends XmlElement {
 					"The argument string must not be null!");
 		}
 
-		text = doc.createElementNS(SVGNS, "text");
+		text = doc.createElementNS(SvgConstants.SVGNS, "text");
 		Text textNode = doc.createTextNode(string);
 		text.appendChild(textNode);
 		text.setAttributeNS(null, "x", String.valueOf(x));

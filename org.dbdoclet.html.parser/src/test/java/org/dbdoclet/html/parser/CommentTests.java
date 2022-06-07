@@ -14,7 +14,7 @@ public class CommentTests extends AbstractTests {
 	}
 
 	@Test
-	@Ignore
+	
 	public void testComment_2()  {
 		parseFragment("<!---------- -->");
 	}

@@ -1,22 +1,24 @@
 package org.dbdoclet.xsd;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 
 import org.dbdoclet.service.ResourceServices;
 import org.dbdoclet.xiphias.NodeSerializer;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class IsValidParentTests {
 
 	@Test
-	public void paraIsValidParent() throws IOException, SAXException, ParserConfigurationException {
+	public void paraIsValidParent() throws IOException, SAXException, ParserConfigurationException, XPathExpressionException {
 		
 		InputStream instream = ResourceServices.getResourceAsStream("/xsd/docbook/docbook.xsd");
 		InputSource source = new InputSource(instream);

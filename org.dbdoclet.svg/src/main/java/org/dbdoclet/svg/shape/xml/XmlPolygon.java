@@ -12,6 +12,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.PathIterator;
 
+import org.dbdoclet.svg.SvgConstants;
 import org.dbdoclet.svg.SvgServices;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -43,7 +44,7 @@ public class XmlPolygon extends XmlElement {
             pi.next();
         }
 
-        polygon = doc.createElementNS(SVGNS, "polygon");
+        polygon = doc.createElementNS(SvgConstants.SVGNS, "polygon");
         polygon.setAttributeNS(null, "stroke", "black");
         polygon.setAttributeNS(null, "fill", "none");
         polygon.setAttributeNS(null, "points", points.toString());

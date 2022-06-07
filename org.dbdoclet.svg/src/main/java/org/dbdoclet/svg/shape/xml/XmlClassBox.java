@@ -27,6 +27,7 @@ public class XmlClassBox extends ClassBox {
 	private static Log logger = LogFactory.getLog(TextBox.class);
 	private XmlRectangle paramRect;
 	private XmlRectangle classRect;
+	@SuppressWarnings("unused")
 	private int drawX;
 	private int drawY;
 
