@@ -10,6 +10,7 @@ package org.dbdoclet.svg.shape.xml;
 
 import java.awt.Color;
 
+import org.dbdoclet.svg.SvgConstants;
 import org.dbdoclet.svg.SvgServices;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -27,7 +28,7 @@ public class XmlLine extends XmlElement {
             throw new IllegalArgumentException("The argument doc must not be null!");
         }
 
-        line = doc.createElementNS(SVGNS, "line");
+        line = doc.createElementNS(SvgConstants.SVGNS, "line");
         line.setAttributeNS(null, "x1", String.valueOf(x1));
         line.setAttributeNS(null, "y1", String.valueOf(y1));
         line.setAttributeNS(null, "x2", String.valueOf(x2));

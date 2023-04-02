@@ -98,7 +98,7 @@ public class DocBookTagFactory extends BaseTagFactory {
 			try {
 				clazz = Class.forName(pkg + name);
 				if (clazz != null) {
-					elem = (DocBookElement) clazz.newInstance();
+					elem = (DocBookElement) clazz.getDeclaredConstructor().newInstance();
 					if (elem != null) {
 						break;
 					}

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: HTML Parser
 Bundle-SymbolicName: org.dbdoclet.html.parser
-Bundle-Version: 8.0.0
+Bundle-Version: 9.0.1
 Export-Package: org.dbdoclet.html.parser,
  org.dbdoclet.html.tokenizer,
  org.dbdoclet.html.tokenizer.parser

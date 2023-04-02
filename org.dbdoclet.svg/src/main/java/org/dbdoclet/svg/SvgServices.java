@@ -12,14 +12,11 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.geom.PathIterator;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.dbdoclet.svg.shape.Connector;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class SvgServices {
-
-    public final static String SVGNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
     public static void drawPolygon(Document doc, Polygon polygon, Color color) {
         
@@ -45,7 +42,7 @@ public class SvgServices {
         }
         
         Element root = doc.getDocumentElement();
-        Element elem = doc.createElementNS(SVGNS, "polygon");
+        Element elem = doc.createElementNS(SvgConstants.SVGNS, "polygon");
         elem.setAttributeNS(null, "stroke", getColorAsHexString(color));
         elem.setAttributeNS(null, "fill", "none");
         elem.setAttributeNS(null, "points", points.toString());
@@ -68,7 +65,7 @@ public class SvgServices {
         }
 
         Element root = doc.getDocumentElement();
-        Element polyline = doc.createElementNS(SVGNS, "polyline");
+        Element polyline = doc.createElementNS(SvgConstants.SVGNS, "polyline");
         polyline.setAttributeNS(null, "fill", "none");
         polyline.setAttributeNS(null, "stroke", getColorAsHexString(color));
 

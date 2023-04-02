@@ -10,6 +10,7 @@ package org.dbdoclet.svg.shape.xml;
 
 import java.awt.Color;
 
+import org.dbdoclet.svg.SvgConstants;
 import org.dbdoclet.svg.SvgServices;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,7 +42,7 @@ public class XmlRectangle extends XmlElement {
         this.width = width;
         this.height = height;
 
-        rect = doc.createElementNS(SVGNS, "rect");
+        rect = doc.createElementNS(SvgConstants.SVGNS, "rect");
         rect.setAttributeNS(null, "x", String.valueOf(x));
         rect.setAttributeNS(null, "y", String.valueOf(y));
         rect.setAttributeNS(null, "width", String.valueOf(width));
@@ -58,7 +59,7 @@ public class XmlRectangle extends XmlElement {
 
         if (shadowEnabled == true) {
 
-            Element shadow = doc.createElementNS(SVGNS, "rect");
+            Element shadow = doc.createElementNS(SvgConstants.SVGNS, "rect");
             shadow.setAttributeNS(null, "x", String.valueOf(x + 3));
             shadow.setAttributeNS(null, "y", String.valueOf(y + 3));
             shadow.setAttributeNS(null, "width", String.valueOf(width));

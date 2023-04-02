@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.html.tokenizer.Token;
 import org.dbdoclet.html.tokenizer.Tokenizer;
 import org.dbdoclet.html.tokenizer.TokenizerException;
@@ -60,8 +58,6 @@ public class HtmlParser {
 	private static final String HTML = "html";
 	public final static int CONTEXT_HTML = 1;
 	public final static int CONTEXT_BODY = 2;
-
-	private static Log logger = LogFactory.getLog(HtmlParser.class);
 
 	private int treeSize = 0;
 
@@ -315,15 +311,11 @@ public class HtmlParser {
 		}
 
 		if (elem == null) {
-
-			logger.debug("Tag <" + tag + "> has no corresponding opening tag!");
 			return 0;
 		}
 
 		int nesting = 0;
 		int depth = openTags.search(tag);
-
-		logger.debug("Open tag stack = '" + openTags + "'");
 
 		for (int i = 0; i < depth; i++) {
 
@@ -337,8 +329,6 @@ public class HtmlParser {
 	private int closeOpenTag(String tag, NodeImpl currentNode) {
 
 		String search = "";
-		logger.debug("Testing tag \"" + tag + "\". The current node is "
-				+ currentNode + ".");
 
 		// Close any open p tags, if the tag is a ol, ul, dl, address,
 		// div, pre or table tag and no opening tag can be found.
@@ -467,14 +457,11 @@ public class HtmlParser {
 
 		String tagName = token.getTagName().toLowerCase();
 
-		logger.debug("tagName=" + tagName);
-
 		if (token.isJavadoc()) {
 
 			tagName = tagName.substring("javadoc:".length());
 			className = "org.dbdoclet.tag.javadoc."
 					+ capFirstLetter(tagName);
-			logger.debug("Javadoc classname = '" + className + "'.");
 
 		} else {
 
@@ -495,16 +482,12 @@ public class HtmlParser {
 		} catch (ClassNotFoundException oops) {
 
 			if (unsupportedTags.get(tagName) == null) {
-
-				logger.debug("Tag " + tagName + " is not supported! ("
-						+ className + ")");
 				unsupportedTags.put(tagName, className);
 			}
 
 		} catch (Exception oops) {
-
-			logger.error("Exception: " + oops.getClass().getName() + " "
-					+ oops.getMessage());
+			
+			oops.printStackTrace();
 		}
 
 		return node;
@@ -552,11 +535,6 @@ public class HtmlParser {
 			event.setStage(ProgressEvent.STAGE_PREPARE);
 			pm.fireProgressEvent(event);
 
-			logger.debug(String.format("++++++ PROCESSING NEXT TOKEN %s",
-					token.getTagName()));
-			logger.debug("token=" + token.toString());
-			logger.debug("currentNode=" + currentNode);
-
 			if (token.isDoctype() && (currentNode == root)) {
 				continue;
 			}
@@ -575,15 +553,11 @@ public class HtmlParser {
 
 				} else if ((tagName != null) && tagName.equals("body")) {
 
-					logger.debug("Missing html tag.");
 					firstElement = false;
 
 				} else {
 
 					if (token.isTag()) {
-
-						logger.debug("Found tag before html tag: "
-								+ token.toString());
 
 						if (errorBuffer.length() < 16832) {
 							errorBuffer += "Found tag before html tag:  "
@@ -625,7 +599,6 @@ public class HtmlParser {
 				}
 
 				if (skip == true) {
-
 					continue;
 				}
 
@@ -646,8 +619,6 @@ public class HtmlParser {
 					String value = token.getValue();
 					value = HtmlServices.textToHtml(value);
 
-					logger.debug("Adding text to literal environment.\n'"
-							+ value + "'.");
 					currentNode.appendChild(new TextImpl(value, currentNode));
 					treeSize++;
 
@@ -679,9 +650,6 @@ public class HtmlParser {
 				tagName = tagName.toLowerCase();
 
 				if ((skip == true) && skipTo.equals(tagName)) {
-
-					logger.debug("Setting skip to false. Found tag " + tagName
-							+ ".");
 					skip = false;
 				}
 
@@ -695,9 +663,6 @@ public class HtmlParser {
 						NodeImpl parent = node.getTrafoParentNode();
 
 						if (parent != null) {
-
-							logger.debug("Closing node = " + node);
-							logger.debug("New current node = " + parent);
 							node = parent;
 						}
 					}
@@ -709,15 +674,9 @@ public class HtmlParser {
 					continue;
 				}
 
-				logger.debug("Created candidate = " + candidate);
-
 				if (!checkCodeContext(candidate)) {
-					logger.debug("Candidate is not allowed in this code context("
-							+ codeContext + ") '" + candidate + "'!");
 					continue;
 				}
-
-				logger.debug("Candidate is valid: " + candidate);
 
 				// Commit changes
 				if (skip == false) {
@@ -750,12 +709,8 @@ public class HtmlParser {
 						currentNode = candidate;
 					}
 
-				} else {
-
-					logger.debug("Skipped candidate.");
-
-				} // end of else
-			} // end of if ()
+				}
+			}
 
 			if (token.isClosingTag() && (skip == false)) {
 
@@ -763,7 +718,6 @@ public class HtmlParser {
 
 					nesting = closeClosingTag(token.getTagName().toLowerCase(),
 							currentNode);
-					logger.debug("Nesting = " + nesting);
 
 					for (int j = 0; j < nesting; j++) {
 

@@ -8,13 +8,10 @@
  */
 package org.dbdoclet.svg.shape.xml;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class XmlElement {
-
-    public final static String SVGNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
     public Document doc;
     

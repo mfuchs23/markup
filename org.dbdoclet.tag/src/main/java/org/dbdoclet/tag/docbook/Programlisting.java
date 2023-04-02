@@ -31,7 +31,7 @@ public class Programlisting extends DocBookElement {
 
     Programlisting setWidth(int width) {
 
-        setAttribute("width", new Integer(width));
+        setAttribute("width", Integer.valueOf(width));
 
         return this;
     }

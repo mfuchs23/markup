@@ -11,7 +11,7 @@ package org.dbdoclet.svg;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
+import org.apache.batik.anim.dom.SVGDOMImplementation;
 import org.dbdoclet.svg.shape.Connector;
 import org.dbdoclet.svg.shape.Shape;
 import org.dbdoclet.svg.shape.xml.XmlRectangle;
@@ -25,10 +25,10 @@ public class SvgXmlCanvas extends SvgCanvas {
 	public SvgXmlCanvas() {
 
 		DOMImplementation domImpl = SVGDOMImplementation.getDOMImplementation();
-		doc = domImpl.createDocument(SVGNS, "svg", null);
+		doc = domImpl.createDocument(SvgConstants.SVGNS, "svg", null);
 
 		Element root = doc.getDocumentElement();
-		defs = doc.createElementNS(SVGNS, "defs");
+		defs = doc.createElementNS(SvgConstants.SVGNS, "defs");
 		root.appendChild(defs);
 
 		addBlurFilter();
@@ -67,11 +67,11 @@ public class SvgXmlCanvas extends SvgCanvas {
 
 	public void addBlurFilter() {
 
-		Element filter = doc.createElementNS(SVGNS, "filter");
+		Element filter = doc.createElementNS(SvgConstants.SVGNS, "filter");
 		filter.setAttributeNS(null, "id", "blur");
 		defs.appendChild(filter);
 
-		Element blur = doc.createElementNS(SVGNS, "feGaussianBlur");
+		Element blur = doc.createElementNS(SvgConstants.SVGNS, "feGaussianBlur");
 		blur.setAttributeNS(null, "in", "SourceGraphic");
 		blur.setAttributeNS(null, "stdDeviation", "3");
 		blur.setAttributeNS(null, "result", "blur");
@@ -80,18 +80,18 @@ public class SvgXmlCanvas extends SvgCanvas {
 
 	public void addRadialGradient() {
 
-		Element gradient = doc.createElementNS(SVGNS, "radialGradient");
+		Element gradient = doc.createElementNS(SvgConstants.SVGNS, "radialGradient");
 		defs.appendChild(gradient);
 		gradient.setAttributeNS(null, "id", "grad1");
 		gradient.setAttributeNS(null, "fx", "30%");
 		gradient.setAttributeNS(null, "fy", "30%");
 
-		Element stop1 = doc.createElementNS(SVGNS, "stop");
+		Element stop1 = doc.createElementNS(SvgConstants.SVGNS, "stop");
 		gradient.appendChild(stop1);
 		stop1.setAttributeNS(null, "offset", "0%");
 		stop1.setAttributeNS(null, "stop-color", "#fff");
 
-		Element stop2 = doc.createElementNS(SVGNS, "stop");
+		Element stop2 = doc.createElementNS(SvgConstants.SVGNS, "stop");
 		gradient.appendChild(stop2);
 		stop2.setAttributeNS(null, "offset", "100%");
 		stop2.setAttributeNS(null, "stop-color", "#99abc6");

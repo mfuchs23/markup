@@ -1,3 +1,4 @@
+Automatic-Module-Name: org.dbdoclet.xiphias
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.dbdoclet.xiphias
@@ -19,5 +20,5 @@ Export-Package: org.dbdoclet.format,
  org.dbdoclet.xiphias,
  org.dbdoclet.xiphias.annotation,
  org.dbdoclet.xiphias.dom
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: Java-17
 Bundle-ClassPath: .

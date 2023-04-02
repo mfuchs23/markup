@@ -39,7 +39,7 @@ public class SvgFontMetrics {
         // g2d = bi.createGraphics();
 
         DOMImplementation domImpl = GenericDOMImplementation.getDOMImplementation();
-        Document document = domImpl.createDocument(SvgServices.SVGNS, "svg", null);
+        Document document = domImpl.createDocument(SvgConstants.SVGNS, "svg", null);
 
         g2d = new SVGGraphics2D(document);
 

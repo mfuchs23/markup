@@ -29,6 +29,7 @@ import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -39,9 +40,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
+import javax.xml.xpath.XPathExpressionException;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.xml.resolver.tools.CatalogResolver;
 import org.dbdoclet.service.FileServices;
 import org.dbdoclet.service.ReplaceServices;
@@ -56,7 +56,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Die Klasse <code>XmlServices</code> stellt eine Sammlung statischer Methoden
@@ -71,7 +70,6 @@ public class XmlServices {
 	private static final Pattern encPattern = Pattern
 			.compile("^(?i).*<\\?xml\\s*.*encoding=['\"](.*)['\"].*\\?>.*$");
 
-	private static Log logger = LogFactory.getLog(XmlServices.class);
 	private static final Pattern startsWithDigitPattern = Pattern
 			.compile("^[0-9].*$");
 
@@ -340,8 +338,6 @@ public class XmlServices {
 			Matcher matcher;
 
 			while ((line = reader.readLine()) != null) {
-
-				logger.debug("line=" + line);
 
 				matcher = encPattern.matcher(line);
 
@@ -763,8 +759,6 @@ public class XmlServices {
 									dest.append(c);
 								}
 							}
-
-							logger.debug("dest: " + dest.toString());
 
 							if (c == '&') {
 
@@ -1379,9 +1373,6 @@ public class XmlServices {
 	 */
 	public static String textToXml(String text, boolean isHtml) {
 
-		logger.debug("Argument text: \"" + text + "\"");
-		logger.debug("Argument isHtml: \"" + isHtml + "\"");
-
 		if (text == null) {
 			return null;
 		}
@@ -1407,7 +1398,6 @@ public class XmlServices {
 		text = replaceAmpersand(text, isHtml);
 		text = UnicodeServices.removeUndefinedCharacters(text);
 
-		logger.debug("Return: \"" + text + "\"");
 		return text;
 	}
 
@@ -1644,12 +1634,13 @@ public class XmlServices {
 
 	/**
 	 * Die Methode <code>xslt</code> führt eine XSL-Transformation durch.
+	 * @throws ParserConfigurationException 
 	 */
 	public static void xslt(File in, String xsl,
 			HashMap<String, String> params, File out, String encoding,
 			boolean validate) throws IOException, SAXException,
 			TransformerConfigurationException, TransformerException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in.getCanonicalPath(), xsl, params, out.getCanonicalPath(),
 				encoding, validate, null);
@@ -1659,7 +1650,7 @@ public class XmlServices {
 			HashMap<String, String> params, File out, String encoding,
 			boolean validate, ErrorListener listener) throws IOException,
 			SAXException, TransformerConfigurationException,
-			TransformerException, UnsupportedEncodingException {
+			TransformerException, UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in.getCanonicalPath(), xsl, params, out.getCanonicalPath(),
 				encoding, validate, listener);
@@ -1668,7 +1659,7 @@ public class XmlServices {
 	public static void xslt(String in, String xsl,
 			HashMap<String, String> params, String out) throws IOException,
 			SAXException, TransformerConfigurationException,
-			TransformerException, UnsupportedEncodingException {
+			TransformerException, UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in, xsl, params, out, "UTF-8", false, null);
 	}
@@ -1677,19 +1668,20 @@ public class XmlServices {
 			HashMap<String, String> params, String out, String encoding,
 			boolean validate) throws IOException, SAXException,
 			TransformerConfigurationException, TransformerException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in, xsl, params, out, encoding, validate, null);
 	}
 
 	/**
 	 * Die Methode <code>xslt</code> führt eine XSL-Transformation durch.
+	 * @throws ParserConfigurationException 
 	 */
 	public static void xslt(String in, String xsl,
 			HashMap<String, String> params, String out, String encoding,
 			boolean validate, ErrorListener listener) throws IOException,
 			SAXException, TransformerConfigurationException,
-			TransformerException, UnsupportedEncodingException {
+			TransformerException, UnsupportedEncodingException, ParserConfigurationException {
 
 		if (in == null) {
 			throw new IllegalArgumentException("Parameter in is null!");
@@ -1712,8 +1704,6 @@ public class XmlServices {
 
 		FileInputStream fis = null;
 		FileOutputStream fos = null;
-
-		logger.debug("validate=" + validate);
 
 		String spf = System.getProperty("javax.xml.parsers.SAXParserFactory");
 		String dbf = System
@@ -1778,24 +1768,17 @@ public class XmlServices {
 			fis = new FileInputStream(in);
 			fos = new FileOutputStream(out);
 
-			try {
-
-				XMLReader reader = XMLReaderFactory.createXMLReader();
-
-				if (validate == true) {
-					reader.setEntityResolver(new CatalogResolver());
-				}
-
-				transformer
-						.transform(new SAXSource(reader, new InputSource(in)),
-								new StreamResult(new OutputStreamWriter(fos,
-										encoding)));
-
-			} catch (Exception oops) {
-
-				logger.fatal("XmlServices.xslt", oops);
-
+			XMLReader reader = SAXParserFactory.newDefaultInstance().newSAXParser().getXMLReader();
+			
+			if (validate == true) {
+				reader.setEntityResolver(new CatalogResolver());
 			}
+
+			transformer
+			.transform(new SAXSource(reader, new InputSource(in)),
+					new StreamResult(new OutputStreamWriter(fos,
+							encoding)));
+
 
 		} finally {
 
@@ -1826,7 +1809,7 @@ public class XmlServices {
 			HashMap<String, String> params, String out, String encoding,
 			ErrorListener listener) throws IOException, SAXException,
 			TransformerConfigurationException, TransformerException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in, xsl, params, out, encoding, false, listener);
 	}
@@ -1845,11 +1828,12 @@ public class XmlServices {
 	 * @throws TransformerConfigurationException
 	 * @throws TransformerException
 	 * @throws UnsupportedEncodingException
+	 * @throws ParserConfigurationException 
 	 */
 	public static void xslt(String in, String xsl, String out)
 			throws IOException, SAXException,
 			TransformerConfigurationException, TransformerException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in, xsl, new HashMap<String, String>(), out, "UTF-8", false, null);
 	}
@@ -1857,7 +1841,7 @@ public class XmlServices {
 	public static void xslt(String in, String xsl, String out,
 			ErrorListener listener) throws IOException, SAXException,
 			TransformerConfigurationException, TransformerException,
-			UnsupportedEncodingException {
+			UnsupportedEncodingException, ParserConfigurationException {
 
 		xslt(in, xsl, new HashMap<String, String>(), out, "UTF-8", false,
 				listener);
@@ -1873,9 +1857,10 @@ public class XmlServices {
 	 * @throws IOException
 	 * @throws SAXException
 	 * @throws ParserConfigurationException
+	 * @throws XPathExpressionException 
 	 */
 	public static void relocateSrc(File file, File imgDir) throws IOException,
-			SAXException, ParserConfigurationException {
+			SAXException, ParserConfigurationException, XPathExpressionException {
 
 		Document doc = loadDocument(file);
 
@@ -1901,8 +1886,6 @@ public class XmlServices {
 			}
 
 			if (fromFile.exists() == false) {
-				logger.warn("Image file doesn't exist: "
-						+ fromFile.getAbsolutePath());
 				continue;
 			}
 

@@ -21,8 +21,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.Sfv;
 import org.dbdoclet.option.FileOption;
 import org.dbdoclet.option.OptionList;
@@ -44,9 +42,6 @@ import org.dbdoclet.svg.shape.TextUnit;
 public class ProcessDiagramCreator extends AbstractDiagrammCreator {
 
 	private final static Color DARK_GREEN = new Color(0, 100, 0);
-
-	private static Log logger = LogFactory.getLog(
-			ProcessDiagramCreator.class);
 
 	private final static Color UNICO_BLUE = new Color(0, 45, 113);
 
@@ -108,8 +103,6 @@ public class ProcessDiagramCreator extends AbstractDiagrammCreator {
 
 		try {
 
-			logger.debug("ProcessDiagramCreator");
-
 			OptionList options = new OptionList(args);
 
 			FileOption optFile = new FileOption("file", "f");
@@ -154,9 +147,6 @@ public class ProcessDiagramCreator extends AbstractDiagrammCreator {
 				}
 
 				String[] tokens = line.split("~");
-
-				logger.debug("tokens[01]=" + tokens[0] + ", tokens[1]="
-						+ tokens[1]);
 
 				if (tokens[0].equals("s")) {
 					activity = pdc.setStart(tokens[1], tokens[2]);
@@ -656,15 +646,10 @@ public class ProcessDiagramCreator extends AbstractDiagrammCreator {
 
 				if (activity.getEnd() != null) {
 
-					// logger.debug("merge");
+					//  
 					Shape nextTextBox = activityMap.get(activity.getEnd());
 
-					if (nextTextBox == null) {
-
-						logger.error("Unbekannte Aktivität "
-								+ activity.getEnd());
-
-					} else {
+					if (nextTextBox != null) {
 
 						if (nextTextBox.getColumn() <= shape.getColumn()) {
 							// nextTextBox.setColumn(shape.getColumn() + 1);

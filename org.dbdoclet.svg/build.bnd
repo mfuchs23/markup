@@ -1,7 +1,14 @@
-version=8.1.0
+version=9.0.1-SNAPSHOT
 Bundle-SymbolicName=org.dbdoclet.svg
 Bundle-Version=${version}
-Bundle-ClassPath: ., lib/batik.jar
-Include-Resource: lib/batik.jar=lib/org.apache.batik_1.7.jar
+
+Bundle-ClassPath: ., lib/batik-svggen.jar,\
+  lib/batik-svg-dom.jar,\
+  lib/batik-transcoder.jar
+
+Include-Resource: lib/batik-svg-dom.jar=lib/batik-svg-dom_1.14.jar,\
+  lib/batik-svggen.jar=lib/batik-svggen_1.14.jar,\
+  lib/batik-transcoder.jar=lib/batik-transcoder_1.14.jar
+
 Export-Package=org.dbdoclet.svg.*;version=${version}
 Import-Package: org.dbdoclet.*, *;resolution:=optional

@@ -16,14 +16,10 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.shape.Text;
 import org.dbdoclet.svg.shape.TextBox;
 
 public class TextBox2D extends TextBox {
-
-    private static Log logger = LogFactory.getLog(TextBox2D.class);
 
     public TextBox2D(Graphics2D g2d, String id, int row, int column) {
 
@@ -89,7 +85,6 @@ public class TextBox2D extends TextBox {
         int width = getWidth();
         int height = getHeight();
         
-        logger.debug("Zeichne Textbox an Position: " + x + "," + y + ", Breite: " + width + ", Höhe: " + height);
         drawBox(x, y, width, height);
         g2d.setPaint(Color.black);
         

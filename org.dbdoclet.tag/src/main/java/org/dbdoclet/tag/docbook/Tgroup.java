@@ -26,7 +26,7 @@ public class Tgroup extends DocBookElement {
 
     public Tgroup setCols(int cols) {
 
-	setAttribute("cols", new Integer(cols));
+	setAttribute("cols", Integer.valueOf(cols));
 
 	return this;
     }

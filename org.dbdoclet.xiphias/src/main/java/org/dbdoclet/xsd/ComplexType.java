@@ -1,5 +1,7 @@
 package org.dbdoclet.xsd;
 
+import javax.xml.xpath.XPathExpressionException;
+
 import org.dbdoclet.xiphias.XPathServices;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -16,7 +18,7 @@ public class ComplexType extends AbstractType {
         return element;
     }
 
-    public boolean isSimpleContent() {
+    public boolean isSimpleContent() throws XPathExpressionException {
 
         Node node = XPathServices.getNode(element, "xs", XmlSchema.XML_SCHEMA_URI, "./xs:simpleContent");
 
@@ -27,7 +29,7 @@ public class ComplexType extends AbstractType {
         return false;
     }
 
-    public String getSimpleContentBase() {
+    public String getSimpleContentBase() throws XPathExpressionException {
 
         Element node = (Element) XPathServices.getNode(element, "xs", XmlSchema.XML_SCHEMA_URI, "./xs:simpleContent/xs:extension");
         

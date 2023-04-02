@@ -16,96 +16,104 @@
  */
 package org.dbdoclet.xiphias;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import org.apache.commons.jxpath.CompiledExpression;
-import org.apache.commons.jxpath.JXPathContext;
-import org.apache.commons.jxpath.JXPathException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import javax.xml.namespace.NamespaceContext;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
+
 import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class XPathServices {
-
-    private static Log logger = LogFactory.getLog(XPathServices.class);
 
     public static Object getValue(Object contextBean, String query) {
         return getValue(contextBean, null, null, query);
     }
 
     /**
-     * Die Methode <code>getValue</code> liefert den Wert eines Kontent.
-     * 
-     * @param contextBean
-     *            <code>Object</code>
-     * @param query
-     *            <code>String</code>
-     * @return <code>Object</code>
-     */
+	 * Die Methode <code>getValue</code> liefert den Wert eines Kontent.
+	 * 
+	 * @param contextBean <code>Object</code>
+	 * @param query       <code>String</code>
+	 * @return <code>Object</code>
+	 * @throws XPathExpressionException
+	 */
     public static Object getValue(Object contextBean, String namespace, String namespaceUrl, String query) {
 
         Object obj = null;
 
-        JXPathContext context = JXPathContext.newContext(contextBean);
-
-        if (namespace != null && namespaceUrl != null) {
-            context.registerNamespace(namespace, namespaceUrl);
-        }
-
-        CompiledExpression expr = JXPathContext.compile(query);
-
+        XPathExpression expression = createExpression(namespace, namespaceUrl, query);
         try {
-
-            obj = expr.getValue(context);
-
-        } catch (JXPathException oops) {
-
-            logger.debug("JXPathException: " + oops.getMessage());
-            obj = null;
-        }
+			obj = expression.evaluate(contextBean, XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return null;
+		}
 
         return obj;
     }
+
+	private static XPathExpression createExpression(String namespace, String namespaceUrl, String query) {
+		
+		XPathFactory xpf = XPathFactory.newInstance();
+        XPath xp = xpf.newXPath();
+        xp.setNamespaceContext(new NamespaceContext() {
+
+			@Override
+			public String getNamespaceURI(String prefix) {
+				return namespaceUrl;
+			}
+
+			@Override
+			public String getPrefix(String namespaceURI) {
+				return namespace;
+			}
+
+			@Override
+			public Iterator<String> getPrefixes(String namespaceURI) {
+				ArrayList<String> ns = new ArrayList<>();
+				ns.add(namespace);
+				return ns.iterator();
+			}
+        	
+        });
+
+        XPathExpression expression = null;
+		try {
+			expression = xp.compile(query);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		
+		return expression;
+	}
 
     public static ArrayList<String> getValues(Object contextBean, String query) {
         return getValues(contextBean, null, null, query);
     }
 
-    @SuppressWarnings("unchecked")
     public static ArrayList<String> getValues(Object contextBean, String namespace, String namespaceUrl, String query) {
 
-        Object obj = null;
-
-        JXPathContext context = JXPathContext.newContext(contextBean);
-
-        if (namespace != null && namespaceUrl != null) {
-            context.registerNamespace(namespace, namespaceUrl);
-        }
-
-        CompiledExpression expr = JXPathContext.compile(query);
-
-        Iterator<Object> iterator;
-        ArrayList<String> list = new ArrayList<String>();
+        XPathExpression expression = createExpression(namespace, namespaceUrl, query);
+        NodeList nodeList = null;
+        ArrayList<String> list = new ArrayList<>();
 
         try {
-
-            // Unchecked iterator
-            iterator = expr.iterate(context);
-
-            while (iterator.hasNext()) {
-
-                obj = iterator.next();
-
-                if (obj != null) {
-                    list.add(obj.toString());
-                }
-            }
-
-        } catch (JXPathException oops) {
-
-            oops.printStackTrace();
+			nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return list;
+		}
+        
+        for (int i=0; i<nodeList.getLength(); i++) {
+        	list.add(nodeList.item(i).toString());
         }
 
         return list;
@@ -118,24 +126,27 @@ public class XPathServices {
 
     public static ArrayList<Node> getNodes(Object contextBean, String namespace, String namespaceUrl, String query) {
 
-        JXPathContext context = JXPathContext.newContext(contextBean);
+    	ArrayList<Node> nodeArray = new ArrayList<Node>();
 
-        if (namespace != null && namespaceUrl != null) {
-            context.registerNamespace(namespace, namespaceUrl);
+    	XPathExpression expression = createExpression(namespace, namespaceUrl, query);
+        if (isNull(expression)) {
+        	return nodeArray;
+        }
+        
+    	NodeList nodeList;
+		try {
+			nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return nodeArray;
+		}
+
+
+        for (int i=0; i<nodeList.getLength(); i++) {
+        	nodeArray.add(nodeList.item(i));
         }
 
-        List<?> list = context.selectNodes(query);
-
-        ArrayList<Node> nodeList = new ArrayList<Node>();
-
-        for (Object obj : list) {
-
-            if (obj instanceof Node) {
-                nodeList.add((Node) obj);
-            }
-        }
-
-        return nodeList;
+        return nodeArray;
     }
 
     public static Node getNode(Object contextBean, String query) {

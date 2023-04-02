@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="common" default="rebuild">
+<project name="markup" default="rebuild">
 
   <property file="module.properties" />
   <import file="../build/build.config/defaultBuild.xml"/>  
@@ -22,8 +22,8 @@
 
   <target name="rebuild">
     <iterate target="distclean"/>
-    <ant useNativeBasedir="true" dir="org.dbdoclet.xiphias" target="build"/>
-    <ant useNativeBasedir="true" dir="org.dbdoclet.tag" target="build"/>
+    <ant inheritall="false" dir="org.dbdoclet.xiphias" target="build"/>
+    <ant inheritall="false" dir="org.dbdoclet.tag" target="build"/>
     <ant useNativeBasedir="true" dir="org.dbdoclet.svg" target="build"/>
     <ant useNativeBasedir="true" dir="org.dbdoclet.css" target="build"/>
     <ant useNativeBasedir="true" dir="org.dbdoclet.html.parser" target="build"/>

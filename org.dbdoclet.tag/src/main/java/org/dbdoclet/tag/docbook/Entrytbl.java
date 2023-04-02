@@ -16,7 +16,7 @@ public class Entrytbl extends DocBookElement {
     }
 
     public Entrytbl setCols(int cols) {
-	setAttribute("cols", new Integer(cols));
+	setAttribute("cols", Integer.valueOf(cols));
 	return this;
     }
 }

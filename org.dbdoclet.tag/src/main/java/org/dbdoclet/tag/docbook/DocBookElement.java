@@ -10,8 +10,6 @@ package org.dbdoclet.tag.docbook;
 
 import java.util.HashMap;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.tag.ITransformPosition;
 import org.dbdoclet.xiphias.XmlConstants;
 import org.dbdoclet.xiphias.dom.ElementImpl;
@@ -20,8 +18,6 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 public class DocBookElement extends ElementImpl {
-
-	private static Log logger = LogFactory.getLog(DocBookElement.class);
 
 	private DocBookVersion docBookVersion = DocBookVersion.V5_0;
 
@@ -46,7 +42,7 @@ public class DocBookElement extends ElementImpl {
 					node).isValid();
 
 		} catch (SAXException e) {
-			logger.error("", e);
+
 			return false;
 
 		} finally {

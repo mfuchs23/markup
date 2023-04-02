@@ -257,7 +257,6 @@ private int jjMoveNfa_0(int startState, int curPos)
          ReInitRounds();
       if (curChar < 64)
       {
-         long l = 1L << curChar;
          do
          {
             switch(jjstateSet[--i])
@@ -291,11 +290,6 @@ private int jjMoveNfa_0(int startState, int curPos)
       }
       else
       {
-         int hiByte = (int)(curChar >> 8);
-         int i1 = hiByte >> 6;
-         long l1 = 1L << (hiByte & 077);
-         int i2 = (curChar & 0xff) >> 6;
-         long l2 = 1L << (curChar & 077);
          do
          {
             switch(jjstateSet[--i])
@@ -378,7 +372,6 @@ private int jjMoveNfa_1(int startState, int curPos)
       }
       else if (curChar < 128)
       {
-         long l = 1L << (curChar & 077);
          do
          {
             switch(jjstateSet[--i])
@@ -630,12 +623,6 @@ private void jjCheckNAdd(int state)
       jjstateSet[jjnewStateCnt++] = state;
       jjrounds[state] = jjround;
    }
-}
-private void jjAddStates(int start, int end)
-{
-   do {
-      jjstateSet[jjnewStateCnt++] = jjnextStates[start];
-   } while (start++ != end);
 }
 private void jjCheckNAddTwoStates(int state1, int state2)
 {

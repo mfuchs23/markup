@@ -10,12 +10,9 @@ package org.dbdoclet.svg.shape;
 
 import java.awt.Graphics2D;
 
-import org.apache.batik.dom.svg.SVGDOMImplementation;
 import org.w3c.dom.Document;
 
 public class Element {
-
-    public final static String SVGNS = SVGDOMImplementation.SVG_NAMESPACE_URI;
 
     private Document doc;
     private Graphics2D g2d;
