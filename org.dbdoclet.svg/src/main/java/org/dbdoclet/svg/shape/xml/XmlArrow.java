@@ -13,8 +13,6 @@ import java.awt.Font;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.Cell;
 import org.dbdoclet.svg.SvgFontMetrics;
 import org.dbdoclet.svg.SvgServices;
@@ -23,8 +21,6 @@ import org.dbdoclet.svg.shape.Shape;
 import org.w3c.dom.Document;
 
 public class XmlArrow extends Arrow {
-
-	private static Log logger = LogFactory.getLog(Arrow.class);
 
 	public XmlArrow(Document doc, String id, Shape from, Shape to) {
 
@@ -155,9 +151,6 @@ public class XmlArrow extends Arrow {
 	}
 
 	public void drawDirect(int xpos1, int ypos1, int xpos2, int ypos2) {
-
-		logger.debug("Zeichne Pfeil von (" + xpos1 + "," + ypos1 + ") nach ("
-				+ xpos2 + "," + ypos2 + ")");
 
 		// Point neck = drawArrowHead(xpos1, ypos1, xpos2, ypos2);
 		drawArrowHead(xpos1, ypos1, xpos2, ypos2);

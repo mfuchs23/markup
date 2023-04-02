@@ -11,8 +11,6 @@ package org.dbdoclet.svg.shape.xml;
 import java.awt.Font;
 import java.util.Iterator;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.Area;
 import org.dbdoclet.svg.SvgFontMetrics;
 import org.dbdoclet.svg.shape.Text;
@@ -21,8 +19,6 @@ import org.dbdoclet.svg.shape.TextSeparator;
 import org.w3c.dom.Document;
 
 public class XmlTextBox extends TextBox {
-
-	private static Log logger = LogFactory.getLog(TextBox.class);
 
 	public XmlTextBox(Document doc, String id, int x, int y) {
 
@@ -43,9 +39,6 @@ public class XmlTextBox extends TextBox {
 		int width = getWidth();
 		int height = getHeight();
 		int roundedCorner = getRoundedCorner();
-
-		logger.debug("Zeichne Textbox an Position: " + x + ", " + y
-				+ ", Breite: " + width + ", Höhe: " + height);
 
 		Area area = new Area();
 		area.addCoords(x, y);

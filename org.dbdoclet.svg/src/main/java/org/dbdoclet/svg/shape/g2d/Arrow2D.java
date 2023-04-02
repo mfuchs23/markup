@@ -14,14 +14,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.shape.Arrow;
 import org.dbdoclet.svg.shape.Shape;
 
 public class Arrow2D extends Arrow {
-    
-    private static Log logger = LogFactory.getLog(Arrow.class);
     
     public Arrow2D(Graphics2D g2d, String id, Shape from, Shape to) {
 
@@ -89,8 +85,6 @@ public class Arrow2D extends Arrow {
         if (g2d == null) {
             throw new IllegalStateException("The field g2d must not be null!");
         }
-
-        logger.debug("Zeichne Pfeil von (" + xpos1 + "," + ypos1 + ") nach (" + xpos2 + "," + ypos2 +")");
 
         g2d.setStroke(new BasicStroke());
         Point neck = drawArrowHead(g2d, xpos1, ypos1, xpos2, ypos2);

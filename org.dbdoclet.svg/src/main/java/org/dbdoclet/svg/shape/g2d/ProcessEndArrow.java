@@ -11,12 +11,7 @@ package org.dbdoclet.svg.shape.g2d;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class ProcessEndArrow extends ProcessArrow {
-
-    private static Log logger = LogFactory.getLog(ProcessEndArrow.class);
 
     public ProcessEndArrow(String id, int row, int col) {
         super(id, row, col);
@@ -27,8 +22,6 @@ public class ProcessEndArrow extends ProcessArrow {
     }
 
     public void draw(int x, int y) {
-
-        logger.debug("Zeichne ProcessArrow an Position(" + x + ", " + y +")");
 
         Graphics2D g2d = getGraphics2D();
 

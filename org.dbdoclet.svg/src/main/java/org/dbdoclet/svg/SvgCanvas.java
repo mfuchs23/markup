@@ -23,8 +23,6 @@ import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.shape.Arrow;
 import org.dbdoclet.svg.shape.Connector;
 import org.dbdoclet.svg.shape.DefaultShape;
@@ -33,8 +31,6 @@ import org.dbdoclet.xiphias.NodeSerializer;
 import org.w3c.dom.Document;
 
 public abstract class SvgCanvas {
-
-	private static Log logger = LogFactory.getLog(SvgCanvas.class);
 
 	protected ArrayList<Connector> connectorList;
 	protected ArrayList<Shape> shapeList;
@@ -105,7 +101,6 @@ public abstract class SvgCanvas {
 	}
 
 	public void addShape(Shape shape) {
-
 		shapeList.add(shape);
 	}
 
@@ -193,8 +188,6 @@ public abstract class SvgCanvas {
 	}
 
 	public void drawImage() {
-
-		logger.debug("drawImage");
 
 		Iterator<Shape> iterator;
 
@@ -310,8 +303,6 @@ public abstract class SvgCanvas {
 			Cell from = connector.getFrom().getCell();
 			Cell to = connector.getTo().getCell();
 
-			logger.debug("from=" + from + ", to=" + to);
-
 			Point start = calculateStartPoint(connector, from, to, rowInfos,
 					colInfos, shapeMatrix);
 			Point end = calculateEndPoint(connector, from, to, rowInfos,
@@ -349,10 +340,6 @@ public abstract class SvgCanvas {
 			maxHeight = imageHeight;
 		}
 		
-		logger.debug("Bildgröße: " + imageWidth + "x" + imageHeight);
-		logger.debug("maxWidth=" + maxWidth + ", maxHeight=" + maxHeight
-				+ ", factor=" + widthFactor);
-
 		setImageSize(imageWidth, imageHeight, maxWidth, maxHeight);
 	}
 
@@ -531,10 +518,6 @@ public abstract class SvgCanvas {
 			xpos1 += (colInfos[from.getColumn()].getWidth() / 2) - arrowPadding;
 			ypos1 += (rowInfos[fromRow].getHeight() - fromShape.getHeight()) / 2;
 		}
-
-		logger.debug("fromRow=" + fromRow + ", rowColum=" + fromColumn
-				+ ", toRow=" + toRow + ",toColumn=" + toColumn + ", anchor="
-				+ anchor);
 
 		return new Point(xpos1, ypos1);
 	}

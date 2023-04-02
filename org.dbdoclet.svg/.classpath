@@ -11,16 +11,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding="module-info.java" kind="src" path="src/main/java"/>
-	<classpathentry kind="src" output="bin/test" path="src/test/java">
-		<attributes>
-			<attribute name="test" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="bin/test" path="src/test/resources">
-		<attributes>
-			<attribute name="test" value="true"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="src" path="src/test/java"/>
+	<classpathentry kind="src" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.apache.ivyde.eclipse.cpcontainer.IVYDE_CONTAINER/?project=org.dbdoclet.svg&amp;ivyXmlPath=ivy.xml&amp;confs=*">
 		<attributes>
 			<attribute name="module" value="true"/>

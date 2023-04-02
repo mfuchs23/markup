@@ -12,13 +12,9 @@ import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.dbdoclet.svg.shape.Shape;
 
 public class ProcessArrow extends Shape {
-
-    private static Log logger = LogFactory.getLog(ProcessArrow.class);
 
     protected int bottomPadding = 10;
     protected int leftPadding = 10;
@@ -66,8 +62,6 @@ public class ProcessArrow extends Shape {
     }
 
     public void draw(int x, int y) {
-
-        logger.debug("Zeichne ProcessArrow an Position(" + x + ", " + y +")");
 
         Graphics2D g2d = getGraphics2D();
         int width = getWidth();

@@ -3,16 +3,17 @@
   <info organisation="org.dbdoclet" module="org.dbdoclet.svg" revision="${module.version}">
   </info>
   <dependencies>
-    <dependency org="org.apache.xmlgraphics" name="batik-svggen" rev="1.14" revConstraint="latest.integration">
+    <dependency org="org.apache.xmlgraphics" name="batik-svggen" rev="1.14">
     	<exclude module="commons-logging"/>
     </dependency>
-	<dependency org="org.apache.xmlgraphics" name="batik-dom" rev="1.14">
-		<exclude name="xml-apis"/>
-	</dependency>
-	<dependency org="org.apache.xmlgraphics" name="batik-transcoder" rev="1.14">
-		<exclude name="xml-apis"/>
-	</dependency>
-	<dependency org="org.dbdoclet" name="org.dbdoclet.commons" rev="9.0.1-SNAPSHOT" revConstraint="latest.integration"/>
+    <dependency org="org.apache.xmlgraphics" name="batik-dom" rev="1.14">
+      <exclude name="xml-apis"/>
+    </dependency>
+    <dependency org="org.apache.xmlgraphics" name="batik-transcoder" rev="1.14">
+      <exclude name="xml-apis"/>
+    </dependency>
+    <!--dependency org="org.apache" name="org.apache.batik" rev="1.7" revConstraint="latest.integration"/-->
+    <dependency org="org.dbdoclet" name="org.dbdoclet.commons" rev="${module.version}" revConstraint="latest.integration"/>
     <dependency org="org.dbdoclet" name="org.dbdoclet.xiphias" rev="${module.version}" revConstraint="latest.integration"/>
   </dependencies>
 </ivy-module>

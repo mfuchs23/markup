@@ -1,27 +1,89 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.EquinoxLauncher">
-<booleanAttribute key="append.args" value="true"/>
-<booleanAttribute key="automaticAdd" value="true"/>
-<booleanAttribute key="automaticValidate" value="false"/>
-<stringAttribute key="bootstrap" value=""/>
-<stringAttribute key="checked" value="[NONE]"/>
-<booleanAttribute key="clearConfig" value="false"/>
-<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/HtmlParser"/>
-<booleanAttribute key="default" value="true"/>
-<booleanAttribute key="default_auto_start" value="true"/>
-<intAttribute key="default_start_level" value="4"/>
-<stringAttribute key="deselected_workspace_plugins" value="org.dbdoclet.jive,org.dbdoclet.trafo,org.dbdoclet.trafo.html.docbook"/>
-<booleanAttribute key="includeOptional" value="false"/>
-<stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
-<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.console.enable.builtin=false"/>
-<stringAttribute key="pde.version" value="3.3"/>
-<booleanAttribute key="show_selected_only" value="false"/>
-<stringAttribute key="target_bundles" value="org.apache.commons.codec@default:default,org.apache.commons.logging*1.0.4.v201101211617@default:default,org.apache.commons.logging*1.1.1.v201101211721@default:default,org.apache.felix.gogo.command@default:default,org.apache.felix.gogo.runtime@default:default,org.apache.felix.gogo.shell@default:default,org.apache.log4j@default:default,org.eclipse.equinox.console@default:default,org.eclipse.osgi@-1:true"/>
-<stringAttribute key="timestamp" value="1365680703948"/>
-<booleanAttribute key="tracing" value="false"/>
-<booleanAttribute key="useCustomFeatures" value="false"/>
-<booleanAttribute key="useDefaultConfigArea" value="true"/>
-<stringAttribute key="workspace_bundles" value="com.google.inject@default:default,org.antlr.v4.runtime@default:default,org.apache.commons.jxpath@default:default,org.apache.xmlgraphics@default:default,org.dbdoclet.commons@default:default,org.dbdoclet.getopts@default:default,org.dbdoclet.html.parser@default:default,org.dbdoclet.tag@default:default,org.dbdoclet.trafo.gui.deDE@default:false,org.dbdoclet.trafo.gui@default:default,org.dbdoclet.trafo.html.dita@default:default,org.dbdoclet.trafo.html@default:default,org.dbdoclet.xiphias@default:default"/>
+    <booleanAttribute key="append.args" value="true"/>
+    <booleanAttribute key="automaticAdd" value="true"/>
+    <booleanAttribute key="automaticValidate" value="false"/>
+    <stringAttribute key="bootstrap" value=""/>
+    <stringAttribute key="checked" value="[NONE]"/>
+    <booleanAttribute key="clearConfig" value="false"/>
+    <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/HtmlParser"/>
+    <booleanAttribute key="default" value="true"/>
+    <booleanAttribute key="default_auto_start" value="true"/>
+    <intAttribute key="default_start_level" value="4"/>
+    <setAttribute key="deselected_workspace_bundles">
+        <setEntry value="org.dbdoclet.jive"/>
+        <setEntry value="org.dbdoclet.trafo"/>
+        <setEntry value="org.dbdoclet.trafo.html.docbook"/>
+    </setAttribute>
+    <booleanAttribute key="includeOptional" value="false"/>
+    <booleanAttribute key="org.eclipse.debug.core.ATTR_FORCE_SYSTEM_CONSOLE_ENCODING" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.JRE_CONTAINER" value="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog -console"/>
+    <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Declipse.ignoreApp=true -Dosgi.noShutdown=true -Dosgi.console.enable.builtin=false"/>
+    <stringAttribute key="pde.version" value="3.3"/>
+    <setAttribute key="selected_target_bundles">
+        <setEntry value="org.apache.commons.codec@default:default"/>
+        <setEntry value="org.apache.commons.logging@default:default"/>
+        <setEntry value="org.apache.felix.gogo.command@default:default"/>
+        <setEntry value="org.apache.felix.gogo.runtime@default:default"/>
+        <setEntry value="org.apache.felix.gogo.shell@default:default"/>
+        <setEntry value="org.eclipse.equinox.console@default:default"/>
+        <setEntry value="org.eclipse.osgi@-1:true"/>
+    </setAttribute>
+    <setAttribute key="selected_workspace_bundles">
+        <setEntry value="com.google.inject@default:default"/>
+        <setEntry value="javax.help@default:default"/>
+        <setEntry value="org.antlr.v4.runtime@default:default"/>
+        <setEntry value="org.apache.commons.codec@default:default"/>
+        <setEntry value="org.apache.commons.jxpath@default:default"/>
+        <setEntry value="org.apache.xmlgraphics@default:default"/>
+        <setEntry value="org.castor@default:default"/>
+        <setEntry value="org.dbdoclet.antol@default:default"/>
+        <setEntry value="org.dbdoclet.commons@default:default"/>
+        <setEntry value="org.dbdoclet.doclet.docbook@default:default"/>
+        <setEntry value="org.dbdoclet.getopts@default:default"/>
+        <setEntry value="org.dbdoclet.html.parser@default:default"/>
+        <setEntry value="org.dbdoclet.svg@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.application@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.common@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.import@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.importer.eclipse@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.docbook@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.eclipsehelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.epub@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.herold@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.html@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.htmlhelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.javahelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.manpage@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.pdf@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.rtf@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.standard@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.webhelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium.wordml@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.medium@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.dbdoclet@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.eclipse@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.epub@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.fo@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.html@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.htmlhelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.javahelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.manpage@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.pdf@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.rtf@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.webhelp@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.docbook.wordml@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.perspective.project@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit.test@default:default"/>
+        <setEntry value="org.dbdoclet.tidbit@default:default"/>
+        <setEntry value="org.dbdoclet.trafo.html.dita@default:default"/>
+        <setEntry value="org.dbdoclet.trafo.html@default:default"/>
+    </setAttribute>
+    <booleanAttribute key="show_selected_only" value="false"/>
+    <stringAttribute key="timestamp" value="1365680703948"/>
+    <booleanAttribute key="tracing" value="false"/>
+    <booleanAttribute key="useCustomFeatures" value="false"/>
+    <booleanAttribute key="useDefaultConfigArea" value="true"/>
 </launchConfiguration>

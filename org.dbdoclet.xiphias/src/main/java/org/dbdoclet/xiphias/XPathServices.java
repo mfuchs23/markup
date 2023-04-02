@@ -16,6 +16,8 @@
  */
 package org.dbdoclet.xiphias;
 
+import static java.util.Objects.isNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -31,7 +33,7 @@ import org.w3c.dom.NodeList;
 
 public class XPathServices {
 
-    public static Object getValue(Object contextBean, String query) throws XPathExpressionException {
+    public static Object getValue(Object contextBean, String query) {
         return getValue(contextBean, null, null, query);
     }
 
@@ -43,18 +45,23 @@ public class XPathServices {
 	 * @return <code>Object</code>
 	 * @throws XPathExpressionException
 	 */
-    public static Object getValue(Object contextBean, String namespace, String namespaceUrl, String query) throws XPathExpressionException {
+    public static Object getValue(Object contextBean, String namespace, String namespaceUrl, String query) {
 
         Object obj = null;
 
         XPathExpression expression = createExpression(namespace, namespaceUrl, query);
-        obj = expression.evaluate(contextBean, XPathConstants.NODE);
+        try {
+			obj = expression.evaluate(contextBean, XPathConstants.NODE);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return null;
+		}
 
         return obj;
     }
 
-	private static XPathExpression createExpression(String namespace, String namespaceUrl, String query)
-			throws XPathExpressionException {
+	private static XPathExpression createExpression(String namespace, String namespaceUrl, String query) {
+		
 		XPathFactory xpf = XPathFactory.newInstance();
         XPath xp = xpf.newXPath();
         xp.setNamespaceContext(new NamespaceContext() {
@@ -78,19 +85,32 @@ public class XPathServices {
         	
         });
 
-        XPathExpression expression = xp.compile(query);
+        XPathExpression expression = null;
+		try {
+			expression = xp.compile(query);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+		}
+		
 		return expression;
 	}
 
-    public static ArrayList<String> getValues(Object contextBean, String query) throws XPathExpressionException {
+    public static ArrayList<String> getValues(Object contextBean, String query) {
         return getValues(contextBean, null, null, query);
     }
 
-    public static ArrayList<String> getValues(Object contextBean, String namespace, String namespaceUrl, String query) throws XPathExpressionException {
+    public static ArrayList<String> getValues(Object contextBean, String namespace, String namespaceUrl, String query) {
 
         XPathExpression expression = createExpression(namespace, namespaceUrl, query);
-        NodeList nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+        NodeList nodeList = null;
         ArrayList<String> list = new ArrayList<>();
+
+        try {
+			nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return list;
+		}
         
         for (int i=0; i<nodeList.getLength(); i++) {
         	list.add(nodeList.item(i).toString());
@@ -99,17 +119,28 @@ public class XPathServices {
         return list;
     }
 
-    public static ArrayList<Node> getNodes(Object contextBean, String query) throws XPathExpressionException {
+    public static ArrayList<Node> getNodes(Object contextBean, String query) {
 
         return getNodes(contextBean, null, null, query);
     }
 
-    public static ArrayList<Node> getNodes(Object contextBean, String namespace, String namespaceUrl, String query) throws XPathExpressionException {
+    public static ArrayList<Node> getNodes(Object contextBean, String namespace, String namespaceUrl, String query) {
 
-        XPathExpression expression = createExpression(namespace, namespaceUrl, query);
-        NodeList nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+    	ArrayList<Node> nodeArray = new ArrayList<Node>();
 
-        ArrayList<Node> nodeArray = new ArrayList<Node>();
+    	XPathExpression expression = createExpression(namespace, namespaceUrl, query);
+        if (isNull(expression)) {
+        	return nodeArray;
+        }
+        
+    	NodeList nodeList;
+		try {
+			nodeList = (NodeList) expression.evaluate(contextBean, XPathConstants.NODESET);
+		} catch (XPathExpressionException e) {
+			e.printStackTrace();
+			return nodeArray;
+		}
+
 
         for (int i=0; i<nodeList.getLength(); i++) {
         	nodeArray.add(nodeList.item(i));
@@ -118,11 +149,11 @@ public class XPathServices {
         return nodeArray;
     }
 
-    public static Node getNode(Object contextBean, String query) throws XPathExpressionException {
+    public static Node getNode(Object contextBean, String query) {
         return getNode(contextBean, null, null, query);
     }
 
-    public static Node getNode(Object contextBean, String namespace, String namespaceUrl, String query) throws XPathExpressionException {
+    public static Node getNode(Object contextBean, String namespace, String namespaceUrl, String query) {
 
         ArrayList<Node> list = getNodes(contextBean, namespace, namespaceUrl, query);
 

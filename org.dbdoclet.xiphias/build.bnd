@@ -1,0 +1,10 @@
+version=9.0.1-SNAPSHOT
+Bundle-Name=org.dbdoclet.xiphias
+Bundle-SymbolicName=org.dbdoclet.xiphias
+Bundle-Version=${version}
+Export-Package: \
+  org.dbdoclet.xiphias.*;version=${version}, \
+  org.dbdoclet.xsd.*;version=${version}, \
+  org.dbdoclet.format.*;version=${version}
+Import-Package: org.dbdoclet.*, *;resolution:=optional
+

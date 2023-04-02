@@ -31,7 +31,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
 import org.dbdoclet.antol.AntRunner;
-import org.dbdoclet.log.ScreenLogger;
+import org.dbdoclet.io.Screen;
 import org.dbdoclet.service.FileServices;
 
 /**
@@ -118,7 +118,6 @@ public class Assemble extends SokoTask {
 		File logFile;
 		Module module;
 		PrintWriter writer;
-		ScreenLogger screen;
 		String arch;
 		String key;
 		String pkgName;
@@ -248,9 +247,8 @@ public class Assemble extends SokoTask {
 						+ "-" + moduleTargets.get(0) + ".log"));
 
 				writer = new PrintWriter(new FileWriter(logFile));
-				screen = new ScreenLogger(writer);
 
-				runner = new AntRunner(screen, module.getBuildFile(),
+				runner = new AntRunner(null, module.getBuildFile(),
 						moduleTargets, props);
 				runner.start();
 
@@ -453,14 +451,11 @@ public class Assemble extends SokoTask {
 
 				} else {
 
-					ScreenLogger screen = new ScreenLogger(new PrintWriter(
-							System.out));
-
 					Properties properties = new Properties();
 					properties.setProperty("confFile",
 							confFile.getAbsolutePath());
 
-					AntRunner runner = new AntRunner(screen,
+					AntRunner runner = new AntRunner(null,
 							module.getBuildFile(), "process-resources",
 							new HashMap<String, String>());
 					runner.start();

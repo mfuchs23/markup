@@ -22,7 +22,7 @@ under the License.
   </info>
   <dependencies>
 	<dependency org="org.apache" name="org.apache.xml.resolver" rev="1.2"/>
-    <dependency org="org.dbdoclet" name="org.dbdoclet.commons" rev="9.0.1-SNAPSHOT" revConstraint="latest.integration"/>
-    <dependency org="org.dbdoclet" name="org.dbdoclet.getopts" rev="9.0.1-SNAPSHOT" revConstraint="latest.integration"/>
+    <dependency org="org.dbdoclet" name="org.dbdoclet.commons" rev="${module.version}" revConstraint="latest.integration"/>
+    <dependency org="org.dbdoclet" name="org.dbdoclet.getopts" rev="${module.version}" revConstraint="latest.integration"/>
   </dependencies>
 </ivy-module>
