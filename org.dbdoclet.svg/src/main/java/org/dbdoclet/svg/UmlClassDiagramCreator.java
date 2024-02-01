@@ -313,6 +313,15 @@ public class UmlClassDiagramCreator {
 		canvas.setMaxHeight(height);
 	}
 
+	public void setFont(String fontFamily, int fontSize) {
+
+		this.fontSize = fontSize;
+		this.fontFamily = fontFamily;
+		
+		sansSerif = new Font(fontFamily, Font.PLAIN, fontSize);
+		sansSerifBold = new Font(fontFamily, Font.BOLD, fontSize);
+	}
+
 	public void setFontSize(int fontSize) {
 
 		this.fontSize = fontSize;
