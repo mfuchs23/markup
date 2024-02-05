@@ -1,5 +1,5 @@
 /* 
- * ### Copyright (C) 2008 Michael Fuchs ###
+ * ### Copyright (C) 2008-2024 Michael Fuchs ###
  * ### All Rights Reserved.             ###
  *
  * Author: Michael Fuchs
@@ -8,24 +8,16 @@
  */
 package org.dbdoclet.tag.docbook;
 
-
-
-
 public class Simplelist extends DocBookElement {
 
-    final static public int FORMAT_INLINE = 1;
+    public static enum Type { HORIZ, VERT, INLINE };
 
     Simplelist() {
         super("simplelist");
     }
 
-    Simplelist setType(int type) {
-
-        if (type == FORMAT_INLINE) {
-
-            setAttribute("type", "inline");
-        }
-
+    Simplelist setType(Type type) {
+    	setAttribute("type", type.toString().toLowerCase());
         return this;
     }
 }

@@ -1,4 +1,4 @@
-#Thu Feb 01 17:17:25 CET 2024
+#Mon Feb 05 13:31:26 CET 2024
 org.dbdoclet.antol.ant.Arg=org.dbdoclet.antol.ant.descriptors.ArgDescriptor
 org.dbdoclet.antol.ant.Dirset=org.dbdoclet.antol.ant.descriptors.DirsetDescriptor
 org.dbdoclet.antol.ant.Bootclasspath=org.dbdoclet.antol.ant.descriptors.BootclasspathDescriptor

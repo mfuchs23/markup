@@ -550,7 +550,7 @@ public class DocBookTagFactory extends BaseTagFactory {
 		return simPara;
 	}
 
-	public Simplelist createSimplelist(int type) {
+	public Simplelist createSimplelist(Simplelist.Type type) {
 	
 		Simplelist simpleList = createSimplelist();
 		simpleList.setType(type);

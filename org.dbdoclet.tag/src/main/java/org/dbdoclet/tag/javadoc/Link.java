@@ -8,7 +8,6 @@
  */
 package org.dbdoclet.tag.javadoc;
 
-
 /**
  * The class <code>Link</code> represents a javadoc link tag.
  * 
@@ -17,21 +16,21 @@ package org.dbdoclet.tag.javadoc;
  */
 public class Link extends JavaDocElement {
 
-    public Link() {
-	super();
-	setNodeName("javadoc:link");
-	setFormatType(FORMAT_INLINE);
-    }
+	public Link() {
+		super();
+		setNodeName("javadoc:link");
+		setFormatType(FORMAT_INLINE);
+	}
 
-    public String getName() {
-	return getAttribute("name");
-    }
+	public String getName() {
+		return getAttribute("name");
+	}
 
-    public String getRef() {
-	return getAttribute("ref");
-    }
+	public String getRef() {
+		return getAttribute("ref");
+	}
 
-    @Override
-    public void init() {
-    }
+	@Override
+	public void init() {
+	}
 }
